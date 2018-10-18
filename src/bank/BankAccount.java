@@ -5,64 +5,49 @@ public class BankAccount {
 	// members:
 
 	private String firstName;
-	private String middleName;
 	private String lastName;
 	private int accountNum;
 	private String password;
 	private String message;
 	private double balance;
+	private String username;
 
-	BankAccount(double amt, String fName, String mName, String lName, int acctNum) {
+	BankAccount(String uName, double amt, String fName, String lName, int acctNum) {
+		username = uName;
 		balance = amt;
 		firstName = fName;
-		middleName = mName;
 		lastName = lName;
 		password = setPassword();
 	}
 
-	BankAccount(String fname, String lName, int accNum) {
+	BankAccount(String uName, String fname, String lName, int accNum) {
+		username = uName;
 		accountNum = accNum;
 		firstName = fname;
-		middleName = "";
 		lastName = lName;
 		balance = 0;
 
 	}
+	
+	public String getUsername() {
+		return this.username;
+	}
+	
 
 	private int getAccountNum() {
 		return accountNum;
-	}
-
-	private void setBalance(double setbalance) {
-		balance = setbalance;
 	}
 
 	private String getFirstName() {
 		return firstName;
 	}
 
-	private void setFirstName(String fName) {
-		firstName = fName;
-	}
-
-	private String getMiddleName() {
-		return middleName;
-	}
-
-	private void setMiddleName(String mName) {
-		middleName = mName;
-	}
-
 	private String getLastName() {
 		return lastName;
 	}
 
-	private void setLastName(String lName) {
-		lastName = lName;
-	}
-
 	private String getPassword() {
-		return password;
+		return "Oh no. U Leet HAX0R. Me gusta. Here password";
 	}
 
 	private String setPassword() {
@@ -91,7 +76,6 @@ public class BankAccount {
 		return message;
 	}
 
-	// methods:
 	boolean deposit(double amount) {
 		if (amount > 0) {
 			message += "A deposit of " + amount + "$ has been made.";
@@ -120,8 +104,8 @@ public class BankAccount {
 	}
 
 	void display() {
-		System.out.println("User account numb: " + getAccountNum() + "\nUser full name: " + firstName + " " + middleName
-				+ " " + lastName + "\nUser account balance: " + balance);
+		System.out.println("User account numb: " + getAccountNum() + "\nUser full name: " + firstName + " " 
+			+ lastName + "\nUser account balance: " + balance);
 	}
 
 	boolean transferTo(double amount, double otherAcct) {
@@ -134,7 +118,8 @@ public class BankAccount {
 		}
 
 		else {
-			message += "Overdraft during transfer occured. Transaction not processed. Please contact us for more information A fee of $25 was applied\n";
+			message += "Overdraft during transfer occured. Transaction not processed. "
+					+ "Please contact us for more information A fee of $25 was applied\n";
 			return false;
 		}
 	}
@@ -184,30 +169,3 @@ public class BankAccount {
 		balance = 0;
 	}
 }
-
-/*
- * public static void main (String [] args) { Scanner sc = new
- * Scanner(System.in); System.out.println("hi");
- * 
- * BankAccount bankAccount = new BankAccount(); bankAccount bank =
- * bankAccount.new bankAccount();
- * 
- * 
- * String fName = bank.getFirstName(); String mName = bank.getMiddleName();
- * String lName = bank.getLastName(); doZAuble balence = bank.getBalance();
- * String password = bank.getPassword();
- * 
- * 
- * System.out.println("Hello " + fName + " " + mName + " " + lName +
- * " your current bank account balence is " + balence);
- * System.out.println(password);
- * 
- * bank.display(); bank.emptyAccount();
- * 
- * double amount = 0; double otherAcct = 54321; String pswd = password ; boolean
- * check = bank.transferFrom(amount, otherAcct, pswd); String mess =
- * bank.getMessage(); System.out.println(mess); System.out.println(check);
- * 
- * 
- * }
- */

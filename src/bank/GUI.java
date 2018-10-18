@@ -55,6 +55,7 @@ public class GUI {
 	final static String TRANSFERFROM_PANEL = "TransferFrom Panel";
 	final static String WRONGPASSWORD_PANEL = "WrongPass Panel";
 	final static String NEWACCOUNT_PANEL = "NewAccount Panel";
+	final static String LOGIN_PANEL = "Login Panel";
 
 	private JTextField txtUsername;
 	private JPasswordField passwordField;
@@ -99,8 +100,8 @@ public class GUI {
 	
 	
 	private int findBankAccountIndex(String username) {
-		// this would be so much easier if we just made a username thingy instead of f/m/l name combo.
-		// too lazy to do it right now though so tommorow. Also need to add a check if it's unique
+		return 0;
+		
 	}
 	
 	private static int generateAccNum() {
@@ -121,9 +122,9 @@ public class GUI {
 		return Integer.valueOf(accComb);
 	}
 
-	private boolean createAcc(double amt, String fName, String mName, String lName, int acctNum) {
+	private boolean createAcc(String username, double amt, String fName, String lName, int acctNum) {
 		try {
-			ba.add(new BankAccount(amt, fName, mName, lName, acctNum));
+			ba.add(new BankAccount(username, amt, fName, lName, acctNum));
 			return true;
 		} catch (Exception e) {
 			return false;
@@ -132,7 +133,7 @@ public class GUI {
 
 	// for testing purposes
 	private static void createTestAccount() {
-		ba.add(new BankAccount(1000, "Ricky", "Loves", "Lin", generateAccNum()));
+		ba.add(new BankAccount("Ricky", 1000, "Ricky", "Lin", generateAccNum()));
 	}
 
 	private void initialize() {
@@ -170,14 +171,14 @@ public class GUI {
 		loginJPanel.add(txtUsername, gbc_txtUsername);
 		txtUsername.setColumns(10);
 
-		JLabel lblNewLabel_1 = new JLabel("Password:");
-		GridBagConstraints gbc_lblNewLabel_1 = new GridBagConstraints();
-		gbc_lblNewLabel_1.anchor = GridBagConstraints.NORTH;
-		gbc_lblNewLabel_1.fill = GridBagConstraints.HORIZONTAL;
-		gbc_lblNewLabel_1.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel_1.gridx = 1;
-		gbc_lblNewLabel_1.gridy = 2;
-		loginJPanel.add(lblNewLabel_1, gbc_lblNewLabel_1);
+		JLabel usernameField = new JLabel("Password:");
+		GridBagConstraints gbc_usernameField = new GridBagConstraints();
+		gbc_usernameField.anchor = GridBagConstraints.NORTH;
+		gbc_usernameField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_usernameField.insets = new Insets(0, 0, 5, 5);
+		gbc_usernameField.gridx = 1;
+		gbc_usernameField.gridy = 2;
+		loginJPanel.add(usernameField, gbc_usernameField);
 
 		passwordField = new JPasswordField();
 		GridBagConstraints gbc_passwordField = new GridBagConstraints();
@@ -187,12 +188,14 @@ public class GUI {
 		gbc_passwordField.gridx = 2;
 		gbc_passwordField.gridy = 2;
 		loginJPanel.add(passwordField, gbc_passwordField);
-
+		
+		
 		JButton btnEnter = new JButton("Enter");
+		
 		btnEnter.addActionListener(new ActionListener() {
+			String username = usernameField.getText();
 			public void actionPerformed(ActionEvent arg0) {
-
-				if (ba.get(this.accIndex).checkPassword(passwordField.getText())) {
+				if (ba.get(findBankAccountIndex(username)).checkPassword(passwordField.getText())) {
 					layout.show(frame.getContentPane(), CHOICE_PANEL);
 
 				} else {
