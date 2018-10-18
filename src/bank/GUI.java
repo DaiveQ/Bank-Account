@@ -22,6 +22,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
@@ -35,9 +36,8 @@ public class GUI {
 
 	private JFrame frame;
 	CardLayout layout = new CardLayout(0, 0);
-	
-	//public  List<BankAccount> ba = new ArrayList<BankAccount>();
-	BankAccount b1 = new BankAccount(1000, "James", "-", "Bond", 2345);
+
+	private static List<BankAccount> ba = new ArrayList<BankAccount>();
 	
 	final static String MAIN_PANEL = "Main Panel";
 	final static String CHOICE_PANEL = "Choice Panel";
@@ -79,6 +79,8 @@ public class GUI {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		createTestAccount();
+
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -91,17 +93,50 @@ public class GUI {
 		});
 	}
 
-	/**
-	 * Create the application.
-	 */
 	public GUI() {
 		initialize();
 	}
+	
+	
+	private int findBankAccountIndex(String username) {
+		// this would be so much easier if we just made a username thingy instead of f/m/l name combo.
+		// too lazy to do it right now though so tommorow. Also need to add a check if it's unique
+	}
+	
+	private static int generateAccNum() {
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
+		// add a check if already used I guess?
+
+		Random rand = new Random();
+
+		int x[] = new int[9];
+		for (int i = 0; i < 9; i++) {
+			x[i] = rand.nextInt(9);
+		}
+
+		String accComb = "";
+		for (int i : x) {
+			accComb = accComb + String.valueOf(x[i]);
+		}
+		return Integer.valueOf(accComb);
+	}
+
+	private boolean createAcc(double amt, String fName, String mName, String lName, int acctNum) {
+		try {
+			ba.add(new BankAccount(amt, fName, mName, lName, acctNum));
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	// for testing purposes
+	private static void createTestAccount() {
+		ba.add(new BankAccount(1000, "Ricky", "Loves", "Lin", generateAccNum()));
+	}
+
 	private void initialize() {
+
 		frame = new JFrame();
 		frame.setAlwaysOnTop(true);
 		frame.setBounds(100, 100, 450, 300);
@@ -157,12 +192,12 @@ public class GUI {
 		btnEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				if (b1.checkPassword(passwordField.getText())) {
+				if (ba.get(this.accIndex).checkPassword(passwordField.getText())) {
 					layout.show(frame.getContentPane(), CHOICE_PANEL);
 
 				} else {
 					layout.show(frame.getContentPane(), WRONGPASSWORD_PANEL);
-
+					
 				}
 			}
 		});
@@ -662,11 +697,11 @@ public class GUI {
 		JPanel WrongPass = new JPanel();
 		frame.getContentPane().add(WrongPass, WRONGPASSWORD_PANEL);
 		WrongPass.setLayout(null);
-		
+
 		JLabel lblWrongPasswordPlease = new JLabel("Wrong Password Please Try Again");
 		lblWrongPasswordPlease.setBounds(116, 118, 207, 42);
 		WrongPass.add(lblWrongPasswordPlease);
-		
+
 		JButton btnBack_1 = new JButton("Back");
 		btnBack_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -699,6 +734,7 @@ public class GUI {
 		btnCreate.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
+				
 			}
 		});
 		btnCreate.setBounds(203, 227, 148, 23);
@@ -737,4 +773,5 @@ public class GUI {
 		passwordField_6.setBounds(130, 180, 200, 20);
 		NewAccount.add(passwordField_6);
 	}
+
 }
