@@ -1,36 +1,32 @@
 package bank;
 
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
+import java.awt.GridBagConstraints;
+import java.awt.Insets;
 import java.awt.GridBagLayout;
 import java.awt.CardLayout;
+import java.awt.Font;
+import java.awt.Color;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
+
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
-import javax.swing.JTextPane;
-import java.awt.GridLayout;
-import java.awt.FlowLayout;
-import java.awt.Font;
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import javax.swing.JTextArea;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
-import javax.swing.JTextArea;
-import javax.swing.JScrollPane;
-import java.awt.GridBagConstraints;
-import java.awt.Insets;
-import javax.swing.SwingConstants;
-import java.awt.Color;
-import java.awt.Window.Type;
 
 public class GUI {
 
@@ -38,7 +34,7 @@ public class GUI {
 	CardLayout layout = new CardLayout(0, 0);
 
 	private static List<BankAccount> ba = new ArrayList<BankAccount>();
-	
+
 	final static String MAIN_PANEL = "Main Panel";
 	final static String CHOICE_PANEL = "Choice Panel";
 	final static String WITHDRAW_PANEL = "Withdraw Panel";
@@ -56,6 +52,7 @@ public class GUI {
 	final static String WRONGPASSWORD_PANEL = "WrongPass Panel";
 	final static String NEWACCOUNT_PANEL = "NewAccount Panel";
 	final static String LOGIN_PANEL = "Login Panel";
+	private static final double DEFAULT_MONEY_VALUE = 1234.56;
 
 	private JTextField txtUsername;
 	private JPasswordField passwordField;
@@ -71,14 +68,12 @@ public class GUI {
 	private JTextField textField_5;
 	private JTextField textField_6;
 	private JTextField textField_7;
-	private JTextField textField_9;
-	private JTextField textField_8;
-	private JPasswordField passwordField_5;
-	private JPasswordField passwordField_6;
+	private JTextField textField_FirstName;
+	private JTextField textField_LastName;
+	private JPasswordField passwordField_Password;
+	private JPasswordField passwordField_Repeat;
+	private JTextField textField_Username;
 
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		createTestAccount();
 
@@ -97,43 +92,60 @@ public class GUI {
 	public GUI() {
 		initialize();
 	}
-	
-	
+
 	private int findBankAccountIndex(String username) {
 		return 0;
+
+	}
+
+	private static int generateAccNum() {
+		// add a check if already used I guess?
+		boolean taken = true;
+		int accNum = 0;
 		
+		while(taken) {
+			
+			String accComb = "";
+			
+			Random rand = new Random();
+			int x[] = new int[9];
+			for (int i = 0; i < 9; i++)
+				x[i] = rand.nextInt(9);
+			
+			for (int i : x) {
+				accComb += String.valueOf(x[i]);
+			}
+			if(checkForUniqueAccNum(Integer.valueOf(accComb))) {
+				accNum = Integer.valueOf(accComb);
+				taken = false;
+			}
+			
+		}
+		return Integer.valueOf(accNum);
 	}
 	
-	private static int generateAccNum() {
-
-		// add a check if already used I guess?
-
-		Random rand = new Random();
-
-		int x[] = new int[9];
-		for (int i = 0; i < 9; i++) {
-			x[i] = rand.nextInt(9);
+	private static boolean checkForUniqueAccNum(int accNum) {
+		for(BankAccount element : ba) {
+			if (element.getAccountNum() == accNum)
+				return false;
 		}
-
-		String accComb = "";
-		for (int i : x) {
-			accComb = accComb + String.valueOf(x[i]);
-		}
-		return Integer.valueOf(accComb);
+		return true;
 	}
 
-	private boolean createAcc(String username, double amt, String fName, String lName, int acctNum) {
-		try {
-			ba.add(new BankAccount(username, amt, fName, lName, acctNum));
-			return true;
-		} catch (Exception e) {
-			return false;
+	private static boolean createAcc(String username, double amt, String fName, String lName, int acctNum) {
+		for (BankAccount element : ba) {
+			if (element.getUsername() == username)
+				return false;
 		}
+		ba.add(new BankAccount(username, amt, fName, lName, acctNum));
+		return true;
 	}
 
 	// for testing purposes
 	private static void createTestAccount() {
-		ba.add(new BankAccount("Ricky", 1000, "Ricky", "Lin", generateAccNum()));
+		int accNum = generateAccNum();
+		ba.add(new BankAccount("Rocky", 1000, "Ricky", "Lin", accNum));
+		createAcc("Ricky", 1000, "Ricky", "Lin", accNum);
 	}
 
 	private void initialize() {
@@ -188,19 +200,19 @@ public class GUI {
 		gbc_passwordField.gridx = 2;
 		gbc_passwordField.gridy = 2;
 		loginJPanel.add(passwordField, gbc_passwordField);
-		
-		
+
 		JButton btnEnter = new JButton("Enter");
-		
+
 		btnEnter.addActionListener(new ActionListener() {
 			String username = usernameField.getText();
+
 			public void actionPerformed(ActionEvent arg0) {
 				if (ba.get(findBankAccountIndex(username)).checkPassword(passwordField.getText())) {
 					layout.show(frame.getContentPane(), CHOICE_PANEL);
 
 				} else {
 					layout.show(frame.getContentPane(), WRONGPASSWORD_PANEL);
-					
+
 				}
 			}
 		});
@@ -721,7 +733,7 @@ public class GUI {
 
 		JLabel lblFirstName = new JLabel("First Name");
 		lblFirstName.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblFirstName.setBounds(36, 33, 84, 14);
+		lblFirstName.setBounds(36, 78, 84, 14);
 		NewAccount.add(lblFirstName);
 
 		JButton btnBack = new JButton("Back");
@@ -730,37 +742,56 @@ public class GUI {
 				layout.show(frame.getContentPane(), MAIN_PANEL);
 			}
 		});
-		btnBack.setBounds(128, 227, 65, 23);
+		btnBack.setBounds(55, 225, 65, 25);
 		NewAccount.add(btnBack);
 
-		JButton btnCreate = new JButton("Create Account");
-		btnCreate.addActionListener(new ActionListener() {
+		JButton btnCreateAccount = new JButton("Create Account");
+		btnCreateAccount.addActionListener(new ActionListener() {
+
+			@SuppressWarnings("deprecation")
+
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
-				
+
+				if (passwordField_Password.getText().hashCode() == passwordField_Repeat.getText().hashCode()) {
+					String username = textField_Username.getText();
+					String firstName = textField_FirstName.getText();
+					String lastName = textField_LastName.getText();
+					
+					if(!createAcc(username, DEFAULT_MONEY_VALUE, firstName, lastName, generateAccNum()))
+						// successful pop-up
+						;
+					else
+						//username taken
+						;
+					
+				} else
+					// passwords don't match pop-up
+					;
+
 			}
 		});
-		btnCreate.setBounds(203, 227, 148, 23);
-		NewAccount.add(btnCreate);
+		btnCreateAccount.setBounds(130, 225, 200, 25);
+		NewAccount.add(btnCreateAccount);
 
-		textField_9 = new JTextField();
-		textField_9.setColumns(10);
-		textField_9.setBounds(130, 30, 200, 20);
-		NewAccount.add(textField_9);
+		textField_FirstName = new JTextField();
+		textField_FirstName.setColumns(10);
+		textField_FirstName.setBounds(130, 75, 200, 20);
+		NewAccount.add(textField_FirstName);
 
-		textField_8 = new JTextField();
-		textField_8.setColumns(10);
-		textField_8.setBounds(130, 80, 200, 20);
-		NewAccount.add(textField_8);
+		textField_LastName = new JTextField();
+		textField_LastName.setColumns(10);
+		textField_LastName.setBounds(130, 110, 200, 20);
+		NewAccount.add(textField_LastName);
 
 		JLabel lblLastName = new JLabel("Last Name");
 		lblLastName.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblLastName.setBounds(46, 83, 74, 14);
+		lblLastName.setBounds(46, 113, 74, 14);
 		NewAccount.add(lblLastName);
 
 		JLabel lblPassword = new JLabel("Password");
 		lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblPassword.setBounds(46, 133, 74, 14);
+		lblPassword.setBounds(46, 148, 74, 14);
 		NewAccount.add(lblPassword);
 
 		JLabel lblRepeatPassword = new JLabel("Repeat Password");
@@ -768,13 +799,22 @@ public class GUI {
 		lblRepeatPassword.setBounds(4, 183, 116, 14);
 		NewAccount.add(lblRepeatPassword);
 
-		passwordField_5 = new JPasswordField();
-		passwordField_5.setBounds(130, 130, 200, 20);
-		NewAccount.add(passwordField_5);
+		passwordField_Password = new JPasswordField();
+		passwordField_Password.setBounds(130, 145, 200, 20);
+		NewAccount.add(passwordField_Password);
 
-		passwordField_6 = new JPasswordField();
-		passwordField_6.setBounds(130, 180, 200, 20);
-		NewAccount.add(passwordField_6);
+		passwordField_Repeat = new JPasswordField();
+		passwordField_Repeat.setBounds(130, 180, 200, 20);
+		NewAccount.add(passwordField_Repeat);
+
+		textField_Username = new JTextField();
+		textField_Username.setColumns(10);
+		textField_Username.setBounds(130, 40, 200, 20);
+		NewAccount.add(textField_Username);
+
+		JLabel lblUsername = new JLabel("Username");
+		lblUsername.setHorizontalAlignment(SwingConstants.RIGHT);
+		lblUsername.setBounds(46, 43, 74, 14);
+		NewAccount.add(lblUsername);
 	}
-
 }

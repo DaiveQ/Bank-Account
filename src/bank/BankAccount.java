@@ -2,15 +2,13 @@ package bank;
 
 public class BankAccount {
 
-	// members:
-
 	private String firstName;
 	private String lastName;
-	private int accountNum;
 	private String password;
 	private String message;
-	private double balance;
 	private String username;
+	private int accountNum;
+	private double balance;
 
 	BankAccount(String uName, double amt, String fName, String lName, int acctNum) {
 		username = uName;
@@ -34,20 +32,8 @@ public class BankAccount {
 	}
 	
 
-	private int getAccountNum() {
+	public int getAccountNum() {
 		return accountNum;
-	}
-
-	private String getFirstName() {
-		return firstName;
-	}
-
-	private String getLastName() {
-		return lastName;
-	}
-
-	private String getPassword() {
-		return "Oh no. U Leet HAX0R. Me gusta. Here password";
 	}
 
 	private String setPassword() {
@@ -104,7 +90,8 @@ public class BankAccount {
 	}
 
 	void display() {
-		System.out.println("User account numb: " + getAccountNum() + "\nUser full name: " + firstName + " " 
+		// shouldn't be printed out
+		System.out.println("User account num: " + getAccountNum() + "\nUser full name: " + firstName + " " 
 			+ lastName + "\nUser account balance: " + balance);
 	}
 
