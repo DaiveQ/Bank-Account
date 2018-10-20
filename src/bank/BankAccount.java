@@ -1,5 +1,8 @@
 package bank;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class BankAccount {
 
 	private String firstName;
@@ -9,7 +12,9 @@ public class BankAccount {
 	private String username;
 	private int accountNum;
 	private double balance;
-
+	
+	SimpleDateFormat datef = new SimpleDateFormat("dd/MM/YYYY HH:mm a");
+	
 	BankAccount(String uName, double amt, String fName, String lName, int acctNum) {
 		username = uName;
 		balance = amt;
@@ -25,6 +30,14 @@ public class BankAccount {
 		lastName = lName;
 		balance = 0;
 
+	}
+	
+	
+	private String getTimeStamp() {
+		Date date = new Date();
+		return datef.format(date) + ": ";
+		
+		//make it so it's used when a message is made
 	}
 	
 	public String getUsername() {
@@ -155,4 +168,5 @@ public class BankAccount {
 		message += "So much for \"leaving something for a rainy day\"\n";
 		balance = 0;
 	}
+
 }

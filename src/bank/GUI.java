@@ -10,6 +10,7 @@ import java.awt.Color;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.text.SimpleDateFormat;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
@@ -17,7 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
@@ -34,7 +35,8 @@ public class GUI {
 	CardLayout layout = new CardLayout(0, 0);
 
 	private static List<BankAccount> ba = new ArrayList<BankAccount>();
-
+	private int index; // index of BankAccount. Shortened for simplicity
+	
 	final static String MAIN_PANEL = "Main Panel";
 	final static String CHOICE_PANEL = "Choice Panel";
 	final static String WITHDRAW_PANEL = "Withdraw Panel";
@@ -54,25 +56,25 @@ public class GUI {
 	final static String LOGIN_PANEL = "Login Panel";
 	private static final double DEFAULT_MONEY_VALUE = 1234.56;
 
-	private JTextField txtUsername;
-	private JPasswordField passwordField;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JPasswordField passwordField_1;
-	private JPasswordField passwordField_2;
-	private JPasswordField passwordField_3;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JPasswordField passwordField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_FirstName;
-	private JTextField textField_LastName;
-	private JPasswordField passwordField_Password;
-	private JPasswordField passwordField_Repeat;
-	private JTextField textField_Username;
+	private JTextField Login_txtUsername;
+	private JPasswordField Login_passwordField;
+	private JTextField Withdraw_txtAmount;
+	private JTextField Deposit_txtAmount;
+	private JPasswordField ResetPass_txtCurrentPassword;
+	private JPasswordField ResetPass_txtNewPassword;
+	private JTextField TransferTo_txtAmount;
+	private JTextField TransferTo_txtBankAccount;
+	private JTextField TransferTo_txtOtherAccount;
+	private JPasswordField TransferFrom_passwordField;
+	private JTextField TransferFrom_txtBankAccount;
+	private JTextField TransferFrom_txtOtherAccount;
+	private JTextField TransferFrom_txtAmount;
+	private JTextField CreateAccount_txtFirstName;
+	private JTextField CreateAccount_txtLastName;
+	private JPasswordField CreateAccount_passwordField;
+	private JPasswordField CreateAccount_passwordFieldRepeat;
+	private JTextField CreateAccount_txtUsername;
+	private JButton Main_btnWithdraw;
 
 	public static void main(String[] args) {
 		createTestAccount();
@@ -93,39 +95,42 @@ public class GUI {
 		initialize();
 	}
 
-	private int findBankAccountIndex(String username) {
-		return 0;
-
+	private void findBankAccountIndex(String username) {
+		checklistloop: for (int i = 0; i < ba.size(); i++) {
+			if (ba.get(i).getUsername() == username) {
+				this.index = i;
+				break checklistloop;
+			}
+		}
 	}
 
 	private static int generateAccNum() {
-		// add a check if already used I guess?
 		boolean taken = true;
 		int accNum = 0;
-		
-		while(taken) {
-			
+
+		while (taken) {
+
 			String accComb = "";
-			
+
 			Random rand = new Random();
 			int x[] = new int[9];
 			for (int i = 0; i < 9; i++)
 				x[i] = rand.nextInt(9);
-			
+
 			for (int i : x) {
 				accComb += String.valueOf(x[i]);
 			}
-			if(checkForUniqueAccNum(Integer.valueOf(accComb))) {
+			if (checkForUniqueAccNum(Integer.valueOf(accComb))) {
 				accNum = Integer.valueOf(accComb);
 				taken = false;
 			}
-			
+
 		}
 		return Integer.valueOf(accNum);
 	}
-	
+
 	private static boolean checkForUniqueAccNum(int accNum) {
-		for(BankAccount element : ba) {
+		for (BankAccount element : ba) {
 			if (element.getAccountNum() == accNum)
 				return false;
 		}
@@ -165,49 +170,52 @@ public class GUI {
 		gbl_loginJPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		loginJPanel.setLayout(gbl_loginJPanel);
 
-		JLabel lblNewLabel = new JLabel("Username:");
-		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
-		gbc_lblNewLabel.fill = GridBagConstraints.BOTH;
-		gbc_lblNewLabel.insets = new Insets(0, 0, 5, 5);
-		gbc_lblNewLabel.gridx = 1;
-		gbc_lblNewLabel.gridy = 1;
-		loginJPanel.add(lblNewLabel, gbc_lblNewLabel);
+		JLabel Login_lblUsername = new JLabel("Username:");
+		GridBagConstraints gbc_Login_lblUsername = new GridBagConstraints();
+		gbc_Login_lblUsername.fill = GridBagConstraints.BOTH;
+		gbc_Login_lblUsername.insets = new Insets(0, 0, 5, 5);
+		gbc_Login_lblUsername.gridx = 1;
+		gbc_Login_lblUsername.gridy = 1;
+		loginJPanel.add(Login_lblUsername, gbc_Login_lblUsername);
 
-		txtUsername = new JTextField();
-		GridBagConstraints gbc_txtUsername = new GridBagConstraints();
-		gbc_txtUsername.anchor = GridBagConstraints.NORTH;
-		gbc_txtUsername.fill = GridBagConstraints.HORIZONTAL;
-		gbc_txtUsername.insets = new Insets(0, 0, 5, 0);
-		gbc_txtUsername.gridx = 2;
-		gbc_txtUsername.gridy = 1;
-		loginJPanel.add(txtUsername, gbc_txtUsername);
-		txtUsername.setColumns(10);
+		Login_txtUsername = new JTextField();
+		GridBagConstraints gbc_Login_txtUsername = new GridBagConstraints();
+		gbc_Login_txtUsername.anchor = GridBagConstraints.NORTH;
+		gbc_Login_txtUsername.fill = GridBagConstraints.HORIZONTAL;
+		gbc_Login_txtUsername.insets = new Insets(0, 0, 5, 0);
+		gbc_Login_txtUsername.gridx = 2;
+		gbc_Login_txtUsername.gridy = 1;
+		loginJPanel.add(Login_txtUsername, gbc_Login_txtUsername);
+		Login_txtUsername.setColumns(10);
 
-		JLabel usernameField = new JLabel("Password:");
-		GridBagConstraints gbc_usernameField = new GridBagConstraints();
-		gbc_usernameField.anchor = GridBagConstraints.NORTH;
-		gbc_usernameField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_usernameField.insets = new Insets(0, 0, 5, 5);
-		gbc_usernameField.gridx = 1;
-		gbc_usernameField.gridy = 2;
-		loginJPanel.add(usernameField, gbc_usernameField);
+		JLabel Login_lblPassword = new JLabel("Password:");
+		GridBagConstraints gbc_Login_lblPassword = new GridBagConstraints();
+		gbc_Login_lblPassword.anchor = GridBagConstraints.NORTH;
+		gbc_Login_lblPassword.fill = GridBagConstraints.HORIZONTAL;
+		gbc_Login_lblPassword.insets = new Insets(0, 0, 5, 5);
+		gbc_Login_lblPassword.gridx = 1;
+		gbc_Login_lblPassword.gridy = 2;
+		loginJPanel.add(Login_lblPassword, gbc_Login_lblPassword);
 
-		passwordField = new JPasswordField();
-		GridBagConstraints gbc_passwordField = new GridBagConstraints();
-		gbc_passwordField.anchor = GridBagConstraints.NORTH;
-		gbc_passwordField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_passwordField.insets = new Insets(0, 0, 5, 0);
-		gbc_passwordField.gridx = 2;
-		gbc_passwordField.gridy = 2;
-		loginJPanel.add(passwordField, gbc_passwordField);
+		Login_passwordField = new JPasswordField();
+		GridBagConstraints gbc_Login_passwordField = new GridBagConstraints();
+		gbc_Login_passwordField.anchor = GridBagConstraints.NORTH;
+		gbc_Login_passwordField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_Login_passwordField.insets = new Insets(0, 0, 5, 0);
+		gbc_Login_passwordField.gridx = 2;
+		gbc_Login_passwordField.gridy = 2;
+		loginJPanel.add(Login_passwordField, gbc_Login_passwordField);
 
-		JButton btnEnter = new JButton("Enter");
+		JButton Login_btnEnter = new JButton("Enter");
 
-		btnEnter.addActionListener(new ActionListener() {
-			String username = usernameField.getText();
+		Login_btnEnter.addActionListener(new ActionListener() {
+
+			// work on it
+
+			String username = Login_lblPassword.getText();
 
 			public void actionPerformed(ActionEvent arg0) {
-				if (ba.get(findBankAccountIndex(username)).checkPassword(passwordField.getText())) {
+				if (ba.get(index).checkPassword(Login_passwordField.getText())) {
 					layout.show(frame.getContentPane(), CHOICE_PANEL);
 
 				} else {
@@ -216,101 +224,86 @@ public class GUI {
 				}
 			}
 		});
-		GridBagConstraints gbc_btnEnter = new GridBagConstraints();
-		gbc_btnEnter.insets = new Insets(0, 0, 5, 0);
-		gbc_btnEnter.anchor = GridBagConstraints.NORTH;
-		gbc_btnEnter.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnEnter.gridx = 2;
-		gbc_btnEnter.gridy = 3;
-		loginJPanel.add(btnEnter, gbc_btnEnter);
+		GridBagConstraints gbc_Login_btnEnter = new GridBagConstraints();
+		gbc_Login_btnEnter.insets = new Insets(0, 0, 5, 0);
+		gbc_Login_btnEnter.anchor = GridBagConstraints.NORTH;
+		gbc_Login_btnEnter.fill = GridBagConstraints.HORIZONTAL;
+		gbc_Login_btnEnter.gridx = 2;
+		gbc_Login_btnEnter.gridy = 3;
+		loginJPanel.add(Login_btnEnter, gbc_Login_btnEnter);
 
-		JButton NewAccountBtn = new JButton("Create A New Account");
-		NewAccountBtn.addActionListener(new ActionListener() {
+		JButton Login_btnCreateAccount = new JButton("Create A New Account");
+		Login_btnCreateAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				layout.show(frame.getContentPane(), NEWACCOUNT_PANEL);
 			}
 		});
-		GridBagConstraints gbc_NewAccountBtn = new GridBagConstraints();
-		gbc_NewAccountBtn.gridx = 2;
-		gbc_NewAccountBtn.gridy = 5;
-		loginJPanel.add(NewAccountBtn, gbc_NewAccountBtn);
+		GridBagConstraints gbc_Login_btnCreateAccount = new GridBagConstraints();
+		gbc_Login_btnCreateAccount.gridx = 2;
+		gbc_Login_btnCreateAccount.gridy = 5;
+		loginJPanel.add(Login_btnCreateAccount, gbc_Login_btnCreateAccount);
 
 		JPanel MainJPanel = new JPanel();
 		frame.getContentPane().add(MainJPanel, CHOICE_PANEL);
 		GridBagLayout gbl_MainJPanel = new GridBagLayout();
 		gbl_MainJPanel.columnWidths = new int[] { 138, 136, 133 };
-		gbl_MainJPanel.rowHeights = new int[] { 19, 75, 23, 23, 23, 0, 0, 0 };
+		gbl_MainJPanel.rowHeights = new int[] { 19, 75, 50, 23, 0, 0, 0 };
 		gbl_MainJPanel.columnWeights = new double[] { 0.0, 0.0, 0.0 };
-		gbl_MainJPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_MainJPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		MainJPanel.setLayout(gbl_MainJPanel);
 
-		JButton withdraw = new JButton("Withdraw");
-		withdraw.addActionListener(new ActionListener() {
+		Main_btnWithdraw = new JButton("Withdraw");
+		Main_btnWithdraw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), WITHDRAW_PANEL);
 			}
 		});
-		GridBagConstraints gbc_withdraw = new GridBagConstraints();
-		gbc_withdraw.fill = GridBagConstraints.BOTH;
-		gbc_withdraw.insets = new Insets(0, 0, 5, 5);
-		gbc_withdraw.gridx = 0;
-		gbc_withdraw.gridy = 1;
-		MainJPanel.add(withdraw, gbc_withdraw);
+		GridBagConstraints gbc_Main_btnWithdraw = new GridBagConstraints();
+		gbc_Main_btnWithdraw.fill = GridBagConstraints.BOTH;
+		gbc_Main_btnWithdraw.insets = new Insets(0, 3, 3, 3);
+		gbc_Main_btnWithdraw.gridx = 0;
+		gbc_Main_btnWithdraw.gridy = 1;
+		MainJPanel.add(Main_btnWithdraw, gbc_Main_btnWithdraw);
 
-		JButton getBalance = new JButton("Get Balance");
-		getBalance.addActionListener(new ActionListener() {
+		JButton Main_btnBalance = new JButton("Get Balance");
+		Main_btnBalance.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), GETBALANCE_PANEL);
 			}
 		});
 
-		JButton deposit = new JButton("Deposit");
-		deposit.addMouseListener(new MouseAdapter() {
+		JButton Main_btnDeposit = new JButton("Deposit");
+		Main_btnDeposit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				layout.show(frame.getContentPane(), DEPOSIT_PANEL);
 			}
 		});
-		GridBagConstraints gbc_deposit = new GridBagConstraints();
-		gbc_deposit.fill = GridBagConstraints.BOTH;
-		gbc_deposit.insets = new Insets(0, 0, 5, 5);
-		gbc_deposit.gridx = 1;
-		gbc_deposit.gridy = 1;
-		MainJPanel.add(deposit, gbc_deposit);
-		GridBagConstraints gbc_getBalance = new GridBagConstraints();
-		gbc_getBalance.fill = GridBagConstraints.BOTH;
-		gbc_getBalance.insets = new Insets(0, 0, 5, 0);
-		gbc_getBalance.gridx = 2;
-		gbc_getBalance.gridy = 1;
-		MainJPanel.add(getBalance, gbc_getBalance);
+		GridBagConstraints gbc_Main_btnDeposit = new GridBagConstraints();
+		gbc_Main_btnDeposit.fill = GridBagConstraints.BOTH;
+		gbc_Main_btnDeposit.insets = new Insets(0, 3, 3, 3);
+		gbc_Main_btnDeposit.gridx = 1;
+		gbc_Main_btnDeposit.gridy = 1;
+		MainJPanel.add(Main_btnDeposit, gbc_Main_btnDeposit);
+		GridBagConstraints gbc_Main_btnBalance = new GridBagConstraints();
+		gbc_Main_btnBalance.fill = GridBagConstraints.BOTH;
+		gbc_Main_btnBalance.insets = new Insets(0, 3, 3, 3);
+		gbc_Main_btnBalance.gridx = 2;
+		gbc_Main_btnBalance.gridy = 1;
+		MainJPanel.add(Main_btnBalance, gbc_Main_btnBalance);
 
-		JButton display = new JButton("Display");
-		display.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				layout.show(frame.getContentPane(), DISPLAY_PANEL);
-			}
-		});
-
-		JButton btnEmptyAccount = new JButton("Empty Account");
-		btnEmptyAccount.addActionListener(new ActionListener() {
+		JButton Main_btnEmptyAccount = new JButton("Empty Account");
+		Main_btnEmptyAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), EMPTYACCOUNT_PANEL);
 			}
 		});
-		GridBagConstraints gbc_btnEmptyAccount = new GridBagConstraints();
-		gbc_btnEmptyAccount.fill = GridBagConstraints.BOTH;
-		gbc_btnEmptyAccount.insets = new Insets(0, 0, 5, 5);
-		gbc_btnEmptyAccount.gridheight = 2;
-		gbc_btnEmptyAccount.gridx = 1;
-		gbc_btnEmptyAccount.gridy = 2;
-		MainJPanel.add(btnEmptyAccount, gbc_btnEmptyAccount);
-		GridBagConstraints gbc_display = new GridBagConstraints();
-		gbc_display.anchor = GridBagConstraints.NORTH;
-		gbc_display.fill = GridBagConstraints.HORIZONTAL;
-		gbc_display.insets = new Insets(0, 0, 5, 0);
-		gbc_display.gridx = 2;
-		gbc_display.gridy = 2;
-		MainJPanel.add(display, gbc_display);
+		GridBagConstraints gbc_Main_btnEmptyAccount = new GridBagConstraints();
+		gbc_Main_btnEmptyAccount.fill = GridBagConstraints.BOTH;
+		gbc_Main_btnEmptyAccount.insets = new Insets(3, 3, 0, 3);
+		gbc_Main_btnEmptyAccount.gridx = 1;
+		gbc_Main_btnEmptyAccount.gridy = 2;
+		MainJPanel.add(Main_btnEmptyAccount, gbc_Main_btnEmptyAccount);
 
 		JButton btnNewButton_4 = new JButton("Read Messages");
 		btnNewButton_4.addActionListener(new ActionListener() {
@@ -319,502 +312,442 @@ public class GUI {
 			}
 		});
 
-		JButton btnNewButton = new JButton("Transfer To");
-		btnNewButton.addActionListener(new ActionListener() {
+		JButton Main_btnTransferTo = new JButton("Transfer To");
+		Main_btnTransferTo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), TRANSFERTO_PANEL);
 			}
 		});
 
-		JButton btnGetPassword = new JButton("Get Password");
-		btnGetPassword.addActionListener(new ActionListener() {
+		JButton Main_btnGetPassword = new JButton("Get Password");
+		Main_btnGetPassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), GETPASSWORD_PANEL);
 			}
 		});
 
-		JButton btnNewButton_1 = new JButton("     Transfer From    ");
-		btnNewButton_1.addActionListener(new ActionListener() {
+		JButton Main_btnTransferFrom = new JButton("Transfer From");
+		Main_btnTransferFrom.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				layout.show(frame.getContentPane(), TRANSFERFROM_PANEL);
 			}
 		});
-		GridBagConstraints gbc_btnNewButton_1 = new GridBagConstraints();
-		gbc_btnNewButton_1.insets = new Insets(0, 0, 5, 5);
-		gbc_btnNewButton_1.gridx = 0;
-		gbc_btnNewButton_1.gridy = 5;
-		MainJPanel.add(btnNewButton_1, gbc_btnNewButton_1);
-		GridBagConstraints gbc_btnGetPassword = new GridBagConstraints();
-		gbc_btnGetPassword.anchor = GridBagConstraints.NORTH;
-		gbc_btnGetPassword.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnGetPassword.insets = new Insets(0, 0, 5, 5);
-		gbc_btnGetPassword.gridx = 1;
-		gbc_btnGetPassword.gridy = 5;
-		MainJPanel.add(btnGetPassword, gbc_btnGetPassword);
+		GridBagConstraints gbc_Main_btnTransferFrom = new GridBagConstraints();
+		gbc_Main_btnTransferFrom.fill = GridBagConstraints.HORIZONTAL;
+		gbc_Main_btnTransferFrom.insets = new Insets(0, 3, 3, 3);
+		gbc_Main_btnTransferFrom.gridx = 0;
+		gbc_Main_btnTransferFrom.gridy = 4;
+		MainJPanel.add(Main_btnTransferFrom, gbc_Main_btnTransferFrom);
+		GridBagConstraints gbc_Main_btnGetPassword = new GridBagConstraints();
+		gbc_Main_btnGetPassword.fill = GridBagConstraints.HORIZONTAL;
+		gbc_Main_btnGetPassword.insets = new Insets(0, 3, 3, 3);
+		gbc_Main_btnGetPassword.gridx = 1;
+		gbc_Main_btnGetPassword.gridy = 4;
+		MainJPanel.add(Main_btnGetPassword, gbc_Main_btnGetPassword);
 
-		JButton btnNewButton_3 = new JButton("Check Password");
-		btnNewButton_3.addActionListener(new ActionListener() {
+		JButton Main_btnCheckPassword = new JButton("Check Password");
+		Main_btnCheckPassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				layout.show(frame.getContentPane(), CHECKPASSWORD_PANEL);
 			}
 		});
-		GridBagConstraints gbc_btnNewButton_3 = new GridBagConstraints();
-		gbc_btnNewButton_3.anchor = GridBagConstraints.NORTH;
-		gbc_btnNewButton_3.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton_3.insets = new Insets(0, 0, 5, 0);
-		gbc_btnNewButton_3.gridx = 2;
-		gbc_btnNewButton_3.gridy = 5;
-		MainJPanel.add(btnNewButton_3, gbc_btnNewButton_3);
+		GridBagConstraints gbc_Main_btnCheckPassword = new GridBagConstraints();
+		gbc_Main_btnCheckPassword.anchor = GridBagConstraints.NORTH;
+		gbc_Main_btnCheckPassword.fill = GridBagConstraints.HORIZONTAL;
+		gbc_Main_btnCheckPassword.insets = new Insets(0, 3, 3, 3);
+		gbc_Main_btnCheckPassword.gridx = 2;
+		gbc_Main_btnCheckPassword.gridy = 4;
+		MainJPanel.add(Main_btnCheckPassword, gbc_Main_btnCheckPassword);
 
-		JButton btnNewButton_2 = new JButton("Reset Password");
-		btnNewButton_2.addActionListener(new ActionListener() {
+		JButton Main_btnResetPassword = new JButton("Reset Password");
+		Main_btnResetPassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), RESETPASSWORD_PANEL);
 			}
 		});
-		GridBagConstraints gbc_btnNewButton_2 = new GridBagConstraints();
-		gbc_btnNewButton_2.anchor = GridBagConstraints.NORTH;
-		gbc_btnNewButton_2.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton_2.insets = new Insets(0, 0, 0, 5);
-		gbc_btnNewButton_2.gridx = 0;
-		gbc_btnNewButton_2.gridy = 6;
-		MainJPanel.add(btnNewButton_2, gbc_btnNewButton_2);
-		GridBagConstraints gbc_btnNewButton = new GridBagConstraints();
-		gbc_btnNewButton.anchor = GridBagConstraints.NORTH;
-		gbc_btnNewButton.gridx = 1;
-		gbc_btnNewButton.gridy = 6;
-		MainJPanel.add(btnNewButton, gbc_btnNewButton);
+		GridBagConstraints gbc_Main_btnResetPassword = new GridBagConstraints();
+		gbc_Main_btnResetPassword.insets = new Insets(3, 3, 0, 3);
+		gbc_Main_btnResetPassword.fill = GridBagConstraints.HORIZONTAL;
+		gbc_Main_btnResetPassword.gridx = 0;
+		gbc_Main_btnResetPassword.gridy = 5;
+		MainJPanel.add(Main_btnResetPassword, gbc_Main_btnResetPassword);
+		GridBagConstraints gbc_Main_btnTransferTo = new GridBagConstraints();
+		gbc_Main_btnTransferTo.insets = new Insets(3, 3, 0, 3);
+		gbc_Main_btnTransferTo.fill = GridBagConstraints.HORIZONTAL;
+		gbc_Main_btnTransferTo.gridx = 1;
+		gbc_Main_btnTransferTo.gridy = 5;
+		MainJPanel.add(Main_btnTransferTo, gbc_Main_btnTransferTo);
 		GridBagConstraints gbc_btnNewButton_4 = new GridBagConstraints();
+		gbc_btnNewButton_4.insets = new Insets(3, 3, 0, 3);
+		gbc_btnNewButton_4.fill = GridBagConstraints.HORIZONTAL;
 		gbc_btnNewButton_4.anchor = GridBagConstraints.NORTH;
 		gbc_btnNewButton_4.gridx = 2;
-		gbc_btnNewButton_4.gridy = 6;
+		gbc_btnNewButton_4.gridy = 5;
 		MainJPanel.add(btnNewButton_4, gbc_btnNewButton_4);
 
-		JPanel Withdraw = new JPanel();
-		frame.getContentPane().add(Withdraw, WITHDRAW_PANEL);
-		Withdraw.setLayout(null);
+		JPanel WithdrawJPanel = new JPanel();
+		frame.getContentPane().add(WithdrawJPanel, WITHDRAW_PANEL);
+		WithdrawJPanel.setLayout(null);
 
-		textField = new JTextField();
-		textField.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		textField.setBounds(142, 112, 150, 37);
-		Withdraw.add(textField);
-		textField.setColumns(10);
+		Withdraw_txtAmount = new JTextField();
+		Withdraw_txtAmount.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		Withdraw_txtAmount.setBounds(142, 112, 150, 37);
+		WithdrawJPanel.add(Withdraw_txtAmount);
+		Withdraw_txtAmount.setColumns(10);
 
-		JLabel lblNewLabel_2 = new JLabel("Enter the Amount You Would Like To Withdraw:");
-		lblNewLabel_2.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_2.setBounds(45, 65, 343, 36);
-		Withdraw.add(lblNewLabel_2);
+		JLabel Withdraw_lblAmountPromt = new JLabel("Enter the Amount You Would Like To Withdraw:");
+		Withdraw_lblAmountPromt.setHorizontalAlignment(SwingConstants.CENTER);
+		Withdraw_lblAmountPromt.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		Withdraw_lblAmountPromt.setBounds(45, 65, 343, 36);
+		WithdrawJPanel.add(Withdraw_lblAmountPromt);
 
-		JButton btnNewButton_5 = new JButton("Enter");
-		btnNewButton_5.addActionListener(new ActionListener() {
+		JButton Withdraw_btnWithdraw = new JButton("Withdraw");
+		Withdraw_btnWithdraw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			}
 		});
-		btnNewButton_5.setBounds(153, 160, 127, 30);
-		Withdraw.add(btnNewButton_5);
+		Withdraw_btnWithdraw.setBounds(153, 160, 127, 30);
+		WithdrawJPanel.add(Withdraw_btnWithdraw);
 
-		JPanel Deposit = new JPanel();
-		Deposit.setBackground(new Color(240, 240, 240));
-		frame.getContentPane().add(Deposit, DEPOSIT_PANEL);
-		Deposit.setLayout(null);
+		JPanel DepositJPanel = new JPanel();
+		DepositJPanel.setBackground(new Color(240, 240, 240));
+		frame.getContentPane().add(DepositJPanel, DEPOSIT_PANEL);
+		DepositJPanel.setLayout(null);
 
-		JLabel lblNewLabel_3 = new JLabel("Enter The Amount That You Would Deposit:");
-		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_3.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_3.setBounds(56, 65, 321, 36);
-		Deposit.add(lblNewLabel_3);
+		JLabel Deposit_lblAmountPrompt = new JLabel("Enter The Amount That You Would Deposit:");
+		Deposit_lblAmountPrompt.setHorizontalAlignment(SwingConstants.CENTER);
+		Deposit_lblAmountPrompt.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		Deposit_lblAmountPrompt.setBounds(56, 65, 321, 36);
+		DepositJPanel.add(Deposit_lblAmountPrompt);
 
-		textField_1 = new JTextField();
-		textField_1.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		textField_1.setBounds(142, 112, 150, 37);
-		Deposit.add(textField_1);
-		textField_1.setColumns(10);
+		Deposit_txtAmount = new JTextField();
+		Deposit_txtAmount.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		Deposit_txtAmount.setBounds(142, 112, 150, 37);
+		DepositJPanel.add(Deposit_txtAmount);
+		Deposit_txtAmount.setColumns(10);
 		//
-		JButton depositBtn = new JButton("Enter");
-		depositBtn.addActionListener(new ActionListener() {
+		JButton Deposit_btnDeposit = new JButton("Deposit");
+		Deposit_btnDeposit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			}
 		});
-		depositBtn.setBounds(153, 160, 127, 30);
-		Deposit.add(depositBtn);
+		Deposit_btnDeposit.setBounds(153, 160, 127, 30);
+		DepositJPanel.add(Deposit_btnDeposit);
 
-		JPanel Display = new JPanel();
-		frame.getContentPane().add(Display, DISPLAY_PANEL);
-		Display.setLayout(null);
+		JPanel AccountDetailJPanel = new JPanel();
+		frame.getContentPane().add(AccountDetailJPanel, DISPLAY_PANEL);
+		AccountDetailJPanel.setLayout(null);
 
-		JButton btnNewButton_8 = new JButton("Back");
-		btnNewButton_8.addActionListener(new ActionListener() {
+		JButton AccountDetail_Back = new JButton("Back");
+		AccountDetail_Back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			}
 		});
-		btnNewButton_8.setBounds(335, 228, 89, 23);
-		Display.add(btnNewButton_8);
+		AccountDetail_Back.setBounds(335, 228, 89, 23);
+		AccountDetailJPanel.add(AccountDetail_Back);
 
-		JLabel lblNewLabel_13 = new JLabel("Account Number:");
-		lblNewLabel_13.setBounds(78, 56, 167, 14);
-		Display.add(lblNewLabel_13);
+		JLabel AccountDetail_lblAccNum = new JLabel("Account Number:");
+		AccountDetail_lblAccNum.setHorizontalAlignment(SwingConstants.RIGHT);
+		AccountDetail_lblAccNum.setBounds(50, 55, 89, 14);
+		AccountDetailJPanel.add(AccountDetail_lblAccNum);
 
-		JLabel lblNewLabel_14 = new JLabel("Balance:");
-		lblNewLabel_14.setBounds(78, 81, 146, 14);
-		Display.add(lblNewLabel_14);
+		JLabel AccountDetail_lblBalance = new JLabel("Balance:");
+		AccountDetail_lblBalance.setHorizontalAlignment(SwingConstants.RIGHT);
+		AccountDetail_lblBalance.setBounds(50, 90, 89, 14);
+		AccountDetailJPanel.add(AccountDetail_lblBalance);
 
-		JLabel lblNewLabel_15 = new JLabel("First Name:");
-		lblNewLabel_15.setBounds(77, 106, 181, 14);
-		Display.add(lblNewLabel_15);
+		JLabel AccountDetail_lblFirstName = new JLabel("First Name:");
+		AccountDetail_lblFirstName.setHorizontalAlignment(SwingConstants.RIGHT);
+		AccountDetail_lblFirstName.setBounds(50, 125, 90, 14);
+		AccountDetailJPanel.add(AccountDetail_lblFirstName);
 
-		JLabel lblNewLabel_16 = new JLabel("Middle Name:");
-		lblNewLabel_16.setBounds(77, 131, 147, 14);
-		Display.add(lblNewLabel_16);
+		JLabel AccountDetail_lblLastName = new JLabel("Last Name:");
+		AccountDetail_lblLastName.setHorizontalAlignment(SwingConstants.RIGHT);
+		AccountDetail_lblLastName.setBounds(50, 160, 89, 14);
+		AccountDetailJPanel.add(AccountDetail_lblLastName);
 
-		JLabel lblNewLabel_17 = new JLabel("Last Name:");
-		lblNewLabel_17.setBounds(80, 157, 144, 14);
-		Display.add(lblNewLabel_17);
+		JLabel AccountDetail_lblAccNumValue = new JLabel();
+		AccountDetail_lblAccNumValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		AccountDetail_lblAccNumValue.setBounds(149, 50, 226, 20);
+		AccountDetailJPanel.add(AccountDetail_lblAccNumValue);
 
-		JPanel CheckPassword = new JPanel();
-		frame.getContentPane().add(CheckPassword, CHECKPASSWORD_PANEL);
-		CheckPassword.setLayout(null);
+		JLabel AccountDetail_lblBalanceValue = new JLabel("New label");
+		AccountDetail_lblBalanceValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		AccountDetail_lblBalanceValue.setBounds(149, 84, 226, 20);
+		AccountDetailJPanel.add(AccountDetail_lblBalanceValue);
 
-		JButton btnNewButton_9 = new JButton("back");
-		btnNewButton_9.addActionListener(new ActionListener() {
+		JLabel AccountDetail_lblFirstNameValue = new JLabel("New label");
+		AccountDetail_lblFirstNameValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		AccountDetail_lblFirstNameValue.setBounds(149, 119, 226, 20);
+		AccountDetailJPanel.add(AccountDetail_lblFirstNameValue);
+
+		JLabel AccountDetail_lblLastNameValue = new JLabel("New label");
+		AccountDetail_lblLastNameValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		AccountDetail_lblLastNameValue.setBounds(149, 154, 226, 20);
+		AccountDetailJPanel.add(AccountDetail_lblLastNameValue);
+
+		JPanel EmptyAccountJPanel = new JPanel();
+		frame.getContentPane().add(EmptyAccountJPanel, EMPTYACCOUNT_PANEL);
+		EmptyAccountJPanel.setLayout(null);
+
+		JButton EmptyAccount_btnBack = new JButton("Back");
+		EmptyAccount_btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			}
 		});
-		btnNewButton_9.setBounds(310, 206, 89, 23);
-		CheckPassword.add(btnNewButton_9);
-
-		JLabel lblNewLabel_18 = new JLabel("Check Password Here:");
-		lblNewLabel_18.setBounds(54, 67, 224, 14);
-		CheckPassword.add(lblNewLabel_18);
-
-		JPanel GetPassword = new JPanel();
-		frame.getContentPane().add(GetPassword, GETPASSWORD_PANEL);
-		GetPassword.setLayout(null);
-
-		JButton btnNewButton_10 = new JButton("Back");
-		btnNewButton_10.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), CHOICE_PANEL);
-			}
-		});
-		btnNewButton_10.setBounds(309, 203, 89, 23);
-		GetPassword.add(btnNewButton_10);
-
-		JLabel label = new JLabel("(Add the code here)  ");
-		label.setBounds(47, 101, 224, 14);
-		GetPassword.add(label);
-
-		JPanel EmptyAccount = new JPanel();
-		frame.getContentPane().add(EmptyAccount, EMPTYACCOUNT_PANEL);
-		EmptyAccount.setLayout(null);
-
-		JButton btnNewButton_11 = new JButton("Enter");
-		btnNewButton_11.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), CHOICE_PANEL);
-			}
-		});
-		btnNewButton_11.setBounds(296, 198, 89, 23);
-		EmptyAccount.add(btnNewButton_11);
-
-		JLabel lblNewLabel_12 = new JLabel("");
-		lblNewLabel_12.setBounds(71, 50, 269, 14);
-		EmptyAccount.add(lblNewLabel_12);
+		EmptyAccount_btnBack.setBounds(296, 198, 89, 23);
+		EmptyAccountJPanel.add(EmptyAccount_btnBack);
 
 		JLabel lblNewLabel_19 = new JLabel("(Add the Writing from the program here:)");
-		lblNewLabel_19.setBounds(121, 75, 264, 4);
-		EmptyAccount.add(lblNewLabel_19);
+		lblNewLabel_19.setBounds(94, 75, 264, 23);
+		EmptyAccountJPanel.add(lblNewLabel_19);
 
-		JPanel ReadMessages = new JPanel();
-		frame.getContentPane().add(ReadMessages, MESSAGES_PANEL);
-		ReadMessages.setLayout(null);
+		JPanel ReadMessagesJPanel = new JPanel();
+		frame.getContentPane().add(ReadMessagesJPanel, MESSAGES_PANEL);
+		ReadMessagesJPanel.setLayout(null);
 
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(10, 11, 414, 240);
-		ReadMessages.add(scrollPane);
+		JScrollPane ReadMessage_scrollPane = new JScrollPane();
+		ReadMessage_scrollPane.setBounds(10, 11, 414, 240);
+		ReadMessagesJPanel.add(ReadMessage_scrollPane);
 
-		JTextArea textArea = new JTextArea(10, 10);
-		scrollPane.setViewportView(textArea);
+		JTextArea ReadMessage_txtAMessage = new JTextArea(10, 10);
+		ReadMessage_scrollPane.setViewportView(ReadMessage_txtAMessage);
+		
+		JButton ReadMessage_btnBack = new JButton("Back");
+		ReadMessage_scrollPane.setColumnHeaderView(ReadMessage_btnBack);
 
-		JButton btnEnter_1 = new JButton("Enter");
-		btnEnter_1.addActionListener(new ActionListener() {
+		JPanel ResetPassJPanel = new JPanel();
+		frame.getContentPane().add(ResetPassJPanel, RESETPASS_PANEL);
+		ResetPassJPanel.setLayout(null);
+
+		ResetPass_txtCurrentPassword = new JPasswordField();
+		ResetPass_txtCurrentPassword.setBounds(60, 79, 174, 20);
+		ResetPassJPanel.add(ResetPass_txtCurrentPassword);
+
+		ResetPass_txtNewPassword = new JPasswordField();
+		ResetPass_txtNewPassword.setBounds(60, 120, 174, 20);
+		ResetPassJPanel.add(ResetPass_txtNewPassword);
+
+		JLabel ResetPass_lblCurrentPassword = new JLabel("<-Current Password");
+		ResetPass_lblCurrentPassword.setBounds(266, 82, 158, 14);
+		ResetPassJPanel.add(ResetPass_lblCurrentPassword);
+
+		JLabel ResetPass_lblNewPass = new JLabel("<- New Password");
+		ResetPass_lblNewPass.setBounds(266, 123, 158, 14);
+		ResetPassJPanel.add(ResetPass_lblNewPass);
+
+		JButton ResetPass_btnEnter = new JButton("Enter");
+		ResetPass_btnEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			}
 		});
-		scrollPane.setColumnHeaderView(btnEnter_1);
+		ResetPass_btnEnter.setBounds(152, 160, 89, 23);
+		ResetPassJPanel.add(ResetPass_btnEnter);
 
-		JPanel ResetPasswordMain = new JPanel();
-		frame.getContentPane().add(ResetPasswordMain, RESETPASSWORD_PANEL);
-		ResetPasswordMain.setLayout(null);
+		JPanel GetBalanceJPanel = new JPanel();
+		frame.getContentPane().add(GetBalanceJPanel, GETBALANCE_PANEL);
+		GetBalanceJPanel.setLayout(null);
 
-		JLabel lblNewLabel_4 = new JLabel("Please enter your current password: ");
-		lblNewLabel_4.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		lblNewLabel_4.setBounds(43, 43, 246, 38);
-		ResetPasswordMain.add(lblNewLabel_4);
-
-		passwordField_1 = new JPasswordField();
-		passwordField_1.setBounds(42, 78, 156, 20);
-		ResetPasswordMain.add(passwordField_1);
-
-		JButton btnNewButton_7 = new JButton("Enter");
-		btnNewButton_7.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), RESETPASS_PANEL);
-			}
-		});
-		btnNewButton_7.setBounds(105, 109, 89, 23);
-		ResetPasswordMain.add(btnNewButton_7);
-
-		JPanel ResetPass = new JPanel();
-		frame.getContentPane().add(ResetPass, RESETPASS_PANEL);
-		ResetPass.setLayout(null);
-
-		passwordField_2 = new JPasswordField();
-		passwordField_2.setBounds(60, 79, 174, 20);
-		ResetPass.add(passwordField_2);
-
-		passwordField_3 = new JPasswordField();
-		passwordField_3.setBounds(60, 120, 174, 20);
-		ResetPass.add(passwordField_3);
-
-		JLabel label_1 = new JLabel("<-Current Password");
-		label_1.setBounds(266, 82, 158, 14);
-		ResetPass.add(label_1);
-
-		JLabel label_2 = new JLabel("<- New Password");
-		label_2.setBounds(266, 123, 158, 14);
-		ResetPass.add(label_2);
-
-		JButton btnNewButton_12 = new JButton("Enter");
-		btnNewButton_12.addActionListener(new ActionListener() {
+		JButton GetBalance_Back = new JButton("Back");
+		GetBalance_Back.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			}
 		});
-		btnNewButton_12.setBounds(152, 160, 89, 23);
-		ResetPass.add(btnNewButton_12);
+		GetBalance_Back.setBounds(335, 228, 89, 23);
+		GetBalanceJPanel.add(GetBalance_Back);
 
-		JPanel GetBalance = new JPanel();
-		frame.getContentPane().add(GetBalance, GETBALANCE_PANEL);
-		GetBalance.setLayout(null);
+		JLabel GetBalance_Balance = new JLabel("Return Balance Here:");
+		GetBalance_Balance.setBounds(120, 55, 246, 23);
+		GetBalanceJPanel.add(GetBalance_Balance);
 
-		JButton btnNewButton_13 = new JButton("Back");
-		btnNewButton_13.addActionListener(new ActionListener() {
+		JPanel TransferToJPanel = new JPanel();
+		frame.getContentPane().add(TransferToJPanel, TRANSFERTO_PANEL);
+		TransferToJPanel.setLayout(null);
+
+		TransferTo_txtAmount = new JTextField();
+		TransferTo_txtAmount.setBounds(129, 49, 202, 20);
+		TransferToJPanel.add(TransferTo_txtAmount);
+		TransferTo_txtAmount.setColumns(10);
+
+		TransferTo_txtBankAccount = new JTextField();
+		TransferTo_txtBankAccount.setBounds(129, 120, 202, 20);
+		TransferToJPanel.add(TransferTo_txtBankAccount);
+		TransferTo_txtBankAccount.setColumns(10);
+
+		TransferTo_txtOtherAccount = new JTextField();
+		TransferTo_txtOtherAccount.setBounds(131, 191, 202, 20);
+		TransferToJPanel.add(TransferTo_txtOtherAccount);
+		TransferTo_txtOtherAccount.setColumns(10);
+
+		JLabel TransferTo_lblAmount = new JLabel("Amount");
+		TransferTo_lblAmount.setBounds(53, 51, 66, 17);
+		TransferToJPanel.add(TransferTo_lblAmount);
+
+		JLabel TransferTo_lblBankAccount = new JLabel("Bank Account");
+		TransferTo_lblBankAccount.setBounds(26, 123, 95, 14);
+		TransferToJPanel.add(TransferTo_lblBankAccount);
+
+		JLabel TransferTo_lblOtherAccount = new JLabel("Other Account");
+		TransferTo_lblOtherAccount.setBounds(26, 194, 95, 14);
+		TransferToJPanel.add(TransferTo_lblOtherAccount);
+
+		JButton TransferTo_btnEnter = new JButton("Enter");
+		TransferTo_btnEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			}
 		});
-		btnNewButton_13.setBounds(335, 228, 89, 23);
-		GetBalance.add(btnNewButton_13);
+		TransferTo_btnEnter.setBounds(290, 228, 89, 23);
+		TransferToJPanel.add(TransferTo_btnEnter);
 
-		JLabel lblNewLabel_20 = new JLabel("Return Balance Here:");
-		lblNewLabel_20.setBounds(120, 55, 246, 23);
-		GetBalance.add(lblNewLabel_20);
+		JPanel TransferFromJPanel = new JPanel();
+		frame.getContentPane().add(TransferFromJPanel, TRANSFERFROM_PANEL);
+		TransferFromJPanel.setLayout(null);
 
-		JPanel TransferTo = new JPanel();
-		frame.getContentPane().add(TransferTo, TRANSFERTO_PANEL);
-		TransferTo.setLayout(null);
+		TransferFrom_passwordField = new JPasswordField();
+		TransferFrom_passwordField.setBounds(131, 187, 200, 20);
+		TransferFromJPanel.add(TransferFrom_passwordField);
 
-		textField_2 = new JTextField();
-		textField_2.setBounds(129, 49, 202, 20);
-		TransferTo.add(textField_2);
-		textField_2.setColumns(10);
+		TransferFrom_txtBankAccount = new JTextField();
+		TransferFrom_txtBankAccount.setBounds(131, 37, 200, 20);
+		TransferFromJPanel.add(TransferFrom_txtBankAccount);
+		TransferFrom_txtBankAccount.setColumns(10);
 
-		textField_3 = new JTextField();
-		textField_3.setBounds(129, 120, 202, 20);
-		TransferTo.add(textField_3);
-		textField_3.setColumns(10);
+		TransferFrom_txtOtherAccount = new JTextField();
+		TransferFrom_txtOtherAccount.setBounds(131, 87, 200, 20);
+		TransferFromJPanel.add(TransferFrom_txtOtherAccount);
+		TransferFrom_txtOtherAccount.setColumns(10);
 
-		textField_4 = new JTextField();
-		textField_4.setBounds(131, 191, 202, 20);
-		TransferTo.add(textField_4);
-		textField_4.setColumns(10);
+		TransferFrom_txtAmount = new JTextField();
+		TransferFrom_txtAmount.setBounds(131, 137, 200, 20);
+		TransferFromJPanel.add(TransferFrom_txtAmount);
+		TransferFrom_txtAmount.setColumns(10);
 
-		JLabel lblNewLabel_5 = new JLabel("Amount");
-		lblNewLabel_5.setBounds(53, 51, 66, 17);
-		TransferTo.add(lblNewLabel_5);
+		JLabel TransferFrom_lblBankAccount = new JLabel("Bank Account:");
+		TransferFrom_lblBankAccount.setHorizontalAlignment(SwingConstants.TRAILING);
+		TransferFrom_lblBankAccount.setBounds(39, 40, 82, 14);
+		TransferFromJPanel.add(TransferFrom_lblBankAccount);
 
-		JLabel lblNewLabel_6 = new JLabel("Bank Account");
-		lblNewLabel_6.setBounds(26, 123, 95, 14);
-		TransferTo.add(lblNewLabel_6);
+		JLabel TransferFrom_lblOtherAccount = new JLabel("Other Account:");
+		TransferFrom_lblOtherAccount.setHorizontalAlignment(SwingConstants.TRAILING);
+		TransferFrom_lblOtherAccount.setBounds(39, 90, 82, 14);
+		TransferFromJPanel.add(TransferFrom_lblOtherAccount);
 
-		JLabel lblNewLabel_7 = new JLabel("Other Account");
-		lblNewLabel_7.setBounds(26, 194, 95, 14);
-		TransferTo.add(lblNewLabel_7);
+		JLabel TransferFrom_lblAmount = new JLabel("Amount:");
+		TransferFrom_lblAmount.setHorizontalAlignment(SwingConstants.TRAILING);
+		TransferFrom_lblAmount.setBounds(39, 140, 82, 14);
+		TransferFromJPanel.add(TransferFrom_lblAmount);
 
-		JButton btnNewButton_14 = new JButton("Enter");
-		btnNewButton_14.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), CHOICE_PANEL);
-			}
-		});
-		btnNewButton_14.setBounds(290, 228, 89, 23);
-		TransferTo.add(btnNewButton_14);
+		JLabel TransferFrom_txtPassword = new JLabel("Password:");
+		TransferFrom_txtPassword.setHorizontalAlignment(SwingConstants.TRAILING);
+		TransferFrom_txtPassword.setBounds(39, 190, 82, 14);
+		TransferFromJPanel.add(TransferFrom_txtPassword);
 
-		JPanel TransferFrom = new JPanel();
-		frame.getContentPane().add(TransferFrom, TRANSFERFROM_PANEL);
-		TransferFrom.setLayout(null);
-
-		passwordField_4 = new JPasswordField();
-		passwordField_4.setBounds(131, 187, 200, 20);
-		TransferFrom.add(passwordField_4);
-
-		textField_5 = new JTextField();
-		textField_5.setBounds(131, 37, 200, 20);
-		TransferFrom.add(textField_5);
-		textField_5.setColumns(10);
-
-		textField_6 = new JTextField();
-		textField_6.setBounds(131, 87, 200, 20);
-		TransferFrom.add(textField_6);
-		textField_6.setColumns(10);
-
-		textField_7 = new JTextField();
-		textField_7.setBounds(131, 137, 200, 20);
-		TransferFrom.add(textField_7);
-		textField_7.setColumns(10);
-
-		JLabel lblNewLabel_8 = new JLabel("Bank Account:");
-		lblNewLabel_8.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblNewLabel_8.setBounds(39, 40, 82, 14);
-		TransferFrom.add(lblNewLabel_8);
-
-		JLabel lblNewLabel_9 = new JLabel("Other Account:");
-		lblNewLabel_9.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblNewLabel_9.setBounds(39, 90, 82, 14);
-		TransferFrom.add(lblNewLabel_9);
-
-		JLabel lblNewLabel_10 = new JLabel("Amount:");
-		lblNewLabel_10.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblNewLabel_10.setBounds(39, 140, 82, 14);
-		TransferFrom.add(lblNewLabel_10);
-
-		JLabel lblNewLabel_11 = new JLabel("Password:");
-		lblNewLabel_11.setHorizontalAlignment(SwingConstants.TRAILING);
-		lblNewLabel_11.setBounds(39, 190, 82, 14);
-		TransferFrom.add(lblNewLabel_11);
-
-		JButton btnNewButton_15 = new JButton("Enter");
-		btnNewButton_15.addActionListener(new ActionListener() {
+		JButton TransferFrom_btnEnter = new JButton("Enter");
+		TransferFrom_btnEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			}
 
 		});
-		btnNewButton_15.setBounds(296, 228, 89, 23);
-		TransferFrom.add(btnNewButton_15);
+		TransferFrom_btnEnter.setBounds(296, 228, 89, 23);
+		TransferFromJPanel.add(TransferFrom_btnEnter);
 
-		JPanel WrongPass = new JPanel();
-		frame.getContentPane().add(WrongPass, WRONGPASSWORD_PANEL);
-		WrongPass.setLayout(null);
+		JPanel CreateAccountJPanel = new JPanel();
 
-		JLabel lblWrongPasswordPlease = new JLabel("Wrong Password Please Try Again");
-		lblWrongPasswordPlease.setBounds(116, 118, 207, 42);
-		WrongPass.add(lblWrongPasswordPlease);
+		frame.getContentPane().add(CreateAccountJPanel, NEWACCOUNT_PANEL);
+		CreateAccountJPanel.setLayout(null);
 
-		JButton btnBack_1 = new JButton("Back");
-		btnBack_1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				frame.getContentPane().add(loginJPanel, MAIN_PANEL);
-			}
-		});
-		btnBack_1.setBounds(175, 171, 89, 23);
-		WrongPass.add(btnBack_1);
+		JLabel CreateAccount_lblFirstName = new JLabel("First Name");
+		CreateAccount_lblFirstName.setHorizontalAlignment(SwingConstants.RIGHT);
+		CreateAccount_lblFirstName.setBounds(36, 78, 84, 14);
+		CreateAccountJPanel.add(CreateAccount_lblFirstName);
 
-		JPanel NewAccount = new JPanel();
-
-		frame.getContentPane().add(NewAccount, NEWACCOUNT_PANEL);
-		NewAccount.setLayout(null);
-
-		JLabel lblFirstName = new JLabel("First Name");
-		lblFirstName.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblFirstName.setBounds(36, 78, 84, 14);
-		NewAccount.add(lblFirstName);
-
-		JButton btnBack = new JButton("Back");
-		btnBack.addActionListener(new ActionListener() {
+		JButton CreateAccount_btnBack = new JButton("Back");
+		CreateAccount_btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), MAIN_PANEL);
+				// frame.getContentPane().add(comp, constraints);
 			}
 		});
-		btnBack.setBounds(55, 225, 65, 25);
-		NewAccount.add(btnBack);
+		CreateAccount_btnBack.setBounds(55, 225, 65, 25);
+		CreateAccountJPanel.add(CreateAccount_btnBack);
 
-		JButton btnCreateAccount = new JButton("Create Account");
-		btnCreateAccount.addActionListener(new ActionListener() {
+		JButton CreateAccount_btnCreate = new JButton("Create Account");
+		CreateAccount_btnCreate.addActionListener(new ActionListener() {
 
 			@SuppressWarnings("deprecation")
 
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 
-				if (passwordField_Password.getText().hashCode() == passwordField_Repeat.getText().hashCode()) {
-					String username = textField_Username.getText();
-					String firstName = textField_FirstName.getText();
-					String lastName = textField_LastName.getText();
-					
-					if(!createAcc(username, DEFAULT_MONEY_VALUE, firstName, lastName, generateAccNum()))
+				if (CreateAccount_passwordField.getText().hashCode() == CreateAccount_passwordFieldRepeat.getText().hashCode()) {
+					String username = CreateAccount_txtUsername.getText();
+					String firstName = CreateAccount_txtFirstName.getText();
+					String lastName = CreateAccount_txtLastName.getText();
+
+					if (!createAcc(username, DEFAULT_MONEY_VALUE, firstName, lastName, generateAccNum()))
 						// successful pop-up
 						;
 					else
-						//username taken
+						// username taken
 						;
-					
+
 				} else
 					// passwords don't match pop-up
 					;
 
 			}
 		});
-		btnCreateAccount.setBounds(130, 225, 200, 25);
-		NewAccount.add(btnCreateAccount);
+		CreateAccount_btnCreate.setBounds(130, 225, 200, 25);
+		CreateAccountJPanel.add(CreateAccount_btnCreate);
 
-		textField_FirstName = new JTextField();
-		textField_FirstName.setColumns(10);
-		textField_FirstName.setBounds(130, 75, 200, 20);
-		NewAccount.add(textField_FirstName);
+		CreateAccount_txtFirstName = new JTextField();
+		CreateAccount_txtFirstName.setColumns(10);
+		CreateAccount_txtFirstName.setBounds(130, 75, 200, 20);
+		CreateAccountJPanel.add(CreateAccount_txtFirstName);
 
-		textField_LastName = new JTextField();
-		textField_LastName.setColumns(10);
-		textField_LastName.setBounds(130, 110, 200, 20);
-		NewAccount.add(textField_LastName);
+		CreateAccount_txtLastName = new JTextField();
+		CreateAccount_txtLastName.setColumns(10);
+		CreateAccount_txtLastName.setBounds(130, 110, 200, 20);
+		CreateAccountJPanel.add(CreateAccount_txtLastName);
 
-		JLabel lblLastName = new JLabel("Last Name");
-		lblLastName.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblLastName.setBounds(46, 113, 74, 14);
-		NewAccount.add(lblLastName);
+		JLabel CreateAccount_lblLastName = new JLabel("Last Name");
+		CreateAccount_lblLastName.setHorizontalAlignment(SwingConstants.RIGHT);
+		CreateAccount_lblLastName.setBounds(46, 113, 74, 14);
+		CreateAccountJPanel.add(CreateAccount_lblLastName);
 
-		JLabel lblPassword = new JLabel("Password");
-		lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblPassword.setBounds(46, 148, 74, 14);
-		NewAccount.add(lblPassword);
+		JLabel CreateAccount_lblPassword = new JLabel("Password");
+		CreateAccount_lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
+		CreateAccount_lblPassword.setBounds(46, 148, 74, 14);
+		CreateAccountJPanel.add(CreateAccount_lblPassword);
 
-		JLabel lblRepeatPassword = new JLabel("Repeat Password");
-		lblRepeatPassword.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblRepeatPassword.setBounds(4, 183, 116, 14);
-		NewAccount.add(lblRepeatPassword);
+		JLabel CreateAccount_lblRepeatPassword = new JLabel("Repeat Password");
+		CreateAccount_lblRepeatPassword.setHorizontalAlignment(SwingConstants.RIGHT);
+		CreateAccount_lblRepeatPassword.setBounds(4, 183, 116, 14);
+		CreateAccountJPanel.add(CreateAccount_lblRepeatPassword);
 
-		passwordField_Password = new JPasswordField();
-		passwordField_Password.setBounds(130, 145, 200, 20);
-		NewAccount.add(passwordField_Password);
+		CreateAccount_passwordField = new JPasswordField();
+		CreateAccount_passwordField.setBounds(130, 145, 200, 20);
+		CreateAccountJPanel.add(CreateAccount_passwordField);
 
-		passwordField_Repeat = new JPasswordField();
-		passwordField_Repeat.setBounds(130, 180, 200, 20);
-		NewAccount.add(passwordField_Repeat);
+		CreateAccount_passwordFieldRepeat = new JPasswordField();
+		CreateAccount_passwordFieldRepeat.setBounds(130, 180, 200, 20);
+		CreateAccountJPanel.add(CreateAccount_passwordFieldRepeat);
 
-		textField_Username = new JTextField();
-		textField_Username.setColumns(10);
-		textField_Username.setBounds(130, 40, 200, 20);
-		NewAccount.add(textField_Username);
+		CreateAccount_txtUsername = new JTextField();
+		CreateAccount_txtUsername.setColumns(10);
+		CreateAccount_txtUsername.setBounds(130, 40, 200, 20);
+		CreateAccountJPanel.add(CreateAccount_txtUsername);
 
-		JLabel lblUsername = new JLabel("Username");
-		lblUsername.setHorizontalAlignment(SwingConstants.RIGHT);
-		lblUsername.setBounds(46, 43, 74, 14);
-		NewAccount.add(lblUsername);
+		JLabel CreateAccount_lblUsername = new JLabel("Username");
+		CreateAccount_lblUsername.setHorizontalAlignment(SwingConstants.RIGHT);
+		CreateAccount_lblUsername.setBounds(46, 43, 74, 14);
+		CreateAccountJPanel.add(CreateAccount_lblUsername);
 	}
 }
