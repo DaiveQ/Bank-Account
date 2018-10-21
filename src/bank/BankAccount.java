@@ -12,9 +12,9 @@ public class BankAccount {
 	private String username;
 	private int accountNum;
 	private double balance;
-	
+
 	SimpleDateFormat datef = new SimpleDateFormat("dd/MM/YYYY HH:mm a");
-	
+
 	BankAccount(String uName, double amt, String fName, String lName, int acctNum) {
 		username = uName;
 		balance = amt;
@@ -31,19 +31,17 @@ public class BankAccount {
 		balance = 0;
 
 	}
-	
-	
+
 	private String getTimeStamp() {
 		Date date = new Date();
 		return datef.format(date) + ": ";
-		
-		//make it so it's used when a message is made
+
+		// make it so it's used when a message is made
 	}
-	
+
 	public String getUsername() {
 		return this.username;
 	}
-	
 
 	public int getAccountNum() {
 		return accountNum;
@@ -52,18 +50,11 @@ public class BankAccount {
 	private String setPassword() {
 		String pswd = "";
 
-		int i = 0;
-		while (i < 3) {
+		for (int i = 0; i < 3; i++)
 			pswd += firstName.charAt(i);
-			i++;
-		}
 
-		i = 1;
-		while (i < 3) {
-			pswd += firstName.charAt(firstName.length() - i);
-			i++;
-		}
-
+		for (int i = 2; i > 0; i--)
+			pswd += lastName.charAt(lastName.length() - i);
 		return pswd;
 	}
 
@@ -104,8 +95,8 @@ public class BankAccount {
 
 	void display() {
 		// shouldn't be printed out
-		System.out.println("User account num: " + getAccountNum() + "\nUser full name: " + firstName + " " 
-			+ lastName + "\nUser account balance: " + balance);
+		System.out.println("User account num: " + getAccountNum() + "\nUser full name: " + firstName + " " + lastName
+				+ "\nUser account balance: " + balance);
 	}
 
 	boolean transferTo(double amount, double otherAcct) {

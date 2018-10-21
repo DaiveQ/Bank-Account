@@ -36,8 +36,7 @@ public class GUI {
 
 	private static List<BankAccount> ba = new ArrayList<BankAccount>();
 	private int index; // index of BankAccount. Shortened for simplicity
-	
-	final static String MAIN_PANEL = "Main Panel";
+
 	final static String CHOICE_PANEL = "Choice Panel";
 	final static String WITHDRAW_PANEL = "Withdraw Panel";
 	final static String DEPOSIT_PANEL = "Deposit Panel";
@@ -51,7 +50,6 @@ public class GUI {
 	final static String GETBALANCE_PANEL = "GetBalance Panel";
 	final static String TRANSFERTO_PANEL = "TransferTo Panel";
 	final static String TRANSFERFROM_PANEL = "TransferFrom Panel";
-	final static String WRONGPASSWORD_PANEL = "WrongPass Panel";
 	final static String NEWACCOUNT_PANEL = "NewAccount Panel";
 	final static String LOGIN_PANEL = "Login Panel";
 	private static final double DEFAULT_MONEY_VALUE = 1234.56;
@@ -95,11 +93,11 @@ public class GUI {
 		initialize();
 	}
 
-	private void findBankAccountIndex(String username) {
-		checklistloop: for (int i = 0; i < ba.size(); i++) {
+	private void setBankAccountIndex(String username) {
+		for (int i = 0; i < ba.size(); i++) {
 			if (ba.get(i).getUsername() == username) {
 				this.index = i;
-				break checklistloop;
+				return;
 			}
 		}
 	}
@@ -130,7 +128,7 @@ public class GUI {
 	}
 
 	private static boolean checkForUniqueAccNum(int accNum) {
-		for (BankAccount element : ba) {
+		for (BankAccount element : ba) {	
 			if (element.getAccountNum() == accNum)
 				return false;
 		}
@@ -139,7 +137,10 @@ public class GUI {
 
 	private static boolean createAcc(String username, double amt, String fName, String lName, int acctNum) {
 		for (BankAccount element : ba) {
-			if (element.getUsername() == username)
+			
+			// Not marking as true for some reason
+			
+			if (element.getUsername().equals(username))
 				return false;
 		}
 		ba.add(new BankAccount(username, amt, fName, lName, acctNum));
@@ -149,7 +150,7 @@ public class GUI {
 	// for testing purposes
 	private static void createTestAccount() {
 		int accNum = generateAccNum();
-		ba.add(new BankAccount("Rocky", 1000, "Ricky", "Lin", accNum));
+		ba.add(new BankAccount("12345", 1000, "123", "45", accNum));
 		createAcc("Ricky", 1000, "Ricky", "Lin", accNum);
 	}
 
@@ -162,7 +163,7 @@ public class GUI {
 		frame.getContentPane().setLayout(layout);
 
 		JPanel loginJPanel = new JPanel();
-		frame.getContentPane().add(loginJPanel, MAIN_PANEL);
+		frame.getContentPane().add(loginJPanel, LOGIN_PANEL);
 		GridBagLayout gbl_loginJPanel = new GridBagLayout();
 		gbl_loginJPanel.columnWidths = new int[] { 75, 74, 107, 0 };
 		gbl_loginJPanel.rowHeights = new int[] { 91, 21, 20, 23, 0, 0, 0 };
@@ -210,18 +211,14 @@ public class GUI {
 
 		Login_btnEnter.addActionListener(new ActionListener() {
 
-			// work on it
-
-			String username = Login_lblPassword.getText();
-
 			public void actionPerformed(ActionEvent arg0) {
-				if (ba.get(index).checkPassword(Login_passwordField.getText())) {
+				setBankAccountIndex(Login_txtUsername.getText());
+
+				if (ba.get(index).checkPassword(Login_passwordField.getText()))
 					layout.show(frame.getContentPane(), CHOICE_PANEL);
-
-				} else {
-					layout.show(frame.getContentPane(), WRONGPASSWORD_PANEL);
-
-				}
+				else
+					JOptionPane.showMessageDialog(null, "Wrong Password or Username. Please try again.", "Login Error",
+							JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		GridBagConstraints gbc_Login_btnEnter = new GridBagConstraints();
@@ -516,7 +513,7 @@ public class GUI {
 
 		JTextArea ReadMessage_txtAMessage = new JTextArea(10, 10);
 		ReadMessage_scrollPane.setViewportView(ReadMessage_txtAMessage);
-		
+
 		JButton ReadMessage_btnBack = new JButton("Back");
 		ReadMessage_scrollPane.setColumnHeaderView(ReadMessage_btnBack);
 
@@ -672,7 +669,7 @@ public class GUI {
 		JButton CreateAccount_btnBack = new JButton("Back");
 		CreateAccount_btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// frame.getContentPane().add(comp, constraints);
+				layout.show(frame.getContentPane(), LOGIN_PANEL);
 			}
 		});
 		CreateAccount_btnBack.setBounds(55, 225, 65, 25);
@@ -686,21 +683,25 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 
-				if (CreateAccount_passwordField.getText().hashCode() == CreateAccount_passwordFieldRepeat.getText().hashCode()) {
+				if (CreateAccount_passwordField.getText().hashCode() == CreateAccount_passwordFieldRepeat.getText()
+						.hashCode()) {
 					String username = CreateAccount_txtUsername.getText();
 					String firstName = CreateAccount_txtFirstName.getText();
 					String lastName = CreateAccount_txtLastName.getText();
 
-					if (!createAcc(username, DEFAULT_MONEY_VALUE, firstName, lastName, generateAccNum()))
-						// successful pop-up
-						;
-					else
-						// username taken
-						;
-
+					if (createAcc(username, DEFAULT_MONEY_VALUE, firstName, lastName, generateAccNum())) {
+						layout.show(frame.getContentPane(), LOGIN_PANEL);
+						JOptionPane.showMessageDialog(null, "Account Created Successfuly", "Account Creation Success",
+								JOptionPane.PLAIN_MESSAGE);
+					} else {
+						JOptionPane.showMessageDialog(null,
+								"Error: Username already in use. Try adding some abbritrary "
+										+ "numbers no one likes to the end",
+								"Account Creation Error", JOptionPane.ERROR_MESSAGE);
+					}
 				} else
-					// passwords don't match pop-up
-					;
+					JOptionPane.showMessageDialog(null, "Error: Passwords Don't match. Please try again",
+							"Account Creation Error", JOptionPane.ERROR_MESSAGE);
 
 			}
 		});
