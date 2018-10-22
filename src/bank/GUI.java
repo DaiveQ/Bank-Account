@@ -35,7 +35,7 @@ public class GUI {
 	CardLayout layout = new CardLayout(0, 0);
 
 	private static List<BankAccount> ba = new ArrayList<BankAccount>();
-	private int index; // index of BankAccount. Shortened for simplicity
+	private static int index = 0; // index of BankAccount. Shortened for simplicity
 
 	final static String CHOICE_PANEL = "Choice Panel";
 	final static String WITHDRAW_PANEL = "Withdraw Panel";
@@ -76,7 +76,7 @@ public class GUI {
 
 	public static void main(String[] args) {
 		createTestAccount();
-
+		ba.get(index).withdraw(99999999);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -87,6 +87,7 @@ public class GUI {
 				}
 			}
 		});
+		
 	}
 
 	public GUI() {

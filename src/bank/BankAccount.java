@@ -8,12 +8,12 @@ public class BankAccount {
 	private String firstName;
 	private String lastName;
 	private String password;
-	private String message;
+	private String message = "";
 	private String username;
 	private int accountNum;
 	private double balance;
 
-	SimpleDateFormat datef = new SimpleDateFormat("dd/MM/YYYY HH:mm a");
+	SimpleDateFormat datef = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss");
 
 	BankAccount(String uName, double amt, String fName, String lName, int acctNum) {
 		username = uName;
@@ -33,10 +33,10 @@ public class BankAccount {
 	}
 
 	private String getTimeStamp() {
+		// change to server side time once server is made
+		
 		Date date = new Date();
 		return datef.format(date) + ": ";
-
-		// make it so it's used when a message is made
 	}
 
 	public String getUsername() {
@@ -58,20 +58,16 @@ public class BankAccount {
 		return pswd;
 	}
 
-	void setMessage(String mess) {
-		message += mess;
-	}
-
 	public String getMessage() {
 		return message;
 	}
 
 	boolean deposit(double amount) {
 		if (amount > 0) {
-			message += "A deposit of " + amount + "$ has been made.";
+			message += getTimeStamp() + "A deposit of " + amount + "$ has been made.\n";
 			return true;
 		} else {
-			message += "Depost unsucsessful - invalid amount\n";
+			message += getTimeStamp() + "Depost unsucsessful - invalid amount\n";
 			return false;
 		}
 
@@ -79,12 +75,12 @@ public class BankAccount {
 
 	boolean withdraw(double amount) {
 		if (amount >= balance) {
-			message += "A bank overdraft fee of 25$ has been added to your account. We thank you for your business.\n";
+			message += getTimeStamp() + "A bank overdraft fee of 25$ has been added to your account. We thank you for your business.\n";
 			return false;
 		}
 
 		else {
-			message += "Withdrawel of " + amount + "$ has beem made.\n";
+			message += getTimeStamp() + "Withdrawel of " + amount + "$ has beem made.\n";
 			return true;
 		}
 	}
@@ -101,7 +97,7 @@ public class BankAccount {
 
 	boolean transferTo(double amount, double otherAcct) {
 		if (amount >= balance) {
-			message += "Transfer of $" + amount + " to account " + otherAcct + " has been complete\n";
+			message += getTimeStamp() + "Transfer of $" + amount + " to account " + otherAcct + " has been complete\n";
 			otherAcct += amount;
 			balance -= amount;
 			return true;
@@ -109,7 +105,7 @@ public class BankAccount {
 		}
 
 		else {
-			message += "Overdraft during transfer occured. Transaction not processed. "
+			message += getTimeStamp() + "Overdraft during transfer occured. Transaction not processed. "
 					+ "Please contact us for more information A fee of $25 was applied\n";
 			return false;
 		}
@@ -118,17 +114,17 @@ public class BankAccount {
 	boolean transferFrom(double amount, double otherAcct, String pswd) {
 		boolean check = checkPassword(pswd);
 		if (balance >= amount && check == true) {
-			message += "Transfer of $" + amount + " from account " + accountNum + " complete.\n";
+			message += getTimeStamp() + "Transfer of $" + amount + " from account " + accountNum + " complete.\n";
 			return true;
 		}
 
 		else if (amount > balance) {
-			message += "Transfer was unsucsessful - an overdraft fee of $25 was applied\n";
+			message += getTimeStamp() + "Transfer was unsucsessful - an overdraft fee of $25 was applied\n";
 			return false;
 		}
 
 		else if (pswd != password) {
-			message += "Transfer was unsucsessful - please check password and try again\n";
+			message += getTimeStamp() + "Transfer was unsucsessful - please check password and try again\n";
 			return false;
 		}
 
@@ -138,12 +134,12 @@ public class BankAccount {
 	boolean resetPassword(String currentPassword, String newPassword) {
 		if (currentPassword == password) {
 			password = newPassword;
-			message += "Password succesfully changed\n";
+			message += getTimeStamp() + "Password succesfully changed\n";
 			return true;
 		}
 
 		else {
-			message += "Password reset unsucsessful - please try again\n";
+			message += getTimeStamp() + "Password reset unsucsessful - please try again\n";
 			return false;
 		}
 	}
@@ -156,7 +152,7 @@ public class BankAccount {
 	}
 
 	void emptyAccount() {
-		message += "So much for \"leaving something for a rainy day\"\n";
+		message += getTimeStamp() + "So much for \"leaving something for a rainy day\"\n";
 		balance = 0;
 	}
 
