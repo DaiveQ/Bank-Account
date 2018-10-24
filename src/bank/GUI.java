@@ -28,6 +28,8 @@ import javax.swing.SwingConstants;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.awt.BorderLayout;
+import javax.swing.JScrollBar;
 
 public class GUI {
 
@@ -87,7 +89,7 @@ public class GUI {
 				}
 			}
 		});
-		
+
 	}
 
 	public GUI() {
@@ -129,7 +131,7 @@ public class GUI {
 	}
 
 	private static boolean checkForUniqueAccNum(int accNum) {
-		for (BankAccount element : ba) {	
+		for (BankAccount element : ba) {
 			if (element.getAccountNum() == accNum)
 				return false;
 		}
@@ -138,9 +140,9 @@ public class GUI {
 
 	private static boolean createAcc(String username, double amt, String fName, String lName, int acctNum) {
 		for (BankAccount element : ba) {
-			
+
 			// Not marking as true for some reason
-			
+
 			if (element.getUsername().equals(username))
 				return false;
 		}
@@ -506,17 +508,25 @@ public class GUI {
 
 		JPanel ReadMessagesJPanel = new JPanel();
 		frame.getContentPane().add(ReadMessagesJPanel, MESSAGES_PANEL);
-		ReadMessagesJPanel.setLayout(null);
+				ReadMessagesJPanel.setLayout(new BorderLayout(0, 0));
+		
+				JButton ReadMessage_btnBack = new JButton("Back");
+				ReadMessage_btnBack.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent arg0) {
+						layout.show(frame.getContentPane(), CHOICE_PANEL);
+						
+					}
+				});
+				ReadMessage_btnBack.setVerticalAlignment(SwingConstants.BOTTOM);
+				ReadMessagesJPanel.add(ReadMessage_btnBack);
 
 		JScrollPane ReadMessage_scrollPane = new JScrollPane();
-		ReadMessage_scrollPane.setBounds(10, 11, 414, 240);
-		ReadMessagesJPanel.add(ReadMessage_scrollPane);
+		ReadMessagesJPanel.add(ReadMessage_scrollPane, BorderLayout.NORTH);
 
-		JTextArea ReadMessage_txtAMessage = new JTextArea(10, 10);
+		JTextArea ReadMessage_txtAMessage = new JTextArea(13, 10);
+		ReadMessage_txtAMessage.setText(ba.get(index).getMessage());
+		ReadMessage_txtAMessage.setEditable(false);
 		ReadMessage_scrollPane.setViewportView(ReadMessage_txtAMessage);
-
-		JButton ReadMessage_btnBack = new JButton("Back");
-		ReadMessage_scrollPane.setColumnHeaderView(ReadMessage_btnBack);
 
 		JPanel ResetPassJPanel = new JPanel();
 		frame.getContentPane().add(ResetPassJPanel, RESETPASS_PANEL);
@@ -683,9 +693,15 @@ public class GUI {
 
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
-
-				if (CreateAccount_passwordField.getText().hashCode() == CreateAccount_passwordFieldRepeat.getText()
-						.hashCode()) {
+				if (!(CreateAccount_passwordField.getText().equals(null)
+						&& CreateAccount_passwordFieldRepeat.getText().equals(null)
+						&& CreateAccount_txtUsername.getText().equals(null)
+						&& CreateAccount_txtFirstName.getText().equals(null)
+						&& CreateAccount_txtLastName.getText().equals(null))) {
+					layout.show(frame.getContentPane(), NEWACCOUNT_PANEL);
+					JOptionPane.showMessageDialog(null, "Dude. Put stuff in the text box. Kind of the point", "bruh",
+							JOptionPane.ERROR_MESSAGE);
+				} else if (CreateAccount_passwordField.getText() == CreateAccount_passwordFieldRepeat.getText()) {
 					String username = CreateAccount_txtUsername.getText();
 					String firstName = CreateAccount_txtFirstName.getText();
 					String lastName = CreateAccount_txtLastName.getText();
@@ -700,10 +716,13 @@ public class GUI {
 										+ "numbers no one likes to the end",
 								"Account Creation Error", JOptionPane.ERROR_MESSAGE);
 					}
-				} else
+				} else {
+					
+					
 					JOptionPane.showMessageDialog(null, "Error: Passwords Don't match. Please try again",
 							"Account Creation Error", JOptionPane.ERROR_MESSAGE);
-
+				}
+				
 			}
 		});
 		CreateAccount_btnCreate.setBounds(130, 225, 200, 25);

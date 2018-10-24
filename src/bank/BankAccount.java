@@ -12,9 +12,9 @@ public class BankAccount {
 	private String username;
 	private int accountNum;
 	private double balance;
-
-	SimpleDateFormat datef = new SimpleDateFormat("dd/MM/YYYY HH:mm:ss");
-
+	private final String DIVIDER = "\n\t     ";
+	SimpleDateFormat datef = new SimpleDateFormat("dd/MM/YYYY HH:mm");
+	
 	BankAccount(String uName, double amt, String fName, String lName, int acctNum) {
 		username = uName;
 		balance = amt;
@@ -75,7 +75,7 @@ public class BankAccount {
 
 	boolean withdraw(double amount) {
 		if (amount >= balance) {
-			message += getTimeStamp() + "A bank overdraft fee of 25$ has been added to your account. We thank you for your business.\n";
+			message += getTimeStamp() + "A bank overdraft fee of 25$ has been added to your account." + DIVIDER +  "We thank you for your business.\n";
 			return false;
 		}
 
