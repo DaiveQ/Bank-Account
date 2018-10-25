@@ -1,0 +1,20 @@
+CRITERIA FOR BANKACCOUNT PROJECT
+
+BankAccount Class (Error Free and Complete)                     25%
+GUI Aesthetics/Design                                           20%
+Functionality that includes the following features:             30%
+    • Deposit
+    • Withdraw
+    • Transfer To
+    • Transfer From
+    • Transaction History
+    • Account Information
+    • Reset Password
+    • Logout
+Some Possible Additional Features                               25%
+    • Create Account Feature (maintain a array of accounts)
+    • Random Account Number Generator    
+      (make sure account numbers are unique!)
+    • Forcing passwords to have at least one capital, one    
+      digit and a minimum length of 5 characters
+    • Timestamp on individual transactions
