@@ -164,7 +164,7 @@ public class BankAccount {
 
 	}
     
-    // emptiess account balance
+    // empties account balance
 	void emptyAccount() {
 		message += getTime() + "So much for \"leaving something for a rainy day\"\n";
 		balance = 0;
