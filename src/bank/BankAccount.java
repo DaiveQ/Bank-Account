@@ -109,7 +109,7 @@ public class BankAccount {
     // transfers money from one BankAccount to another
 	boolean transferTo(double amount, BankAccount otherAcc) {
 		if (amount >= balance && balance > 0) {
-			message += getTime() + "Transfer of $" + amount + " to account " + otherAcct + " has been complete\n";
+			message += getTime() + "Transfer of $" + amount + " to account " + otherAcc.accountNum + " has been complete\n";
 			otherAcc.balance += amount;
 			this.balance -= amount;
 			return true;

@@ -7,11 +7,13 @@ import java.awt.GridBagLayout;
 import java.awt.CardLayout;
 import java.awt.Font;
 import java.awt.Color;
+import java.awt.BorderLayout;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.text.SimpleDateFormat;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
@@ -28,8 +30,6 @@ import javax.swing.SwingConstants;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.awt.BorderLayout;
-import javax.swing.JScrollBar;
 
 public class GUI {
 
@@ -98,7 +98,7 @@ public class GUI {
 
 	private void setBankAccountIndex(String username) {
 		for (int i = 0; i < ba.size(); i++) {
-			if (ba.get(i).getUsername() == username) {
+			if (ba.get(i).getUsername().equals(username)) {
 				this.index = i;
 				return;
 			}
@@ -224,6 +224,41 @@ public class GUI {
 							JOptionPane.ERROR_MESSAGE);
 			}
 		});
+		
+		// Makes the Key Enter press the JButton Enter
+		
+		Login_txtUsername.addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					Login_btnEnter.doClick();
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+			}
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+			}
+		});
+
+		Login_passwordField.addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					Login_btnEnter.doClick();
+				}
+			}
+
+			@Override
+			public void keyReleased(KeyEvent arg0) {
+			}
+
+			@Override
+			public void keyTyped(KeyEvent arg0) {
+			}
+		});
+
 		GridBagConstraints gbc_Login_btnEnter = new GridBagConstraints();
 		gbc_Login_btnEnter.insets = new Insets(0, 0, 5, 0);
 		gbc_Login_btnEnter.anchor = GridBagConstraints.NORTH;
@@ -508,17 +543,17 @@ public class GUI {
 
 		JPanel ReadMessagesJPanel = new JPanel();
 		frame.getContentPane().add(ReadMessagesJPanel, MESSAGES_PANEL);
-				ReadMessagesJPanel.setLayout(new BorderLayout(0, 0));
-		
-				JButton ReadMessage_btnBack = new JButton("Back");
-				ReadMessage_btnBack.addActionListener(new ActionListener() {
-					public void actionPerformed(ActionEvent arg0) {
-						layout.show(frame.getContentPane(), CHOICE_PANEL);
-						
-					}
-				});
-				ReadMessage_btnBack.setVerticalAlignment(SwingConstants.BOTTOM);
-				ReadMessagesJPanel.add(ReadMessage_btnBack);
+		ReadMessagesJPanel.setLayout(new BorderLayout(0, 0));
+
+		JButton ReadMessage_btnBack = new JButton("Back");
+		ReadMessage_btnBack.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				layout.show(frame.getContentPane(), CHOICE_PANEL);
+
+			}
+		});
+		ReadMessage_btnBack.setVerticalAlignment(SwingConstants.BOTTOM);
+		ReadMessagesJPanel.add(ReadMessage_btnBack);
 
 		JScrollPane ReadMessage_scrollPane = new JScrollPane();
 		ReadMessagesJPanel.add(ReadMessage_scrollPane, BorderLayout.NORTH);
@@ -662,7 +697,6 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			}
-
 		});
 		TransferFrom_btnEnter.setBounds(296, 228, 89, 23);
 		TransferFromJPanel.add(TransferFrom_btnEnter);
@@ -717,12 +751,11 @@ public class GUI {
 								"Account Creation Error", JOptionPane.ERROR_MESSAGE);
 					}
 				} else {
-					
-					
+
 					JOptionPane.showMessageDialog(null, "Error: Passwords Don't match. Please try again",
 							"Account Creation Error", JOptionPane.ERROR_MESSAGE);
 				}
-				
+
 			}
 		});
 		CreateAccount_btnCreate.setBounds(130, 225, 200, 25);
