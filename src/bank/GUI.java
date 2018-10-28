@@ -465,6 +465,7 @@ public class GUI {
 		JButton Deposit_btnDeposit = new JButton("Deposit");
 		Deposit_btnDeposit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				ba.get(index).deposit(Double.valueOf(Deposit_txtAmount.getText()));
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			}
 		});
