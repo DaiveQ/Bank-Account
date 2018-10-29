@@ -224,9 +224,9 @@ public class GUI {
 							JOptionPane.ERROR_MESSAGE);
 			}
 		});
-		
+
 		// Makes the Key Enter press the JButton Enter
-		
+
 		Login_txtUsername.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -728,15 +728,17 @@ public class GUI {
 
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
-				if (!(CreateAccount_passwordField.getText().equals(null)
-						&& CreateAccount_passwordFieldRepeat.getText().equals(null)
-						&& CreateAccount_txtUsername.getText().equals(null)
-						&& CreateAccount_txtFirstName.getText().equals(null)
-						&& CreateAccount_txtLastName.getText().equals(null))) {
+				
+				if ((CreateAccount_passwordField.getText().trim().isEmpty()
+						|| CreateAccount_passwordFieldRepeat.getText().equals(null)
+						|| CreateAccount_txtUsername.getText().trim().isEmpty()
+						|| CreateAccount_txtFirstName.getText().trim().isEmpty()
+						|| CreateAccount_txtLastName.getText().trim().isEmpty())) {
+					
 					layout.show(frame.getContentPane(), NEWACCOUNT_PANEL);
 					JOptionPane.showMessageDialog(null, "Dude. Put stuff in the text box. Kind of the point", "bruh",
 							JOptionPane.ERROR_MESSAGE);
-				} else if (CreateAccount_passwordField.getText() == CreateAccount_passwordFieldRepeat.getText()) {
+				} else if (CreateAccount_passwordField.getText().equals(CreateAccount_passwordFieldRepeat.getText())) {
 					String username = CreateAccount_txtUsername.getText();
 					String firstName = CreateAccount_txtFirstName.getText();
 					String lastName = CreateAccount_txtLastName.getText();
@@ -746,13 +748,14 @@ public class GUI {
 						JOptionPane.showMessageDialog(null, "Account Created Successfuly", "Account Creation Success",
 								JOptionPane.PLAIN_MESSAGE);
 					} else {
+						layout.show(frame.getContentPane(), NEWACCOUNT_PANEL);
 						JOptionPane.showMessageDialog(null,
 								"Error: Username already in use. Try adding some abbritrary "
 										+ "numbers no one likes to the end",
 								"Account Creation Error", JOptionPane.ERROR_MESSAGE);
 					}
 				} else {
-
+					layout.show(frame.getContentPane(), NEWACCOUNT_PANEL);
 					JOptionPane.showMessageDialog(null, "Error: Passwords Don't match. Please try again",
 							"Account Creation Error", JOptionPane.ERROR_MESSAGE);
 				}
