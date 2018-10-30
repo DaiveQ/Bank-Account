@@ -104,6 +104,14 @@ public class GUI {
 			}
 		}
 	}
+	
+	private boolean passwordCheck(String pass) {
+		if(pass.toLowerCase().equals(pass)) return false;
+		else if(pass.toUpperCase().equals(pass)) return false;
+		else if(pass.length() < 9) return false;
+		// else if password has number
+		else return true;
+	}
 
 	private static int generateAccNum() {
 		boolean taken = true;
@@ -754,6 +762,10 @@ public class GUI {
 										+ "numbers no one likes to the end",
 								"Account Creation Error", JOptionPane.ERROR_MESSAGE);
 					}
+				} else if(!passwordCheck(CreateAccount_passwordField.getText())) {
+					JOptionPane.showMessageDialog(null, "Not secure enough");
+					
+					// expand on later
 				} else {
 					layout.show(frame.getContentPane(), NEWACCOUNT_PANEL);
 					JOptionPane.showMessageDialog(null, "Error: Passwords Don't match. Please try again",
