@@ -99,7 +99,7 @@ public class GUI {
 	private void setBankAccountIndex(String username) {
 		for (int i = 0; i < ba.size(); i++) {
 			if (ba.get(i).getUsername().equals(username)) {
-				this.index = i;
+				GUI.index = i;
 				return;
 			}
 		}
@@ -221,7 +221,9 @@ public class GUI {
 		JButton Login_btnEnter = new JButton("Enter");
 
 		Login_btnEnter.addActionListener(new ActionListener() {
-
+			
+			@SuppressWarnings("deprecation")
+			
 			public void actionPerformed(ActionEvent arg0) {
 				setBankAccountIndex(Login_txtUsername.getText());
 
@@ -232,21 +234,17 @@ public class GUI {
 							JOptionPane.ERROR_MESSAGE);
 			}
 		});
-
-		// Makes the Key Enter press the JButton Enter
-
+		
 		Login_txtUsername.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					Login_btnEnter.doClick();
 				}
 			}
-
-			@Override
+			
 			public void keyReleased(KeyEvent arg0) {
 			}
-
-			@Override
+			
 			public void keyTyped(KeyEvent arg0) {
 			}
 		});
@@ -258,11 +256,9 @@ public class GUI {
 				}
 			}
 
-			@Override
 			public void keyReleased(KeyEvent arg0) {
 			}
 
-			@Override
 			public void keyTyped(KeyEvent arg0) {
 			}
 		});
@@ -469,17 +465,33 @@ public class GUI {
 		Deposit_txtAmount.setBounds(142, 112, 150, 37);
 		DepositJPanel.add(Deposit_txtAmount);
 		Deposit_txtAmount.setColumns(10);
-		//
+		
 		JButton Deposit_btnDeposit = new JButton("Deposit");
 		Deposit_btnDeposit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ba.get(index).deposit(Double.valueOf(Deposit_txtAmount.getText()));
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
+				
 			}
 		});
 		Deposit_btnDeposit.setBounds(153, 160, 127, 30);
 		DepositJPanel.add(Deposit_btnDeposit);
-
+		
+		// enter button presses deposit
+		Deposit_txtAmount.addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					Deposit_btnDeposit.doClick();
+				}
+			}
+			
+			public void keyReleased(KeyEvent arg0) {
+			}
+			
+			public void keyTyped(KeyEvent arg0) {
+			}
+		});
+		
 		JPanel AccountDetailJPanel = new JPanel();
 		frame.getContentPane().add(AccountDetailJPanel, DISPLAY_PANEL);
 		AccountDetailJPanel.setLayout(null);

@@ -123,7 +123,6 @@ public class BankAccount {
 	}
 
 	boolean transferFrom(double amount, double otherAcct, String pswd) {
-		boolean check = checkPassword(pswd);
 		if (balance >= amount) {
 			message += getTime() + "Transfer of $" + amount + " from account " + accountNum + " complete.\n";
 			return true;
