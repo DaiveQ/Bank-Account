@@ -1,5 +1,6 @@
 package bank;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -21,6 +22,9 @@ public class BankAccount {
 	
 	// date format for use with messages for timestamps
 	SimpleDateFormat datef = new SimpleDateFormat("dd/MM/YYYY HH:mm");
+	
+	// Also remember to round decimals or use BigDecimal
+	DecimalFormat df = new DecimalFormat("#.00");
 	
 	BankAccount(String uName, double amt, String fName, String lName, int acctNum) {
 		username = uName;
@@ -70,11 +74,18 @@ public class BankAccount {
 	public String getMessage() {
 		return message;
 	}
+	
+	// untested
+	public String getLastMessage() {
+		int endOfTimestamp = this.message.lastIndexOf(": ");
+		return this.message.substring(endOfTimestamp, message.length());
+	}
+
     
     // deposits
 	boolean deposit(double amount) {
 		if (amount > 0) {
-			message += getTime() + "A deposit of " + amount + "$ has been made.\n";
+			message += getTime() + "A deposit of $" + df.format(amount) + " has been made.\n";
 			return true;
 		} else {
 			message += getTime() + "Depost unsucsessful - invalid amount\n";
@@ -85,12 +96,12 @@ public class BankAccount {
 
 	boolean withdraw(double amount) {
 		if (amount >= balance) {
-			message += getTime() + "A bank overdraft fee of 25$ has been added to your account." + DIVIDER +  "We thank you for your business.\n";
+			message += getTime() + "A bank overdraft fee of $25 has been added to your account." + DIVIDER +  "We thank you for your business.\n";
 			return false;
 		}
 
 		else {
-			message += getTime() + "Withdrawel of " + amount + "$ has beem made.\n";
+			message += getTime() + "Withdrawl of $" + df.format(amount) + " has beem made.\n";
 			return true;
 		}
 	}
@@ -109,7 +120,7 @@ public class BankAccount {
     // transfers money from one BankAccount to another
 	boolean transferTo(double amount, BankAccount otherAcc) {
 		if (amount >= balance && balance > 0) {
-			message += getTime() + "Transfer of $" + amount + " to account " + otherAcc.accountNum + " has been complete\n";
+			message += getTime() + "Transfer of $" + df.format(amount) + " to account " + otherAcc.accountNum + " has been complete\n";
 			otherAcc.balance += amount;
 			this.balance -= amount;
 			return true;
@@ -124,7 +135,7 @@ public class BankAccount {
 
 	boolean transferFrom(double amount, double otherAcct, String pswd) {
 		if (balance >= amount) {
-			message += getTime() + "Transfer of $" + amount + " from account " + accountNum + " complete.\n";
+			message += getTime() + "Transfer of $" + df.format(amount) + " from account " + accountNum + " complete.\n";
 			return true;
 		}
 

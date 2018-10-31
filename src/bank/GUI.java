@@ -33,6 +33,9 @@ import java.util.Random;
 
 public class GUI {
 
+	// Add null check to Deposit and Withdraw\
+	// Also give functionality to Transfer To/From
+	
 	private JFrame frame;
 	CardLayout layout = new CardLayout(0, 0);
 
@@ -148,9 +151,6 @@ public class GUI {
 
 	private static boolean createAcc(String username, double amt, String fName, String lName, int acctNum) {
 		for (BankAccount element : ba) {
-
-			// Not marking as true for some reason
-
 			if (element.getUsername().equals(username))
 				return false;
 		}
@@ -173,14 +173,14 @@ public class GUI {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(layout);
 
-		JPanel loginJPanel = new JPanel();
-		frame.getContentPane().add(loginJPanel, LOGIN_PANEL);
-		GridBagLayout gbl_loginJPanel = new GridBagLayout();
-		gbl_loginJPanel.columnWidths = new int[] { 75, 74, 107, 0 };
-		gbl_loginJPanel.rowHeights = new int[] { 91, 21, 20, 23, 0, 0, 0 };
-		gbl_loginJPanel.columnWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		gbl_loginJPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		loginJPanel.setLayout(gbl_loginJPanel);
+		JPanel LoginJPanel = new JPanel();
+		frame.getContentPane().add(LoginJPanel, LOGIN_PANEL);
+		GridBagLayout gbl_LoginJPanel = new GridBagLayout();
+		gbl_LoginJPanel.columnWidths = new int[] { 75, 74, 107, 0 };
+		gbl_LoginJPanel.rowHeights = new int[] { 91, 21, 20, 23, 0, 0, 0 };
+		gbl_LoginJPanel.columnWeights = new double[] { 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_LoginJPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		LoginJPanel.setLayout(gbl_LoginJPanel);
 
 		JLabel Login_lblUsername = new JLabel("Username:");
 		GridBagConstraints gbc_Login_lblUsername = new GridBagConstraints();
@@ -188,7 +188,7 @@ public class GUI {
 		gbc_Login_lblUsername.insets = new Insets(0, 0, 5, 5);
 		gbc_Login_lblUsername.gridx = 1;
 		gbc_Login_lblUsername.gridy = 1;
-		loginJPanel.add(Login_lblUsername, gbc_Login_lblUsername);
+		LoginJPanel.add(Login_lblUsername, gbc_Login_lblUsername);
 
 		Login_txtUsername = new JTextField();
 		GridBagConstraints gbc_Login_txtUsername = new GridBagConstraints();
@@ -197,7 +197,7 @@ public class GUI {
 		gbc_Login_txtUsername.insets = new Insets(0, 0, 5, 0);
 		gbc_Login_txtUsername.gridx = 2;
 		gbc_Login_txtUsername.gridy = 1;
-		loginJPanel.add(Login_txtUsername, gbc_Login_txtUsername);
+		LoginJPanel.add(Login_txtUsername, gbc_Login_txtUsername);
 		Login_txtUsername.setColumns(10);
 
 		JLabel Login_lblPassword = new JLabel("Password:");
@@ -207,7 +207,7 @@ public class GUI {
 		gbc_Login_lblPassword.insets = new Insets(0, 0, 5, 5);
 		gbc_Login_lblPassword.gridx = 1;
 		gbc_Login_lblPassword.gridy = 2;
-		loginJPanel.add(Login_lblPassword, gbc_Login_lblPassword);
+		LoginJPanel.add(Login_lblPassword, gbc_Login_lblPassword);
 
 		Login_passwordField = new JPasswordField();
 		GridBagConstraints gbc_Login_passwordField = new GridBagConstraints();
@@ -216,7 +216,7 @@ public class GUI {
 		gbc_Login_passwordField.insets = new Insets(0, 0, 5, 0);
 		gbc_Login_passwordField.gridx = 2;
 		gbc_Login_passwordField.gridy = 2;
-		loginJPanel.add(Login_passwordField, gbc_Login_passwordField);
+		LoginJPanel.add(Login_passwordField, gbc_Login_passwordField);
 
 		JButton Login_btnEnter = new JButton("Enter");
 
@@ -269,7 +269,7 @@ public class GUI {
 		gbc_Login_btnEnter.fill = GridBagConstraints.HORIZONTAL;
 		gbc_Login_btnEnter.gridx = 2;
 		gbc_Login_btnEnter.gridy = 3;
-		loginJPanel.add(Login_btnEnter, gbc_Login_btnEnter);
+		LoginJPanel.add(Login_btnEnter, gbc_Login_btnEnter);
 
 		JButton Login_btnCreateAccount = new JButton("Create A New Account");
 		Login_btnCreateAccount.addActionListener(new ActionListener() {
@@ -280,7 +280,7 @@ public class GUI {
 		GridBagConstraints gbc_Login_btnCreateAccount = new GridBagConstraints();
 		gbc_Login_btnCreateAccount.gridx = 2;
 		gbc_Login_btnCreateAccount.gridy = 5;
-		loginJPanel.add(Login_btnCreateAccount, gbc_Login_btnCreateAccount);
+		LoginJPanel.add(Login_btnCreateAccount, gbc_Login_btnCreateAccount);
 
 		JPanel MainJPanel = new JPanel();
 		frame.getContentPane().add(MainJPanel, CHOICE_PANEL);
@@ -344,12 +344,8 @@ public class GUI {
 		gbc_Main_btnEmptyAccount.gridy = 2;
 		MainJPanel.add(Main_btnEmptyAccount, gbc_Main_btnEmptyAccount);
 
-		JButton btnNewButton_4 = new JButton("Read Messages");
-		btnNewButton_4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), MESSAGES_PANEL);
-			}
-		});
+		JButton Main_btnGetMessages = new JButton("Read Messages");
+		// Action Listerner added later in code
 
 		JButton Main_btnTransferTo = new JButton("Transfer To");
 		Main_btnTransferTo.addActionListener(new ActionListener() {
@@ -416,13 +412,13 @@ public class GUI {
 		gbc_Main_btnTransferTo.gridx = 1;
 		gbc_Main_btnTransferTo.gridy = 5;
 		MainJPanel.add(Main_btnTransferTo, gbc_Main_btnTransferTo);
-		GridBagConstraints gbc_btnNewButton_4 = new GridBagConstraints();
-		gbc_btnNewButton_4.insets = new Insets(3, 3, 0, 3);
-		gbc_btnNewButton_4.fill = GridBagConstraints.HORIZONTAL;
-		gbc_btnNewButton_4.anchor = GridBagConstraints.NORTH;
-		gbc_btnNewButton_4.gridx = 2;
-		gbc_btnNewButton_4.gridy = 5;
-		MainJPanel.add(btnNewButton_4, gbc_btnNewButton_4);
+		GridBagConstraints gbc_Main_btnGetMessages = new GridBagConstraints();
+		gbc_Main_btnGetMessages.insets = new Insets(3, 3, 0, 3);
+		gbc_Main_btnGetMessages.fill = GridBagConstraints.HORIZONTAL;
+		gbc_Main_btnGetMessages.anchor = GridBagConstraints.NORTH;
+		gbc_Main_btnGetMessages.gridx = 2;
+		gbc_Main_btnGetMessages.gridy = 5;
+		MainJPanel.add(Main_btnGetMessages, gbc_Main_btnGetMessages);
 
 		JPanel WithdrawJPanel = new JPanel();
 		frame.getContentPane().add(WithdrawJPanel, WITHDRAW_PANEL);
@@ -444,6 +440,22 @@ public class GUI {
 		Withdraw_btnWithdraw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
+				ba.get(index).withdraw(Double.valueOf(Withdraw_txtAmount.getText()));
+			}
+		});
+		
+		// adds KeyListerner to Enter to click the Withdraw Button
+		Withdraw_txtAmount.addKeyListener(new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					Withdraw_btnWithdraw.doClick();
+				}
+			}
+			
+			public void keyReleased(KeyEvent arg0) {
+			}
+			
+			public void keyTyped(KeyEvent arg0) {
 			}
 		});
 		Withdraw_btnWithdraw.setBounds(153, 160, 127, 30);
@@ -580,10 +592,17 @@ public class GUI {
 		ReadMessagesJPanel.add(ReadMessage_scrollPane, BorderLayout.NORTH);
 
 		JTextArea ReadMessage_txtAMessage = new JTextArea(13, 10);
-		ReadMessage_txtAMessage.setText(ba.get(index).getMessage());
+		ReadMessage_txtAMessage.setText("");
 		ReadMessage_txtAMessage.setEditable(false);
 		ReadMessage_scrollPane.setViewportView(ReadMessage_txtAMessage);
-
+		
+		Main_btnGetMessages.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				ReadMessage_txtAMessage.setText(ba.get(index).getMessage());
+				layout.show(frame.getContentPane(), MESSAGES_PANEL);
+			}
+		});
+		
 		JPanel ResetPassJPanel = new JPanel();
 		frame.getContentPane().add(ResetPassJPanel, RESETPASS_PANEL);
 		ResetPassJPanel.setLayout(null);
@@ -764,6 +783,10 @@ public class GUI {
 					String lastName = CreateAccount_txtLastName.getText();
 
 					if (createAcc(username, DEFAULT_MONEY_VALUE, firstName, lastName, generateAccNum())) {
+						
+						// Add password argument to BankAccount constructor
+						// Update createAcc to accept the parameter
+						
 						layout.show(frame.getContentPane(), LOGIN_PANEL);
 						JOptionPane.showMessageDialog(null, "Account Created Successfuly", "Account Creation Success",
 								JOptionPane.PLAIN_MESSAGE);
