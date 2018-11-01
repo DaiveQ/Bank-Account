@@ -108,7 +108,17 @@ public class GUI {
 		}
 	}
 	
-	private boolean passwordCheck(String pass) {
+	private boolean isPasswordsecure(String pass) {
+		
+		///////////////////////////////////////////////////////
+		// TESTING IF STATEMENT. PASSOWRDS STARTING WITH 12345 
+		// WILL BE PASSED DELETE ONCE DONE
+		///////////////////////////////////////////////////////
+		if(pass.length() >= 5) {
+			if(pass.substring(0, 5).equals("12345")) return true;
+		}
+		///////////////////////////////////////////////////////
+		
 		if(pass.toLowerCase().equals(pass)) return false;
 		else if(pass.toUpperCase().equals(pass)) return false;
 		else if(pass.length() < 9) return false;
@@ -149,20 +159,20 @@ public class GUI {
 		return true;
 	}
 
-	private static boolean createAcc(String username, double amt, String fName, String lName, int acctNum) {
+	private static boolean createAcc(String username, double amt, String fName, String lName, int acctNum, String password) {
 		for (BankAccount element : ba) {
 			if (element.getUsername().equals(username))
 				return false;
 		}
-		ba.add(new BankAccount(username, amt, fName, lName, acctNum));
+		ba.add(new BankAccount(username, amt, fName, lName, acctNum, password));
 		return true;
 	}
-
-	// for testing purposes
+	
+	
 	private static void createTestAccount() {
 		int accNum = generateAccNum();
 		ba.add(new BankAccount("12345", 1000, "123", "45", accNum));
-		createAcc("Ricky", 1000, "Ricky", "Lin", accNum);
+		ba.add(new BankAccount("Ricky", 1000, "Ricky", "Lin", accNum));
 	}
 
 	private void initialize() {
@@ -778,11 +788,19 @@ public class GUI {
 					JOptionPane.showMessageDialog(null, "Dude. Put stuff in the text box. Kind of the point", "bruh",
 							JOptionPane.ERROR_MESSAGE);
 				} else if (CreateAccount_passwordField.getText().equals(CreateAccount_passwordFieldRepeat.getText())) {
+					
 					String username = CreateAccount_txtUsername.getText();
 					String firstName = CreateAccount_txtFirstName.getText();
 					String lastName = CreateAccount_txtLastName.getText();
-
-					if (createAcc(username, DEFAULT_MONEY_VALUE, firstName, lastName, generateAccNum())) {
+					String password = CreateAccount_passwordField.getText();
+					
+					if(!isPasswordsecure(password)) {
+						layout.show(frame.getContentPane(), NEWACCOUNT_PANEL);
+						JOptionPane.showMessageDialog(null, "ERROR: Password did not meet one of the following fields: 1+ capital, 1+ lowercase "
+								+ "9+ characters. NOTE: PASSWORDS STARTING WITH 12345 IS A LAZY PASS FOR TESTING");
+					}
+					
+					else if (createAcc(username, DEFAULT_MONEY_VALUE, firstName, lastName, generateAccNum(), password)) {
 						
 						// Add password argument to BankAccount constructor
 						// Update createAcc to accept the parameter
@@ -797,10 +815,6 @@ public class GUI {
 										+ "numbers no one likes to the end",
 								"Account Creation Error", JOptionPane.ERROR_MESSAGE);
 					}
-				} else if(!passwordCheck(CreateAccount_passwordField.getText())) {
-					JOptionPane.showMessageDialog(null, "Not secure enough");
-					
-					// expand on later
 				} else {
 					layout.show(frame.getContentPane(), NEWACCOUNT_PANEL);
 					JOptionPane.showMessageDialog(null, "Error: Passwords Don't match. Please try again",

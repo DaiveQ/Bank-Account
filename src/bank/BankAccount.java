@@ -27,20 +27,27 @@ public class BankAccount {
 	DecimalFormat df = new DecimalFormat("#.00");
 	
 	BankAccount(String uName, double amt, String fName, String lName, int acctNum) {
-		username = uName;
-		balance = amt;
-		firstName = fName;
-		lastName = lName;
-		password = setPassword();
+		this.username = uName;
+		this.balance = amt;
+		this.firstName = fName;
+		this.lastName = lName;
+		this.password = setPassword();
+	}
+	
+	BankAccount(String uName, double amt, String fName, String lName, int acctNum, String password) {
+		this.username = uName;
+		this.balance = amt;
+		this.firstName = fName;
+		this.lastName = lName;
+		this.password = password;
 	}
     
 	BankAccount(String uName, String fname, String lName, int accNum) {
-		username = uName;
-		accountNum = accNum;
-		firstName = fname;
-		lastName = lName;
-		balance = 0;
-
+		this.username = uName;
+		this.accountNum = accNum;
+		this.firstName = fname;
+		this.lastName = lName;
+		this.balance = 0;
 	}
     
 	private String getTime() {
