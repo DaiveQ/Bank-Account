@@ -287,6 +287,7 @@ public class GUI {
 				layout.show(frame.getContentPane(), NEWACCOUNT_PANEL);
 			}
 		});
+		
 		GridBagConstraints gbc_Login_btnCreateAccount = new GridBagConstraints();
 		gbc_Login_btnCreateAccount.gridx = 2;
 		gbc_Login_btnCreateAccount.gridy = 5;
@@ -307,6 +308,7 @@ public class GUI {
 				layout.show(frame.getContentPane(), WITHDRAW_PANEL);
 			}
 		});
+		
 		GridBagConstraints gbc_Main_btnWithdraw = new GridBagConstraints();
 		gbc_Main_btnWithdraw.fill = GridBagConstraints.BOTH;
 		gbc_Main_btnWithdraw.insets = new Insets(0, 3, 3, 3);
@@ -328,6 +330,7 @@ public class GUI {
 				layout.show(frame.getContentPane(), DEPOSIT_PANEL);
 			}
 		});
+		
 		GridBagConstraints gbc_Main_btnDeposit = new GridBagConstraints();
 		gbc_Main_btnDeposit.fill = GridBagConstraints.BOTH;
 		gbc_Main_btnDeposit.insets = new Insets(0, 3, 3, 3);
@@ -347,6 +350,7 @@ public class GUI {
 				layout.show(frame.getContentPane(), EMPTYACCOUNT_PANEL);
 			}
 		});
+		
 		GridBagConstraints gbc_Main_btnEmptyAccount = new GridBagConstraints();
 		gbc_Main_btnEmptyAccount.fill = GridBagConstraints.BOTH;
 		gbc_Main_btnEmptyAccount.insets = new Insets(3, 3, 0, 3);
@@ -377,6 +381,7 @@ public class GUI {
 				layout.show(frame.getContentPane(), TRANSFERFROM_PANEL);
 			}
 		});
+		
 		GridBagConstraints gbc_Main_btnTransferFrom = new GridBagConstraints();
 		gbc_Main_btnTransferFrom.fill = GridBagConstraints.HORIZONTAL;
 		gbc_Main_btnTransferFrom.insets = new Insets(0, 3, 3, 3);
@@ -396,6 +401,7 @@ public class GUI {
 				layout.show(frame.getContentPane(), CHECKPASSWORD_PANEL);
 			}
 		});
+		
 		GridBagConstraints gbc_Main_btnCheckPassword = new GridBagConstraints();
 		gbc_Main_btnCheckPassword.anchor = GridBagConstraints.NORTH;
 		gbc_Main_btnCheckPassword.fill = GridBagConstraints.HORIZONTAL;
@@ -410,6 +416,7 @@ public class GUI {
 				layout.show(frame.getContentPane(), RESETPASSWORD_PANEL);
 			}
 		});
+		
 		GridBagConstraints gbc_Main_btnResetPassword = new GridBagConstraints();
 		gbc_Main_btnResetPassword.insets = new Insets(3, 3, 0, 3);
 		gbc_Main_btnResetPassword.fill = GridBagConstraints.HORIZONTAL;
@@ -468,6 +475,7 @@ public class GUI {
 			public void keyTyped(KeyEvent arg0) {
 			}
 		});
+		
 		Withdraw_btnWithdraw.setBounds(153, 160, 127, 30);
 		WithdrawJPanel.add(Withdraw_btnWithdraw);
 
@@ -496,6 +504,7 @@ public class GUI {
 				
 			}
 		});
+		
 		Deposit_btnDeposit.setBounds(153, 160, 127, 30);
 		DepositJPanel.add(Deposit_btnDeposit);
 		
@@ -524,6 +533,7 @@ public class GUI {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			}
 		});
+		
 		AccountDetail_Back.setBounds(335, 228, 89, 23);
 		AccountDetailJPanel.add(AccountDetail_Back);
 
@@ -577,6 +587,7 @@ public class GUI {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			}
 		});
+		
 		EmptyAccount_btnBack.setBounds(296, 198, 89, 23);
 		EmptyAccountJPanel.add(EmptyAccount_btnBack);
 
@@ -595,6 +606,7 @@ public class GUI {
 
 			}
 		});
+		
 		ReadMessage_btnBack.setVerticalAlignment(SwingConstants.BOTTOM);
 		ReadMessagesJPanel.add(ReadMessage_btnBack);
 
@@ -606,6 +618,7 @@ public class GUI {
 		ReadMessage_txtAMessage.setEditable(false);
 		ReadMessage_scrollPane.setViewportView(ReadMessage_txtAMessage);
 		
+	    // Makes it so txtAMessage is updated on click
 		Main_btnGetMessages.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ReadMessage_txtAMessage.setText(ba.get(index).getMessage());
@@ -639,6 +652,7 @@ public class GUI {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			}
 		});
+		
 		ResetPass_btnEnter.setBounds(152, 160, 89, 23);
 		ResetPassJPanel.add(ResetPass_btnEnter);
 
@@ -652,6 +666,7 @@ public class GUI {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			}
 		});
+		
 		GetBalance_Back.setBounds(335, 228, 89, 23);
 		GetBalanceJPanel.add(GetBalance_Back);
 
@@ -696,6 +711,7 @@ public class GUI {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			}
 		});
+		
 		TransferTo_btnEnter.setBounds(290, 228, 89, 23);
 		TransferToJPanel.add(TransferTo_btnEnter);
 
@@ -748,6 +764,7 @@ public class GUI {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			}
 		});
+		
 		TransferFrom_btnEnter.setBounds(296, 228, 89, 23);
 		TransferFromJPanel.add(TransferFrom_btnEnter);
 
@@ -767,6 +784,7 @@ public class GUI {
 				layout.show(frame.getContentPane(), LOGIN_PANEL);
 			}
 		});
+		
 		CreateAccount_btnBack.setBounds(55, 225, 65, 25);
 		CreateAccountJPanel.add(CreateAccount_btnBack);
 
@@ -823,6 +841,7 @@ public class GUI {
 
 			}
 		});
+		
 		CreateAccount_btnCreate.setBounds(130, 225, 200, 25);
 		CreateAccountJPanel.add(CreateAccount_btnCreate);
 
