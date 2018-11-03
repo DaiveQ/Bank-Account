@@ -59,8 +59,8 @@ public class GUI {
 	final static String LOGIN_PANEL = "Login Panel";
 	private static final double DEFAULT_MONEY_VALUE = 1234.56;
 
-	private JTextField Login_txtUsername;
-	private JPasswordField Login_passwordField;
+	private JTextField loginTxtUsername;
+	private JPasswordField loginPasswordField;
 	private JTextField Withdraw_txtAmount;
 	private JTextField Deposit_txtAmount;
 	private JPasswordField ResetPass_txtCurrentPassword;
@@ -72,11 +72,11 @@ public class GUI {
 	private JTextField TransferFrom_txtBankAccount;
 	private JTextField TransferFrom_txtOtherAccount;
 	private JTextField TransferFrom_txtAmount;
-	private JTextField CreateAccount_txtFirstName;
-	private JTextField CreateAccount_txtLastName;
-	private JPasswordField CreateAccount_passwordField;
-	private JPasswordField CreateAccount_passwordFieldRepeat;
-	private JTextField CreateAccount_txtUsername;
+	private JTextField regTxtFirstName;
+	private JTextField regTxtLastName;
+	private JPasswordField regPasswordField;
+	private JPasswordField regPasswordFieldRepeat;
+	private JTextField regTxtUsername;
 	private JButton Main_btnWithdraw;
 
 	public static void main(String[] args) {
@@ -192,52 +192,52 @@ public class GUI {
 		gbl_LoginJPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		LoginJPanel.setLayout(gbl_LoginJPanel);
 
-		JLabel Login_lblUsername = new JLabel("Username:");
-		GridBagConstraints gbc_Login_lblUsername = new GridBagConstraints();
-		gbc_Login_lblUsername.fill = GridBagConstraints.BOTH;
-		gbc_Login_lblUsername.insets = new Insets(0, 0, 5, 5);
-		gbc_Login_lblUsername.gridx = 1;
-		gbc_Login_lblUsername.gridy = 1;
-		LoginJPanel.add(Login_lblUsername, gbc_Login_lblUsername);
+		JLabel loginLblUsername = new JLabel("Username:");
+		GridBagConstraints gbc_loginLblUsername = new GridBagConstraints();
+		gbc_loginLblUsername.fill = GridBagConstraints.BOTH;
+		gbc_loginLblUsername.insets = new Insets(0, 0, 5, 5);
+		gbc_loginLblUsername.gridx = 1;
+		gbc_loginLblUsername.gridy = 1;
+		LoginJPanel.add(loginLblUsername, gbc_loginLblUsername);
 
-		Login_txtUsername = new JTextField();
-		GridBagConstraints gbc_Login_txtUsername = new GridBagConstraints();
-		gbc_Login_txtUsername.anchor = GridBagConstraints.NORTH;
-		gbc_Login_txtUsername.fill = GridBagConstraints.HORIZONTAL;
-		gbc_Login_txtUsername.insets = new Insets(0, 0, 5, 0);
-		gbc_Login_txtUsername.gridx = 2;
-		gbc_Login_txtUsername.gridy = 1;
-		LoginJPanel.add(Login_txtUsername, gbc_Login_txtUsername);
-		Login_txtUsername.setColumns(10);
+		loginTxtUsername = new JTextField();
+		GridBagConstraints gbc_loginTxtUsername = new GridBagConstraints();
+		gbc_loginTxtUsername.anchor = GridBagConstraints.NORTH;
+		gbc_loginTxtUsername.fill = GridBagConstraints.HORIZONTAL;
+		gbc_loginTxtUsername.insets = new Insets(0, 0, 5, 0);
+		gbc_loginTxtUsername.gridx = 2;
+		gbc_loginTxtUsername.gridy = 1;
+		LoginJPanel.add(loginTxtUsername, gbc_loginTxtUsername);
+		loginTxtUsername.setColumns(10);
 
-		JLabel Login_lblPassword = new JLabel("Password:");
-		GridBagConstraints gbc_Login_lblPassword = new GridBagConstraints();
-		gbc_Login_lblPassword.anchor = GridBagConstraints.NORTH;
-		gbc_Login_lblPassword.fill = GridBagConstraints.HORIZONTAL;
-		gbc_Login_lblPassword.insets = new Insets(0, 0, 5, 5);
-		gbc_Login_lblPassword.gridx = 1;
-		gbc_Login_lblPassword.gridy = 2;
-		LoginJPanel.add(Login_lblPassword, gbc_Login_lblPassword);
+		JLabel loginLblPassword = new JLabel("Password:");
+		GridBagConstraints gbc_loginLblPassword = new GridBagConstraints();
+		gbc_loginLblPassword.anchor = GridBagConstraints.NORTH;
+		gbc_loginLblPassword.fill = GridBagConstraints.HORIZONTAL;
+		gbc_loginLblPassword.insets = new Insets(0, 0, 5, 5);
+		gbc_loginLblPassword.gridx = 1;
+		gbc_loginLblPassword.gridy = 2;
+		LoginJPanel.add(loginLblPassword, gbc_loginLblPassword);
 
-		Login_passwordField = new JPasswordField();
-		GridBagConstraints gbc_Login_passwordField = new GridBagConstraints();
-		gbc_Login_passwordField.anchor = GridBagConstraints.NORTH;
-		gbc_Login_passwordField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_Login_passwordField.insets = new Insets(0, 0, 5, 0);
-		gbc_Login_passwordField.gridx = 2;
-		gbc_Login_passwordField.gridy = 2;
-		LoginJPanel.add(Login_passwordField, gbc_Login_passwordField);
+		loginPasswordField = new JPasswordField();
+		GridBagConstraints gbc_loginPasswordField = new GridBagConstraints();
+		gbc_loginPasswordField.anchor = GridBagConstraints.NORTH;
+		gbc_loginPasswordField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_loginPasswordField.insets = new Insets(0, 0, 5, 0);
+		gbc_loginPasswordField.gridx = 2;
+		gbc_loginPasswordField.gridy = 2;
+		LoginJPanel.add(loginPasswordField, gbc_loginPasswordField);
 
-		JButton Login_btnEnter = new JButton("Enter");
+		JButton loginBtnEnter = new JButton("Enter");
 
-		Login_btnEnter.addActionListener(new ActionListener() {
+		loginBtnEnter.addActionListener(new ActionListener() {
 			
 			@SuppressWarnings("deprecation")
 			
 			public void actionPerformed(ActionEvent arg0) {
-				setBankAccountIndex(Login_txtUsername.getText());
+				setBankAccountIndex(loginTxtUsername.getText());
 
-				if (ba.get(index).checkPassword(Login_passwordField.getText()))
+				if (ba.get(index).checkPassword(loginPasswordField.getText()))
 					layout.show(frame.getContentPane(), CHOICE_PANEL);
 				else
 					JOptionPane.showMessageDialog(null, "Wrong Password or Username. Please try again.", "Login Error",
@@ -245,10 +245,10 @@ public class GUI {
 			}
 		});
 		
-		Login_txtUsername.addKeyListener(new KeyListener() {
+		loginTxtUsername.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					Login_btnEnter.doClick();
+					loginBtnEnter.doClick();
 				}
 			}
 			
@@ -259,10 +259,10 @@ public class GUI {
 			}
 		});
 
-		Login_passwordField.addKeyListener(new KeyListener() {
+		loginPasswordField.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					Login_btnEnter.doClick();
+					loginBtnEnter.doClick();
 				}
 			}
 
@@ -273,25 +273,25 @@ public class GUI {
 			}
 		});
 
-		GridBagConstraints gbc_Login_btnEnter = new GridBagConstraints();
-		gbc_Login_btnEnter.insets = new Insets(0, 0, 5, 0);
-		gbc_Login_btnEnter.anchor = GridBagConstraints.NORTH;
-		gbc_Login_btnEnter.fill = GridBagConstraints.HORIZONTAL;
-		gbc_Login_btnEnter.gridx = 2;
-		gbc_Login_btnEnter.gridy = 3;
-		LoginJPanel.add(Login_btnEnter, gbc_Login_btnEnter);
+		GridBagConstraints gbc_loginBtnEnter = new GridBagConstraints();
+		gbc_loginBtnEnter.insets = new Insets(0, 0, 5, 0);
+		gbc_loginBtnEnter.anchor = GridBagConstraints.NORTH;
+		gbc_loginBtnEnter.fill = GridBagConstraints.HORIZONTAL;
+		gbc_loginBtnEnter.gridx = 2;
+		gbc_loginBtnEnter.gridy = 3;
+		LoginJPanel.add(loginBtnEnter, gbc_loginBtnEnter);
 
-		JButton Login_btnCreateAccount = new JButton("Create A New Account");
-		Login_btnCreateAccount.addActionListener(new ActionListener() {
+		JButton loginBtnCreateAccount = new JButton("Create A New Account");
+		loginBtnCreateAccount.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				layout.show(frame.getContentPane(), NEWACCOUNT_PANEL);
 			}
 		});
 		
-		GridBagConstraints gbc_Login_btnCreateAccount = new GridBagConstraints();
-		gbc_Login_btnCreateAccount.gridx = 2;
-		gbc_Login_btnCreateAccount.gridy = 5;
-		LoginJPanel.add(Login_btnCreateAccount, gbc_Login_btnCreateAccount);
+		GridBagConstraints gbc_loginBtnCreateAccount = new GridBagConstraints();
+		gbc_loginBtnCreateAccount.gridx = 2;
+		gbc_loginBtnCreateAccount.gridy = 5;
+		LoginJPanel.add(loginBtnCreateAccount, gbc_loginBtnCreateAccount);
 
 		JPanel MainJPanel = new JPanel();
 		frame.getContentPane().add(MainJPanel, CHOICE_PANEL);
@@ -768,15 +768,15 @@ public class GUI {
 		TransferFrom_btnEnter.setBounds(296, 228, 89, 23);
 		TransferFromJPanel.add(TransferFrom_btnEnter);
 
-		JPanel CreateAccountJPanel = new JPanel();
+		JPanel regAccountJPanel = new JPanel();
 
-		frame.getContentPane().add(CreateAccountJPanel, NEWACCOUNT_PANEL);
-		CreateAccountJPanel.setLayout(null);
+		frame.getContentPane().add(regAccountJPanel, NEWACCOUNT_PANEL);
+		regAccountJPanel.setLayout(null);
 
-		JLabel CreateAccount_lblFirstName = new JLabel("First Name");
-		CreateAccount_lblFirstName.setHorizontalAlignment(SwingConstants.RIGHT);
-		CreateAccount_lblFirstName.setBounds(36, 78, 84, 14);
-		CreateAccountJPanel.add(CreateAccount_lblFirstName);
+		JLabel regLblFirstName = new JLabel("First Name");
+		regLblFirstName.setHorizontalAlignment(SwingConstants.RIGHT);
+		regLblFirstName.setBounds(36, 78, 84, 14);
+		regAccountJPanel.add(regLblFirstName);
 
 		JButton CreateAccount_btnBack = new JButton("Back");
 		CreateAccount_btnBack.addActionListener(new ActionListener() {
@@ -786,7 +786,7 @@ public class GUI {
 		});
 		
 		CreateAccount_btnBack.setBounds(55, 225, 65, 25);
-		CreateAccountJPanel.add(CreateAccount_btnBack);
+		regAccountJPanel.add(CreateAccount_btnBack);
 
 		JButton CreateAccount_btnCreate = new JButton("Create Account");
 		CreateAccount_btnCreate.addActionListener(new ActionListener() {
@@ -795,28 +795,24 @@ public class GUI {
 
 			public void actionPerformed(ActionEvent e) {
 				
-				if ((CreateAccount_passwordField.getText().trim().isEmpty()
-						|| CreateAccount_passwordFieldRepeat.getText().equals(null)
-						|| CreateAccount_txtUsername.getText().trim().isEmpty()
-						|| CreateAccount_txtFirstName.getText().trim().isEmpty()
-						|| CreateAccount_txtLastName.getText().trim().isEmpty())) {
+				if ((regPasswordField.getText().trim().isEmpty()
+						|| regPasswordFieldRepeat.getText().equals(null)
+						|| regTxtUsername.getText().trim().isEmpty()
+						|| regTxtFirstName.getText().trim().isEmpty()
+						|| regTxtLastName.getText().trim().isEmpty())) {
 					JOptionPane.showMessageDialog(null, "Dude. Put stuff in the text box. Kind of the point", "bruh",
-							JOptionPane.ERROR_MESSAGE)
-				 CreateAccount_passwordField.setText("");
-				 CreateAccount_passwordFieldzRepeat.setText("");
+							JOptionPane.ERROR_MESSAGE);
 				 
-				} else if (CreateAccount_passwordField.getText().equals(CreateAccount_passwordFieldRepeat.getText())) {
+				} else if (regPasswordField.getText().equals(regPasswordFieldRepeat.getText())) {
 					
-					String username = CreateAccount_txtUsername.getText();
-					String firstName = CreateAccount_txtFirstName.getText();
-					String lastName = CreateAccount_txtLastName.getText();
-					String password = CreateAccount_passwordField.getText();
+					String username = regTxtUsername.getText();
+					String firstName = regTxtFirstName.getText();
+					String lastName = regTxtLastName.getText();
+					String password = regPasswordField.getText();
 					
 					if(!isPasswordsecure(password)) {
 						JOptionPane.showMessageDialog(null, "ERROR: Password did not meet one of the following fields: 1+ capital, 1+ lowercase "
 								+ "9+ characters. NOTE: PASSWORDS STARTING WITH 12345 IS A LAZY PASS FOR TESTING");
-						 CreateAccount_passwordField.setText("");
-						 CreateAccount_passwordFieldRepeat.setText("");
 								}
 					
 					else if (createAcc(username, DEFAULT_MONEY_VALUE, firstName, lastName, generateAccNum(), password)) {
@@ -826,7 +822,7 @@ public class GUI {
 						
 						layout.show(frame.getContentPane(), LOGIN_PANEL);
 						JOptionPane.showMessageDialog(null, "Account Created Successfuly", "Account Creation Success",
-								JOptionPane.PLAIN_MESSAGE)
+								JOptionPane.PLAIN_MESSAGE);
 							
 							//add pass clears
 					} else {
@@ -834,7 +830,7 @@ public class GUI {
 						JOptionPane.showMessageDialog(null,
 								"Error: Username already in use. Try adding some abbritrary "
 										+ "numbers no one likes to the end",
-								"Account Creation Error", JOptionPane.ERROR_MESSAGE)
+								"Account Creation Error", JOptionPane.ERROR_MESSAGE);
 							
 							// add pass clears
 					}
@@ -843,54 +839,53 @@ public class GUI {
 					JOptionPane.showMessageDialog(null, "Error: Passwords Don't match. Please try again",
 							"Account Creation Error", JOptionPane.ERROR_MESSAGE);
 				}
-
 			}
 		});
 		
 		CreateAccount_btnCreate.setBounds(130, 225, 200, 25);
-		CreateAccountJPanel.add(CreateAccount_btnCreate);
+		regAccountJPanel.add(CreateAccount_btnCreate);
 
-		CreateAccount_txtFirstName = new JTextField();
-		CreateAccount_txtFirstName.setColumns(10);
-		CreateAccount_txtFirstName.setBounds(130, 75, 200, 20);
-		CreateAccountJPanel.add(CreateAccount_txtFirstName);
+		regTxtFirstName = new JTextField();
+		regTxtFirstName.setColumns(10);
+		regTxtFirstName.setBounds(130, 75, 200, 20);
+		regAccountJPanel.add(regTxtFirstName);
 
-		CreateAccount_txtLastName = new JTextField();
-		CreateAccount_txtLastName.setColumns(10);
-		CreateAccount_txtLastName.setBounds(130, 110, 200, 20);
-		CreateAccountJPanel.add(CreateAccount_txtLastName);
+		regTxtLastName = new JTextField();
+		regTxtLastName.setColumns(10);
+		regTxtLastName.setBounds(130, 110, 200, 20);
+		regAccountJPanel.add(regTxtLastName);
 
-		JLabel CreateAccount_lblLastName = new JLabel("Last Name");
-		CreateAccount_lblLastName.setHorizontalAlignment(SwingConstants.RIGHT);
-		CreateAccount_lblLastName.setBounds(46, 113, 74, 14);
-		CreateAccountJPanel.add(CreateAccount_lblLastName);
+		JLabel regLblLastName = new JLabel("Last Name");
+		regLblLastName.setHorizontalAlignment(SwingConstants.RIGHT);
+		regLblLastName.setBounds(46, 113, 74, 14);
+		regAccountJPanel.add(regLblLastName);
 
-		JLabel CreateAccount_lblPassword = new JLabel("Password");
-		CreateAccount_lblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
-		CreateAccount_lblPassword.setBounds(46, 148, 74, 14);
-		CreateAccountJPanel.add(CreateAccount_lblPassword);
+		JLabel regLblPassword = new JLabel("Password");
+		regLblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
+		regLblPassword.setBounds(46, 148, 74, 14);
+		regAccountJPanel.add(regLblPassword);
 
-		JLabel CreateAccount_lblRepeatPassword = new JLabel("Repeat Password");
-		CreateAccount_lblRepeatPassword.setHorizontalAlignment(SwingConstants.RIGHT);
-		CreateAccount_lblRepeatPassword.setBounds(4, 183, 116, 14);
-		CreateAccountJPanel.add(CreateAccount_lblRepeatPassword);
+		JLabel regLblRepeatPassword = new JLabel("Repeat Password");
+		regLblRepeatPassword.setHorizontalAlignment(SwingConstants.RIGHT);
+		regLblRepeatPassword.setBounds(4, 183, 116, 14);
+		regAccountJPanel.add(regLblRepeatPassword);
 
-		CreateAccount_passwordField = new JPasswordField();
-		CreateAccount_passwordField.setBounds(130, 145, 200, 20);
-		CreateAccountJPanel.add(CreateAccount_passwordField);
+		regPasswordField = new JPasswordField();
+		regPasswordField.setBounds(130, 145, 200, 20);
+		regAccountJPanel.add(regPasswordField);
 
-		CreateAccount_passwordFieldRepeat = new JPasswordField();
-		CreateAccount_passwordFieldRepeat.setBounds(130, 180, 200, 20);
-		CreateAccountJPanel.add(CreateAccount_passwordFieldRepeat);
+		regPasswordFieldRepeat = new JPasswordField();
+		regPasswordFieldRepeat.setBounds(130, 180, 200, 20);
+		regAccountJPanel.add(regPasswordFieldRepeat);
 
-		CreateAccount_txtUsername = new JTextField();
-		CreateAccount_txtUsername.setColumns(10);
-		CreateAccount_txtUsername.setBounds(130, 40, 200, 20);
-		CreateAccountJPanel.add(CreateAccount_txtUsername);
+		regTxtUsername = new JTextField();
+		regTxtUsername.setColumns(10);
+		regTxtUsername.setBounds(130, 40, 200, 20);
+		regAccountJPanel.add(regTxtUsername);
 
-		JLabel CreateAccount_lblUsername = new JLabel("Username");
-		CreateAccount_lblUsername.setHorizontalAlignment(SwingConstants.RIGHT);
-		CreateAccount_lblUsername.setBounds(46, 43, 74, 14);
-		CreateAccountJPanel.add(CreateAccount_lblUsername);
+		JLabel regLblUsername = new JLabel("Username");
+		regLblUsername.setHorizontalAlignment(SwingConstants.RIGHT);
+		regLblUsername.setBounds(46, 43, 74, 14);
+		regAccountJPanel.add(regLblUsername);
 	}
 }
