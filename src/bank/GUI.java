@@ -794,17 +794,17 @@ public class GUI {
 			@SuppressWarnings("deprecation")
 
 			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), CHOICE_PANEL);
 				
 				if ((CreateAccount_passwordField.getText().trim().isEmpty()
 						|| CreateAccount_passwordFieldRepeat.getText().equals(null)
 						|| CreateAccount_txtUsername.getText().trim().isEmpty()
 						|| CreateAccount_txtFirstName.getText().trim().isEmpty()
 						|| CreateAccount_txtLastName.getText().trim().isEmpty())) {
-					
-					layout.show(frame.getContentPane(), NEWACCOUNT_PANEL);
 					JOptionPane.showMessageDialog(null, "Dude. Put stuff in the text box. Kind of the point", "bruh",
-							JOptionPane.ERROR_MESSAGE);
+							JOptionPane.ERROR_MESSAGE)
+				 CreateAccount_passwordField.setText("");
+				 CreateAccount_passwordFieldzRepeat.setText("");
+				 
 				} else if (CreateAccount_passwordField.getText().equals(CreateAccount_passwordFieldRepeat.getText())) {
 					
 					String username = CreateAccount_txtUsername.getText();
@@ -813,10 +813,11 @@ public class GUI {
 					String password = CreateAccount_passwordField.getText();
 					
 					if(!isPasswordsecure(password)) {
-						layout.show(frame.getContentPane(), NEWACCOUNT_PANEL);
 						JOptionPane.showMessageDialog(null, "ERROR: Password did not meet one of the following fields: 1+ capital, 1+ lowercase "
 								+ "9+ characters. NOTE: PASSWORDS STARTING WITH 12345 IS A LAZY PASS FOR TESTING");
-					}
+						 CreateAccount_passwordField.setText("");
+						 CreateAccount_passwordFieldRepeat.setText("");
+								}
 					
 					else if (createAcc(username, DEFAULT_MONEY_VALUE, firstName, lastName, generateAccNum(), password)) {
 						
@@ -825,13 +826,17 @@ public class GUI {
 						
 						layout.show(frame.getContentPane(), LOGIN_PANEL);
 						JOptionPane.showMessageDialog(null, "Account Created Successfuly", "Account Creation Success",
-								JOptionPane.PLAIN_MESSAGE);
+								JOptionPane.PLAIN_MESSAGE)
+							
+							//add pass clears
 					} else {
 						layout.show(frame.getContentPane(), NEWACCOUNT_PANEL);
 						JOptionPane.showMessageDialog(null,
 								"Error: Username already in use. Try adding some abbritrary "
 										+ "numbers no one likes to the end",
-								"Account Creation Error", JOptionPane.ERROR_MESSAGE);
+								"Account Creation Error", JOptionPane.ERROR_MESSAGE)
+							
+							// add pass clears
 					}
 				} else {
 					layout.show(frame.getContentPane(), NEWACCOUNT_PANEL);
