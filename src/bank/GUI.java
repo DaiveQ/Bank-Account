@@ -59,20 +59,20 @@ public class GUI {
 	private static final double DEFAULT_MONEY_VALUE = 1234.56;
 
 	private JTextField loginTxtUsername;
-	private JPasswordField loginPasswordField;
+	private JPasswordField loginPassword;
 	private JTextField withdrawTxtAmount;
 	private JTextField depositTxtAmount;
 	private JTextField transToTxtAmount;
 	private JTextField transToTxtBankAccount;
 	private JTextField transToTxtOtherAccount;
-	private JPasswordField transFromPasswordField;
+	private JPasswordField transFromPassword;
 	private JTextField transFromTxtBankAccount;
 	private JTextField transFromTxtOtherAccount;
 	private JTextField transFromTxtAmount;
 	private JTextField regTxtFirstName;
 	private JTextField regTxtLastName;
-	private JPasswordField regPasswordField;
-	private JPasswordField regPasswordFieldRepeat;
+	private JPasswordField regPassword;
+	private JPasswordField regPasswordRepeat;
 	private JTextField regTxtUsername;
 	private JButton mainBtnWithdraw;
 
@@ -216,29 +216,29 @@ public class GUI {
 		gbc_loginLblPassword.gridy = 2;
 		loginJPanel.add(loginLblPassword, gbc_loginLblPassword);
 
-		loginPasswordField = new JPasswordField();
-		GridBagConstraints gbc_loginPasswordField = new GridBagConstraints();
-		gbc_loginPasswordField.anchor = GridBagConstraints.NORTH;
-		gbc_loginPasswordField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_loginPasswordField.insets = new Insets(0, 0, 5, 0);
-		gbc_loginPasswordField.gridx = 2;
-		gbc_loginPasswordField.gridy = 2;
-		loginJPanel.add(loginPasswordField, gbc_loginPasswordField);
+		loginPassword = new JPasswordField();
+		GridBagConstraints gbc_loginPassword = new GridBagConstraints();
+		gbc_loginPassword.anchor = GridBagConstraints.NORTH;
+		gbc_loginPassword.fill = GridBagConstraints.HORIZONTAL;
+		gbc_loginPassword.insets = new Insets(0, 0, 5, 0);
+		gbc_loginPassword.gridx = 2;
+		gbc_loginPassword.gridy = 2;
+		loginJPanel.add(loginPassword, gbc_loginPassword);
 
 		JButton loginBtnEnter = new JButton("Enter");
 
 		loginBtnEnter.addActionListener(new ActionListener() {
-			
 			@SuppressWarnings("deprecation")
-			
 			public void actionPerformed(ActionEvent arg0) {
 				setBankAccountIndex(loginTxtUsername.getText());
-
-				if (ba.get(index).checkPassword(loginPasswordField.getText()))
+				
+				if (ba.get(index).checkPassword(loginPassword.getText())) {
 					layout.show(frame.getContentPane(), CHOICE_PANEL);
-				else
+				} else {
 					JOptionPane.showMessageDialog(null, "Wrong Password or Username. Please try again.", "Login Error",
 							JOptionPane.ERROR_MESSAGE);
+				}
+				loginPassword.setText("");
 			}
 		});
 		
@@ -256,7 +256,7 @@ public class GUI {
 			}
 		});
 
-		loginPasswordField.addKeyListener(new KeyListener() {
+		loginPassword.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					loginBtnEnter.doClick();
@@ -278,17 +278,17 @@ public class GUI {
 		gbc_loginBtnEnter.gridy = 3;
 		loginJPanel.add(loginBtnEnter, gbc_loginBtnEnter);
 
-		JButton loginBtnCreateAccount = new JButton("Create A New Account");
-		loginBtnCreateAccount.addActionListener(new ActionListener() {
+		JButton loginBtnRegister = new JButton("Create A New Account");
+		loginBtnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				layout.show(frame.getContentPane(), REGISTER_PANEL);
 			}
 		});
 		
-		GridBagConstraints gbc_loginBtnCreateAccount = new GridBagConstraints();
-		gbc_loginBtnCreateAccount.gridx = 2;
-		gbc_loginBtnCreateAccount.gridy = 5;
-		loginJPanel.add(loginBtnCreateAccount, gbc_loginBtnCreateAccount);
+		GridBagConstraints gbc_loginBtnRegister = new GridBagConstraints();
+		gbc_loginBtnRegister.gridx = 2;
+		gbc_loginBtnRegister.gridy = 5;
+		loginJPanel.add(loginBtnRegister, gbc_loginBtnRegister);
 
 		JPanel mainJPanel = new JPanel();
 		frame.getContentPane().add(mainJPanel, CHOICE_PANEL);
@@ -356,7 +356,7 @@ public class GUI {
 		mainJPanel.add(mainBtnEmpty, gbc_mainBtnEmpty);
 
 		JButton mainBtnGetMessages = new JButton("Read Messages");
-		// Action Listerner added later in code
+		// Action Listener added later in code
 
 		JButton mainBtnTransTo = new JButton("Transfer To");
 		mainBtnTransTo.addActionListener(new ActionListener() {
@@ -686,9 +686,9 @@ public class GUI {
 		frame.getContentPane().add(transFromJPanel, TRANSFERFROM_PANEL);
 		transFromJPanel.setLayout(null);
 
-		transFromPasswordField = new JPasswordField();
-		transFromPasswordField.setBounds(131, 187, 200, 20);
-		transFromJPanel.add(transFromPasswordField);
+		transFromPassword = new JPasswordField();
+		transFromPassword.setBounds(131, 187, 200, 20);
+		transFromJPanel.add(transFromPassword);
 
 		transFromTxtBankAccount = new JTextField();
 		transFromTxtBankAccount.setBounds(131, 37, 200, 20);
@@ -735,15 +735,15 @@ public class GUI {
 		transFromBtnEnter.setBounds(296, 228, 89, 23);
 		transFromJPanel.add(transFromBtnEnter);
 
-		JPanel regAccountJPanel = new JPanel();
+		JPanel registerJPanel = new JPanel();
 
-		frame.getContentPane().add(regAccountJPanel, REGISTER_PANEL);
-		regAccountJPanel.setLayout(null);
+		frame.getContentPane().add(registerJPanel, REGISTER_PANEL);
+		registerJPanel.setLayout(null);
 
 		JLabel regLblFirstName = new JLabel("First Name");
 		regLblFirstName.setHorizontalAlignment(SwingConstants.RIGHT);
 		regLblFirstName.setBounds(36, 78, 84, 14);
-		regAccountJPanel.add(regLblFirstName);
+		registerJPanel.add(regLblFirstName);
 
 		JButton regBtnBack = new JButton("Back");
 		regBtnBack.addActionListener(new ActionListener() {
@@ -753,7 +753,7 @@ public class GUI {
 		});
 		
 		regBtnBack.setBounds(55, 225, 65, 25);
-		regAccountJPanel.add(regBtnBack);
+		registerJPanel.add(regBtnBack);
 
 		JButton regBtnCreate = new JButton("Create Account");
 		regBtnCreate.addActionListener(new ActionListener() {
@@ -762,20 +762,20 @@ public class GUI {
 
 			public void actionPerformed(ActionEvent e) {
 				
-				if ((regPasswordField.getText().trim().isEmpty()
-						|| regPasswordFieldRepeat.getText().equals(null)
+				if ((regPassword.getText().trim().isEmpty()
+						|| regPasswordRepeat.getText().equals(null)
 						|| regTxtUsername.getText().trim().isEmpty()
 						|| regTxtFirstName.getText().trim().isEmpty()
 						|| regTxtLastName.getText().trim().isEmpty())) {
 					JOptionPane.showMessageDialog(null, "Dude. Put stuff in the text box. Kind of the point", "bruh",
 							JOptionPane.ERROR_MESSAGE);
 				 
-				} else if (regPasswordField.getText().equals(regPasswordFieldRepeat.getText())) {
+				} else if (regPassword.getText().equals(regPasswordRepeat.getText())) {
 					
 					String username = regTxtUsername.getText();
 					String firstName = regTxtFirstName.getText();
 					String lastName = regTxtLastName.getText();
-					String password = regPasswordField.getText();
+					String password = regPassword.getText();
 					
 					if(!isPasswordsecure(password)) {
 						JOptionPane.showMessageDialog(null, "ERROR: Password did not meet one of the following fields: 1+ capital, 1+ lowercase "
@@ -806,54 +806,58 @@ public class GUI {
 					JOptionPane.showMessageDialog(null, "Error: Passwords Don't match. Please try again",
 							"Account Creation Error", JOptionPane.ERROR_MESSAGE);
 				}
+				
+				regPassword.setText("");
+				regPasswordRepeat.setText("");
+				
 			}
 		});
 		
 		regBtnCreate.setBounds(130, 225, 200, 25);
-		regAccountJPanel.add(regBtnCreate);
+		registerJPanel.add(regBtnCreate);
 
 		regTxtFirstName = new JTextField();
 		regTxtFirstName.setColumns(10);
 		regTxtFirstName.setBounds(130, 75, 200, 20);
-		regAccountJPanel.add(regTxtFirstName);
+		registerJPanel.add(regTxtFirstName);
 
 		regTxtLastName = new JTextField();
 		regTxtLastName.setColumns(10);
 		regTxtLastName.setBounds(130, 110, 200, 20);
-		regAccountJPanel.add(regTxtLastName);
+		registerJPanel.add(regTxtLastName);
 
 		JLabel regLblLastName = new JLabel("Last Name");
 		regLblLastName.setHorizontalAlignment(SwingConstants.RIGHT);
 		regLblLastName.setBounds(46, 113, 74, 14);
-		regAccountJPanel.add(regLblLastName);
+		registerJPanel.add(regLblLastName);
 
 		JLabel regLblPassword = new JLabel("Password");
 		regLblPassword.setHorizontalAlignment(SwingConstants.RIGHT);
 		regLblPassword.setBounds(46, 148, 74, 14);
-		regAccountJPanel.add(regLblPassword);
+		registerJPanel.add(regLblPassword);
 
 		JLabel regLblRepeatPassword = new JLabel("Repeat Password");
 		regLblRepeatPassword.setHorizontalAlignment(SwingConstants.RIGHT);
 		regLblRepeatPassword.setBounds(4, 183, 116, 14);
-		regAccountJPanel.add(regLblRepeatPassword);
+		registerJPanel.add(regLblRepeatPassword);
 
-		regPasswordField = new JPasswordField();
-		regPasswordField.setBounds(130, 145, 200, 20);
-		regAccountJPanel.add(regPasswordField);
+		regPassword = new JPasswordField();
+		regPassword.setBounds(130, 145, 200, 20);
+		registerJPanel.add(regPassword);
 
-		regPasswordFieldRepeat = new JPasswordField();
-		regPasswordFieldRepeat.setBounds(130, 180, 200, 20);
-		regAccountJPanel.add(regPasswordFieldRepeat);
+		regPasswordRepeat = new JPasswordField();
+		regPasswordRepeat.setBounds(130, 180, 200, 20);
+		registerJPanel.add(regPasswordRepeat);
 
 		regTxtUsername = new JTextField();
 		regTxtUsername.setColumns(10);
 		regTxtUsername.setBounds(130, 40, 200, 20);
-		regAccountJPanel.add(regTxtUsername);
+		registerJPanel.add(regTxtUsername);
 
 		JLabel regLblUsername = new JLabel("Username");
 		regLblUsername.setHorizontalAlignment(SwingConstants.RIGHT);
 		regLblUsername.setBounds(46, 43, 74, 14);
-		regAccountJPanel.add(regLblUsername);
+		registerJPanel.add(regLblUsername);
 		
 		JPanel resetPasswordPanel = new JPanel();
 		frame.getContentPane().add(resetPasswordPanel, "name_2314993320963");
