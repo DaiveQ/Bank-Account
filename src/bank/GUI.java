@@ -297,6 +297,10 @@ public class GUI {
 		JButton loginBtnRegister = new JButton("Create A New Account");
 		loginBtnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				
+				loginTxtUsername.setText("");
+				loginPassword.setText("");
+				
 				layout.show(frame.getContentPane(), REGISTER_PANEL);
 			}
 		});
@@ -306,160 +310,7 @@ public class GUI {
 		gbc_loginBtnRegister.gridy = 5;
 		loginJPanel.add(loginBtnRegister, gbc_loginBtnRegister);
 
-		JPanel mainJPanel = new JPanel();
-		frame.getContentPane().add(mainJPanel, CHOICE_PANEL);
-		GridBagLayout gbl_mainJPanel = new GridBagLayout();
-		gbl_mainJPanel.columnWidths = new int[] { 138, 136, 133 };
-		gbl_mainJPanel.rowHeights = new int[] { 19, 75, 50, 23, 0, 0, 0 };
-		gbl_mainJPanel.columnWeights = new double[] { 0.0, 0.0, 0.0 };
-		gbl_mainJPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
-		mainJPanel.setLayout(gbl_mainJPanel);
-
-		mainBtnWithdraw = new JButton("Withdraw");
-
-		// displays the withdraw panel when the withdraw button is pressed on the main panel
-		mainBtnWithdraw.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), WITHDRAW_PANEL);
-			}
-		});
 		
-		GridBagConstraints gbc_mainBtnWithdraw = new GridBagConstraints();
-		gbc_mainBtnWithdraw.fill = GridBagConstraints.BOTH;
-		gbc_mainBtnWithdraw.insets = new Insets(0, 3, 3, 3);
-		gbc_mainBtnWithdraw.gridx = 0;
-		gbc_mainBtnWithdraw.gridy = 1;
-		mainJPanel.add(mainBtnWithdraw, gbc_mainBtnWithdraw);
-
-		// displays the balance (maybe in a popup later) when the button is pressed on the main panel
-		JButton mainBtnBalance = new JButton("Get Balance");
-		mainBtnBalance.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), GETBALANCE_PANEL);
-			}
-		});
-
-		// displays the deposit panel when the button is pressed on the main panel
-		JButton mainBtnDeposit = new JButton("Deposit");
-		mainBtnDeposit.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent e) {
-				layout.show(frame.getContentPane(), DEPOSIT_PANEL);
-			}
-		});
-		
-		GridBagConstraints gbc_mainBtnDeposit = new GridBagConstraints();
-		gbc_mainBtnDeposit.fill = GridBagConstraints.BOTH;
-		gbc_mainBtnDeposit.insets = new Insets(0, 3, 3, 3);
-		gbc_mainBtnDeposit.gridx = 1;
-		gbc_mainBtnDeposit.gridy = 1;
-		mainJPanel.add(mainBtnDeposit, gbc_mainBtnDeposit);
-		GridBagConstraints gbc_mainBtnBalance = new GridBagConstraints();
-		gbc_mainBtnBalance.fill = GridBagConstraints.BOTH;
-		gbc_mainBtnBalance.insets = new Insets(0, 3, 3, 3);
-		gbc_mainBtnBalance.gridx = 2;
-		gbc_mainBtnBalance.gridy = 1;
-		mainJPanel.add(mainBtnBalance, gbc_mainBtnBalance);
-
-		// displays the empty account panel when the button is pressed on the main panel
-		JButton mainBtnEmpty = new JButton("Empty Account");
-		mainBtnEmpty.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), EMPTYACCOUNT_PANEL);
-			}
-		});
-		
-		GridBagConstraints gbc_mainBtnEmpty = new GridBagConstraints();
-		gbc_mainBtnEmpty.fill = GridBagConstraints.BOTH;
-		gbc_mainBtnEmpty.insets = new Insets(3, 3, 0, 3);
-		gbc_mainBtnEmpty.gridx = 1;
-		gbc_mainBtnEmpty.gridy = 2;
-		mainJPanel.add(mainBtnEmpty, gbc_mainBtnEmpty);
-
-		JButton mainBtnGetMessages = new JButton("Read Messages");
-		// Action Listener is added later in code. Might shift this entire section there
-
-		// displays the transfer to panel when the button is pressed on the main panel
-		JButton mainBtnTransTo = new JButton("Transfer To");
-		mainBtnTransTo.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), TRANSFERTO_PANEL);
-			}
-		});
-
-		// displays the get password panel when the button is pressed on the main panel
-		JButton mainBtnGetPassword = new JButton("Get Password");
-		mainBtnGetPassword.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), GETPASSWORD_PANEL);
-			}
-		});
-
-		// displays the transfer from panel when the button is pressed on the main panel
-		JButton mainBtnTransFrom = new JButton("Transfer From");
-		mainBtnTransFrom.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				layout.show(frame.getContentPane(), TRANSFERFROM_PANEL);
-			}
-		});
-		
-		GridBagConstraints gbc_mainBtnTransFrom = new GridBagConstraints();
-		gbc_mainBtnTransFrom.fill = GridBagConstraints.HORIZONTAL;
-		gbc_mainBtnTransFrom.insets = new Insets(0, 3, 3, 3);
-		gbc_mainBtnTransFrom.gridx = 0;
-		gbc_mainBtnTransFrom.gridy = 4;
-		mainJPanel.add(mainBtnTransFrom, gbc_mainBtnTransFrom);
-		GridBagConstraints gbc_mainBtnGetPassword = new GridBagConstraints();
-		gbc_mainBtnGetPassword.fill = GridBagConstraints.HORIZONTAL;
-		gbc_mainBtnGetPassword.insets = new Insets(0, 3, 3, 3);
-		gbc_mainBtnGetPassword.gridx = 1;
-		gbc_mainBtnGetPassword.gridy = 4;
-		mainJPanel.add(mainBtnGetPassword, gbc_mainBtnGetPassword);
-
-		// DELETE; IS REDUNDANT. SAME AS GETPASSWORD
-		JButton mainBtnCheckPassword = new JButton("Check Password");
-		mainBtnCheckPassword.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				layout.show(frame.getContentPane(), CHECKPASSWORD_PANEL);
-			}
-		});
-		
-		GridBagConstraints gbc_mainBtnCheckPassword = new GridBagConstraints();
-		gbc_mainBtnCheckPassword.anchor = GridBagConstraints.NORTH;
-		gbc_mainBtnCheckPassword.fill = GridBagConstraints.HORIZONTAL;
-		gbc_mainBtnCheckPassword.insets = new Insets(0, 3, 3, 3);
-		gbc_mainBtnCheckPassword.gridx = 2;
-		gbc_mainBtnCheckPassword.gridy = 4;
-		mainJPanel.add(mainBtnCheckPassword, gbc_mainBtnCheckPassword);
-
-		// displays the reset password panel when the button is pressed on the main panel
-		JButton mainBtnResetPassword = new JButton("Reset Password");
-		mainBtnResetPassword.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), RESETPASSWORD_PANEL);
-			}
-		});
-		
-		GridBagConstraints gbc_mainBtnResetPassword = new GridBagConstraints();
-		gbc_mainBtnResetPassword.insets = new Insets(3, 3, 0, 3);
-		gbc_mainBtnResetPassword.fill = GridBagConstraints.HORIZONTAL;
-		gbc_mainBtnResetPassword.gridx = 0;
-		gbc_mainBtnResetPassword.gridy = 5;
-		mainJPanel.add(mainBtnResetPassword, gbc_mainBtnResetPassword);
-		GridBagConstraints gbc_mainBtnTransTo = new GridBagConstraints();
-		gbc_mainBtnTransTo.insets = new Insets(3, 3, 0, 3);
-		gbc_mainBtnTransTo.fill = GridBagConstraints.HORIZONTAL;
-		gbc_mainBtnTransTo.gridx = 1;
-		gbc_mainBtnTransTo.gridy = 5;
-		mainJPanel.add(mainBtnTransTo, gbc_mainBtnTransTo);
-		GridBagConstraints gbc_mainBtnGetMessages = new GridBagConstraints();
-		gbc_mainBtnGetMessages.insets = new Insets(3, 3, 0, 3);
-		gbc_mainBtnGetMessages.fill = GridBagConstraints.HORIZONTAL;
-		gbc_mainBtnGetMessages.anchor = GridBagConstraints.NORTH;
-		gbc_mainBtnGetMessages.gridx = 2;
-		gbc_mainBtnGetMessages.gridy = 5;
-		mainJPanel.add(mainBtnGetMessages, gbc_mainBtnGetMessages);
-
 		JPanel withdrawJPanel = new JPanel();
 		frame.getContentPane().add(withdrawJPanel, WITHDRAW_PANEL);
 		withdrawJPanel.setLayout(null);
@@ -470,18 +321,19 @@ public class GUI {
 		withdrawJPanel.add(withdrawTxtAmount);
 		withdrawTxtAmount.setColumns(10);
 
-		JLabel withdrawLblAmountPromt = new JLabel("Enter the Amount You Would Like To Withdraw:");
-		withdrawLblAmountPromt.setHorizontalAlignment(SwingConstants.CENTER);
-		withdrawLblAmountPromt.setFont(new Font("Tahoma", Font.PLAIN, 15));
-		withdrawLblAmountPromt.setBounds(45, 65, 343, 36);
-		withdrawJPanel.add(withdrawLblAmountPromt);
+		JLabel withdrawLblAmountPrompt = new JLabel("Enter the Amount You Would Like To Withdraw:");
+		withdrawLblAmountPrompt.setHorizontalAlignment(SwingConstants.CENTER);
+		withdrawLblAmountPrompt.setFont(new Font("Tahoma", Font.PLAIN, 15));
+		withdrawLblAmountPrompt.setBounds(45, 65, 343, 36);
+		withdrawJPanel.add(withdrawLblAmountPrompt);
 
 		// withdraws moeny when the withdraw button is pressed on the withdraw panel
 		JButton withdrawBtnWithdraw = new JButton("Withdraw");
 		withdrawBtnWithdraw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), CHOICE_PANEL);
 				ba.get(index).withdraw(Double.valueOf(withdrawTxtAmount.getText()));
+				withdrawTxtAmount.setText("");
+				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			}
 		});
 		
@@ -524,6 +376,7 @@ public class GUI {
 		depositBtnDeposit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ba.get(index).deposit(Double.valueOf(depositTxtAmount.getText()));
+				depositTxtAmount.setText("");
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 				
 			}
@@ -641,14 +494,7 @@ public class GUI {
 		messageTxtAMessage.setText("");
 		messageTxtAMessage.setEditable(false);
 		messageScrollPane.setViewportView(messageTxtAMessage);
-		
-	    // Makes it so txtAMessage is updated on click
-		mainBtnGetMessages.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				messageTxtAMessage.setText(ba.get(index).getMessage());
-				layout.show(frame.getContentPane(), MESSAGES_PANEL);
-			}
-		});
+
 
 		JPanel getBalance = new JPanel();
 		frame.getContentPane().add(getBalance, GETBALANCE_PANEL);
@@ -888,5 +734,169 @@ public class GUI {
 		
 		JPanel resetPasswordPanel = new JPanel();
 		frame.getContentPane().add(resetPasswordPanel, "name_2314993320963");
+		
+		JPanel mainJPanel = new JPanel();
+		frame.getContentPane().add(mainJPanel, CHOICE_PANEL);
+		GridBagLayout gbl_mainJPanel = new GridBagLayout();
+		gbl_mainJPanel.columnWidths = new int[] { 138, 136, 133 };
+		gbl_mainJPanel.rowHeights = new int[] { 19, 75, 50, 23, 0, 0, 0 };
+		gbl_mainJPanel.columnWeights = new double[] { 0.0, 0.0, 0.0 };
+		gbl_mainJPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		mainJPanel.setLayout(gbl_mainJPanel);
+
+		mainBtnWithdraw = new JButton("Withdraw");
+
+		// displays the withdraw panel when the withdraw button is pressed on the main panel
+		mainBtnWithdraw.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				layout.show(frame.getContentPane(), WITHDRAW_PANEL);
+				withdrawTxtAmount.setText("");
+			}
+		});
+		
+		GridBagConstraints gbc_mainBtnWithdraw = new GridBagConstraints();
+		gbc_mainBtnWithdraw.fill = GridBagConstraints.BOTH;
+		gbc_mainBtnWithdraw.insets = new Insets(0, 3, 3, 3);
+		gbc_mainBtnWithdraw.gridx = 0;
+		gbc_mainBtnWithdraw.gridy = 1;
+		mainJPanel.add(mainBtnWithdraw, gbc_mainBtnWithdraw);
+
+		// displays the balance (maybe in a popup later) when the button is pressed on the main panel
+		JButton mainBtnBalance = new JButton("Get Balance");
+		
+		mainBtnBalance.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				layout.show(frame.getContentPane(), GETBALANCE_PANEL);
+				getBalanceLblBalance.setText("Balance: " + ba.get(index).getBalance());
+			}
+		});
+
+		// displays the deposit panel when the button is pressed on the main panel
+		JButton mainBtnDeposit = new JButton("Deposit");
+		mainBtnDeposit.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				depositLblAmountPrompt.setText("");
+
+				layout.show(frame.getContentPane(), DEPOSIT_PANEL);
+			}
+		});
+		
+		GridBagConstraints gbc_mainBtnDeposit = new GridBagConstraints();
+		gbc_mainBtnDeposit.fill = GridBagConstraints.BOTH;
+		gbc_mainBtnDeposit.insets = new Insets(0, 3, 3, 3);
+		gbc_mainBtnDeposit.gridx = 1;
+		gbc_mainBtnDeposit.gridy = 1;
+		mainJPanel.add(mainBtnDeposit, gbc_mainBtnDeposit);
+		GridBagConstraints gbc_mainBtnBalance = new GridBagConstraints();
+		gbc_mainBtnBalance.fill = GridBagConstraints.BOTH;
+		gbc_mainBtnBalance.insets = new Insets(0, 3, 3, 3);
+		gbc_mainBtnBalance.gridx = 2;
+		gbc_mainBtnBalance.gridy = 1;
+		mainJPanel.add(mainBtnBalance, gbc_mainBtnBalance);
+
+		// displays the empty account panel when the button is pressed on the main panel
+		JButton mainBtnEmpty = new JButton("Empty Account");
+		mainBtnEmpty.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				layout.show(frame.getContentPane(), EMPTYACCOUNT_PANEL);
+			}
+		});
+		
+		GridBagConstraints gbc_mainBtnEmpty = new GridBagConstraints();
+		gbc_mainBtnEmpty.fill = GridBagConstraints.BOTH;
+		gbc_mainBtnEmpty.insets = new Insets(3, 3, 0, 3);
+		gbc_mainBtnEmpty.gridx = 1;
+		gbc_mainBtnEmpty.gridy = 2;
+		mainJPanel.add(mainBtnEmpty, gbc_mainBtnEmpty);
+
+		JButton mainBtnGetMessages = new JButton("Read Messages");
+			mainBtnGetMessages.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				messageTxtAMessage.setText(ba.get(index).getMessage());
+				layout.show(frame.getContentPane(), MESSAGES_PANEL);
+			}
+		});
+			
+		// displays the transfer to panel when the button is pressed on the main panel
+		JButton mainBtnTransTo = new JButton("Transfer To");
+		mainBtnTransTo.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				layout.show(frame.getContentPane(), TRANSFERTO_PANEL);
+			}
+		});
+
+		// displays the get password panel when the button is pressed on the main panel
+		JButton mainBtnGetPassword = new JButton("Get Password");
+		mainBtnGetPassword.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				layout.show(frame.getContentPane(), GETPASSWORD_PANEL);
+			}
+		});
+
+		// displays the transfer from panel when the button is pressed on the main panel
+		JButton mainBtnTransFrom = new JButton("Transfer From");
+		mainBtnTransFrom.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				layout.show(frame.getContentPane(), TRANSFERFROM_PANEL);
+			}
+		});
+		
+		GridBagConstraints gbc_mainBtnTransFrom = new GridBagConstraints();
+		gbc_mainBtnTransFrom.fill = GridBagConstraints.HORIZONTAL;
+		gbc_mainBtnTransFrom.insets = new Insets(0, 3, 3, 3);
+		gbc_mainBtnTransFrom.gridx = 0;
+		gbc_mainBtnTransFrom.gridy = 4;
+		mainJPanel.add(mainBtnTransFrom, gbc_mainBtnTransFrom);
+		GridBagConstraints gbc_mainBtnGetPassword = new GridBagConstraints();
+		gbc_mainBtnGetPassword.fill = GridBagConstraints.HORIZONTAL;
+		gbc_mainBtnGetPassword.insets = new Insets(0, 3, 3, 3);
+		gbc_mainBtnGetPassword.gridx = 1;
+		gbc_mainBtnGetPassword.gridy = 4;
+		mainJPanel.add(mainBtnGetPassword, gbc_mainBtnGetPassword);
+
+		// DELETE; IS REDUNDANT. SAME AS GETPASSWORD
+		JButton mainBtnCheckPassword = new JButton("Check Password");
+		mainBtnCheckPassword.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				layout.show(frame.getContentPane(), CHECKPASSWORD_PANEL);
+			}
+		});
+		
+		GridBagConstraints gbc_mainBtnCheckPassword = new GridBagConstraints();
+		gbc_mainBtnCheckPassword.anchor = GridBagConstraints.NORTH;
+		gbc_mainBtnCheckPassword.fill = GridBagConstraints.HORIZONTAL;
+		gbc_mainBtnCheckPassword.insets = new Insets(0, 3, 3, 3);
+		gbc_mainBtnCheckPassword.gridx = 2;
+		gbc_mainBtnCheckPassword.gridy = 4;
+		mainJPanel.add(mainBtnCheckPassword, gbc_mainBtnCheckPassword);
+
+		// displays the reset password panel when the button is pressed on the main panel
+		JButton mainBtnResetPassword = new JButton("Reset Password");
+		mainBtnResetPassword.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				layout.show(frame.getContentPane(), RESETPASSWORD_PANEL);
+			}
+		});
+		
+		GridBagConstraints gbc_mainBtnResetPassword = new GridBagConstraints();
+		gbc_mainBtnResetPassword.insets = new Insets(3, 3, 0, 3);
+		gbc_mainBtnResetPassword.fill = GridBagConstraints.HORIZONTAL;
+		gbc_mainBtnResetPassword.gridx = 0;
+		gbc_mainBtnResetPassword.gridy = 5;
+		mainJPanel.add(mainBtnResetPassword, gbc_mainBtnResetPassword);
+		GridBagConstraints gbc_mainBtnTransTo = new GridBagConstraints();
+		gbc_mainBtnTransTo.insets = new Insets(3, 3, 0, 3);
+		gbc_mainBtnTransTo.fill = GridBagConstraints.HORIZONTAL;
+		gbc_mainBtnTransTo.gridx = 1;
+		gbc_mainBtnTransTo.gridy = 5;
+		mainJPanel.add(mainBtnTransTo, gbc_mainBtnTransTo);
+		GridBagConstraints gbc_mainBtnGetMessages = new GridBagConstraints();
+		gbc_mainBtnGetMessages.insets = new Insets(3, 3, 0, 3);
+		gbc_mainBtnGetMessages.fill = GridBagConstraints.HORIZONTAL;
+		gbc_mainBtnGetMessages.anchor = GridBagConstraints.NORTH;
+		gbc_mainBtnGetMessages.gridx = 2;
+		gbc_mainBtnGetMessages.gridy = 5;
+		mainJPanel.add(mainBtnGetMessages, gbc_mainBtnGetMessages);
+
 	}
 }

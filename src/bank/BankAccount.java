@@ -100,13 +100,13 @@ public class BankAccount {
 	}
 
 	boolean withdraw(double amount) {
-		if (amount >= balance) {
+		if (amount > balance) {
 			message += getTime() + "A bank overdraft fee of $25 has been added to your account." + DIVIDER +  "We thank you for your business.\n";
 			return false;
 		}
 
 		else {
-			message += getTime() + "Withdrawl of $" + df.format(amount) + " has beem made.\n";
+			message += getTime() + "Withdrawl of $" + df.format(amount) + " has been made.\n";
 			return true;
 		}
 	}
