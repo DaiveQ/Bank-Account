@@ -78,7 +78,6 @@ public class GUI {
 
 	public static void main(String[] args) {
 		createTestAccount();
-		ba.get(index).withdraw(99999999);
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -109,7 +108,7 @@ public class GUI {
 		
 		///////////////////////////////////////////////////////
 		// TESTING IF STATEMENT. PASSOWRDS STARTING WITH 12345 
-		// WILL BE PASSED DELETE ONCE DONE
+		// WILL BE PASSED NO MATTER WHAT. DELETE THIS WHEN DONE
 		///////////////////////////////////////////////////////
 		if(pass.length() >= 5) {
 			if(pass.substring(0, 5).equals("12345")) return true;
@@ -129,8 +128,10 @@ public class GUI {
 
 		while (taken) {
 
+
 			String accComb = "";
 
+			// generates account number
 			Random rand = new Random();
 			int x[] = new int[9];
 			for (int i = 0; i < 9; i++)
@@ -139,6 +140,8 @@ public class GUI {
 			for (int i : x) {
 				accComb += String.valueOf(x[i]);
 			}
+
+			//checks if the generated number is unique
 			if (checkForUniqueAccNum(Integer.valueOf(accComb))) {
 				accNum = Integer.valueOf(accComb);
 				taken = false;
@@ -157,10 +160,14 @@ public class GUI {
 	}
 
 	private static boolean createAcc(String username, double amt, String fName, String lName, int acctNum, String password) {
+
+		// checks if the username is already taken
 		for (BankAccount element : ba) {
 			if (element.getUsername().equals(username))
 				return false;
 		}
+
+		// adds accont
 		ba.add(new BankAccount(username, amt, fName, lName, acctNum, password));
 		return true;
 	}
@@ -227,6 +234,8 @@ public class GUI {
 
 		JButton loginBtnEnter = new JButton("Enter");
 
+
+		// checks for username and password. Continues accordingly
 		loginBtnEnter.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent arg0) {
@@ -238,10 +247,14 @@ public class GUI {
 					JOptionPane.showMessageDialog(null, "Wrong Password or Username. Please try again.", "Login Error",
 							JOptionPane.ERROR_MESSAGE);
 				}
+
+				// resets the password field
 				loginPassword.setText("");
 			}
 		});
 		
+		// makes the username text field press the enter button when
+		// the enter key is pressed
 		loginTxtUsername.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -256,6 +269,7 @@ public class GUI {
 			}
 		});
 
+		// makes the username text field click the enter button when the enter key is pressed
 		loginPassword.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -278,6 +292,8 @@ public class GUI {
 		gbc_loginBtnEnter.gridy = 3;
 		loginJPanel.add(loginBtnEnter, gbc_loginBtnEnter);
 
+
+		// displays the register panel when the register button is pressed on the login panel
 		JButton loginBtnRegister = new JButton("Create A New Account");
 		loginBtnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -300,6 +316,8 @@ public class GUI {
 		mainJPanel.setLayout(gbl_mainJPanel);
 
 		mainBtnWithdraw = new JButton("Withdraw");
+
+		// displays the withdraw panel when the withdraw button is pressed on the main panel
 		mainBtnWithdraw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), WITHDRAW_PANEL);
@@ -313,6 +331,7 @@ public class GUI {
 		gbc_mainBtnWithdraw.gridy = 1;
 		mainJPanel.add(mainBtnWithdraw, gbc_mainBtnWithdraw);
 
+		// displays the balance (maybe in a popup later) when the button is pressed on the main panel
 		JButton mainBtnBalance = new JButton("Get Balance");
 		mainBtnBalance.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -320,6 +339,7 @@ public class GUI {
 			}
 		});
 
+		// displays the deposit panel when the button is pressed on the main panel
 		JButton mainBtnDeposit = new JButton("Deposit");
 		mainBtnDeposit.addMouseListener(new MouseAdapter() {
 			@Override
@@ -341,6 +361,7 @@ public class GUI {
 		gbc_mainBtnBalance.gridy = 1;
 		mainJPanel.add(mainBtnBalance, gbc_mainBtnBalance);
 
+		// displays the empty account panel when the button is pressed on the main panel
 		JButton mainBtnEmpty = new JButton("Empty Account");
 		mainBtnEmpty.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -356,8 +377,9 @@ public class GUI {
 		mainJPanel.add(mainBtnEmpty, gbc_mainBtnEmpty);
 
 		JButton mainBtnGetMessages = new JButton("Read Messages");
-		// Action Listener added later in code
+		// Action Listener is added later in code. Might shift this entire section there
 
+		// displays the transfer to panel when the button is pressed on the main panel
 		JButton mainBtnTransTo = new JButton("Transfer To");
 		mainBtnTransTo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -365,6 +387,7 @@ public class GUI {
 			}
 		});
 
+		// displays the get password panel when the button is pressed on the main panel
 		JButton mainBtnGetPassword = new JButton("Get Password");
 		mainBtnGetPassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -372,6 +395,7 @@ public class GUI {
 			}
 		});
 
+		// displays the transfer from panel when the button is pressed on the main panel
 		JButton mainBtnTransFrom = new JButton("Transfer From");
 		mainBtnTransFrom.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -392,6 +416,7 @@ public class GUI {
 		gbc_mainBtnGetPassword.gridy = 4;
 		mainJPanel.add(mainBtnGetPassword, gbc_mainBtnGetPassword);
 
+		// DELETE; IS REDUNDANT. SAME AS GETPASSWORD
 		JButton mainBtnCheckPassword = new JButton("Check Password");
 		mainBtnCheckPassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -407,6 +432,7 @@ public class GUI {
 		gbc_mainBtnCheckPassword.gridy = 4;
 		mainJPanel.add(mainBtnCheckPassword, gbc_mainBtnCheckPassword);
 
+		// displays the reset password panel when the button is pressed on the main panel
 		JButton mainBtnResetPassword = new JButton("Reset Password");
 		mainBtnResetPassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -450,6 +476,7 @@ public class GUI {
 		withdrawLblAmountPromt.setBounds(45, 65, 343, 36);
 		withdrawJPanel.add(withdrawLblAmountPromt);
 
+		// withdraws moeny when the withdraw button is pressed on the withdraw panel
 		JButton withdrawBtnWithdraw = new JButton("Withdraw");
 		withdrawBtnWithdraw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

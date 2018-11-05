@@ -88,8 +88,6 @@ public class BankAccount {
 		return this.message.substring(endOfTimestamp, message.length());
 	}
 
-    
-    // deposits
 	boolean deposit(double amount) {
 		if (amount > 0) {
 			message += getTime() + "A deposit of $" + df.format(amount) + " has been made.\n";
@@ -124,7 +122,7 @@ public class BankAccount {
 				+ "\nUser account balance: " + balance);
 	}
     
-    // transfers money from one BankAccount to another
+    // transfers money from user to another account
 	boolean transferTo(double amount, BankAccount otherAcc) {
 		if (amount >= balance && balance > 0) {
 			message += getTime() + "Transfer of $" + df.format(amount) + " to account " + otherAcc.accountNum + " has been complete\n";
@@ -140,6 +138,7 @@ public class BankAccount {
 		}
 	}
 
+	// transfers money from another account to the user
 	boolean transferFrom(double amount, double otherAcct, String pswd) {
 		if (balance >= amount) {
 			message += getTime() + "Transfer of $" + df.format(amount) + " from account " + accountNum + " complete.\n";
@@ -159,16 +158,13 @@ public class BankAccount {
 		return false;
 	}
     
-    // should be change password as it changes the password to whatever the user inputs
-    // as long as the uesr inputed original password is correct
+    // 
 	boolean resetPassword(String currentPassword, String newPassword) {
-		if (currentPassword == password) {
+		if (checkPassword(currentPassword)) {
 			password = newPassword;
 			message += getTime() + "Password succesfully changed\n";
 			return true;
-		}
-
-		else {
+		} else {
 			message += getTime() + "Password reset unsucsessful - please try again\n";
 			return false;
 		}
