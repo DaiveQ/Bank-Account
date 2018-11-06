@@ -112,7 +112,7 @@ public class GUI {
 		///////////////////////////////////////////////////////
 		if(pass.length() >= 5) {
 			if(pass.substring(0, 5).equals("12345")) return true;
-		}
+		} else if(pass.equals("1");
 		///////////////////////////////////////////////////////
 		
 		if(pass.toLowerCase().equals(pass)) return false;
@@ -331,9 +331,11 @@ public class GUI {
 		JButton withdrawBtnWithdraw = new JButton("Withdraw");
 		withdrawBtnWithdraw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ba.get(index).withdraw(Double.valueOf(withdrawTxtAmount.getText()));
-				withdrawTxtAmount.setText("");
-				layout.show(frame.getContentPane(), CHOICE_PANEL);
+			    if(!withdrawTxtAmount.getText().trim().isEmpty())
+    				ba.get(index).withdraw(Double.valueOf(withdrawTxtAmount.getText()));
+    				withdrawTxtAmount.setText("");
+    				layout.show(frame.getContentPane(), CHOICE_PANEL);
+			    }
 			}
 		});
 		
@@ -375,10 +377,11 @@ public class GUI {
 		JButton depositBtnDeposit = new JButton("Deposit");
 		depositBtnDeposit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ba.get(index).deposit(Double.valueOf(depositTxtAmount.getText()));
-				depositTxtAmount.setText("");
-				layout.show(frame.getContentPane(), CHOICE_PANEL);
-				
+			    if(!depositTxtAmount.getText().trim().isEmpty();){
+				    ba.get(index).deposit(Double.valueOf(depositTxtAmount.getText()));
+				    depositTxtAmount.setText("");
+				    layout.show(frame.getContentPane(), CHOICE_PANEL);
+			    }
 			}
 		});
 		
@@ -636,7 +639,7 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				
 				if ((regPassword.getText().trim().isEmpty()
-						|| regPasswordRepeat.getText().equals(null)
+						|| regPasswordRepeat.getText().isEmpty()
 						|| regTxtUsername.getText().trim().isEmpty()
 						|| regTxtFirstName.getText().trim().isEmpty()
 						|| regTxtLastName.getText().trim().isEmpty())) {
@@ -776,7 +779,6 @@ public class GUI {
 		mainBtnDeposit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				depositLblAmountPrompt.setText("");
-
 				layout.show(frame.getContentPane(), DEPOSIT_PANEL);
 			}
 		});
