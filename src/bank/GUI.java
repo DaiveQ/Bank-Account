@@ -33,7 +33,6 @@ import java.util.Random;
 
 public class GUI {
 
-	// Add null check to Deposit and Withdraw\
 	// Also give functionality to Transfer To/From
 	
 	private JFrame frame;
@@ -41,6 +40,7 @@ public class GUI {
 
 	private static List<BankAccount> ba = new ArrayList<BankAccount>();
 	private static int index = 0; // index of BankAccount. Shortened for simplicity
+	private static int index
 
 	final static String CHOICE_PANEL = "Choice Panel";
 	final static String WITHDRAW_PANEL = "Withdraw Panel";
@@ -103,6 +103,16 @@ public class GUI {
 			}
 		}
 	}
+	
+	// change to based on the other account number instead of username?
+	private int getBankAccountIndex(String username) {
+		for (int i = 0; i < ba.size(); i++) {
+			if (ba.get(i).getUsername().equals(username)) {
+                return i;
+			}
+		}
+	}
+	
 	
 	private boolean isPasswordsecure(String pass) {
 		
