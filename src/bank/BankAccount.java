@@ -125,9 +125,9 @@ public class BankAccount {
     // transfers money from user to another account
 	boolean transferTo(double amount, BankAccount otherAcc) {
 		if (amount >= balance && balance > 0) {
-			message += getTime() + "Transfer of $" + df.format(amount) + " to account " + otherAcc.accountNum + " has been complete\n";
 			otherAcc.balance += amount;
 			this.balance -= amount;
+			message += getTime() + "Transfer of $" + df.format(amount) + " to account " + otherAcc.accountNum + " has been complete\n";
 			return true;
 
 		}

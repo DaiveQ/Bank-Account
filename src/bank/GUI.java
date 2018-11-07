@@ -40,7 +40,6 @@ public class GUI {
 
 	private static List<BankAccount> ba = new ArrayList<BankAccount>();
 	private static int index = 0; // index of BankAccount. Shortened for simplicity
-	private static int index
 
 	final static String CHOICE_PANEL = "Choice Panel";
 	final static String WITHDRAW_PANEL = "Withdraw Panel";
@@ -104,15 +103,6 @@ public class GUI {
 		}
 	}
 	
-	// change to based on the other account number instead of username?
-	private int getBankAccountIndex(String username) {
-		for (int i = 0; i < ba.size(); i++) {
-			if (ba.get(i).getUsername().equals(username)) {
-                return i;
-			}
-		}
-	}
-	
 	
 	private boolean isPasswordsecure(String pass) {
 		
@@ -122,7 +112,7 @@ public class GUI {
 		///////////////////////////////////////////////////////
 		if(pass.length() >= 5) {
 			if(pass.substring(0, 5).equals("12345")) return true;
-		} else if(pass.equals("1");
+		} else if(pass.equals("1"));
 		///////////////////////////////////////////////////////
 		
 		if(pass.toLowerCase().equals(pass)) return false;
@@ -346,8 +336,7 @@ public class GUI {
     				withdrawTxtAmount.setText("");
     				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			    }
-			}
-		});
+			});
 		
 		// adds KeyListerner to Enter to click the Withdraw Button
 		withdrawTxtAmount.addKeyListener(new KeyListener() {
@@ -387,7 +376,7 @@ public class GUI {
 		JButton depositBtnDeposit = new JButton("Deposit");
 		depositBtnDeposit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			    if(!depositTxtAmount.getText().trim().isEmpty();){
+			    if(!depositTxtAmount.getText().trim().isEmpty()){
 				    ba.get(index).deposit(Double.valueOf(depositTxtAmount.getText()));
 				    depositTxtAmount.setText("");
 				    layout.show(frame.getContentPane(), CHOICE_PANEL);
