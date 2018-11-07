@@ -551,6 +551,9 @@ public class GUI {
 		transToBtnEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
+				transToTxtAmount.setText("");
+				transToTxtBankAccount.setText("");
+				transToTxtOtherAccount.setText("");
 			}
 		});
 		
