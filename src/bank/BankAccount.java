@@ -22,7 +22,7 @@ public class BankAccount {
 	// date format for use with messages for timestamps
 	SimpleDateFormat datef = new SimpleDateFormat("dd/MM/YYYY HH:mm");
 
-	DecimalFormat df = new DecimalFormat("#.00");
+	DecimalFormat df = new DecimalFormat("#. 00");
 
 	BankAccount(String uName, double amt, String fName, String lName, int acctNum) {
 		this.username = uName;
@@ -81,7 +81,7 @@ public class BankAccount {
 	}
 
 	public String getBalance() {
-		return df.format(balance);
+		return df.format(this.balance);
 	}
 
 	private String setPassword() {
@@ -100,6 +100,7 @@ public class BankAccount {
 	boolean deposit(double amount) {
 		amount = roundDecimals(amount);
 		if (amount > 0) {
+			this.balance += amount;
 			message += getTime() + "A deposit of $" + df.format(amount) + " has been made.\n";
 			return true;
 		} else {
@@ -111,7 +112,8 @@ public class BankAccount {
 
 	boolean withdraw(double amount) {
 		amount = roundDecimals(amount);
-		if (amount > balance) {
+		if (amount > balance && amount > 0) {
+			message += getTime() + "Withdrawl of $" + df.format(amount) + " failed. Check balance and try again";
 			return false;
 		}
 
@@ -119,13 +121,6 @@ public class BankAccount {
 			message += getTime() + "Withdrawl of $" + df.format(amount) + " has been made.\n";
 			return true;
 		}
-	}
-
-	// displays account information
-	void display() {
-		// shouldn't be printed out
-		System.out.println("User account num: " + getAccountNum() + "\nUser full name: " + firstName + " " + lastName
-				+ "\nUser account balance: " + balance);
 	}
 
 	// transfers money from user to another account

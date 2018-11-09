@@ -44,8 +44,7 @@ public class GUI {
 	final static String CHOICE_PANEL = "Choice Panel";
 	final static String WITHDRAW_PANEL = "Withdraw Panel";
 	final static String DEPOSIT_PANEL = "Deposit Panel";
-	final static String DISPLAY_PANEL = "Display Panel";
-	final static String CHECKPASSWORD_PANEL = "CheckPassword Panel";
+	final static String ACCOUNTDETAIL_PANEL = "AccountDetail Panel";
 	final static String GETPASSWORD_PANEL = "GetPassword Panel";
 	final static String EMPTYACCOUNT_PANEL = "EmptyAccount Panel";
 	final static String MESSAGES_PANEL = "Messages Panel";
@@ -174,9 +173,9 @@ public class GUI {
 	
 	
 	private static void createTestAccount() {
-		int accNum = generateAccNum();
-		ba.add(new BankAccount("12345", 1000, "123", "45", accNum));
-		ba.add(new BankAccount("Ricky", 1000, "Ricky", "Lin", accNum));
+		ba.add(new BankAccount("12345", 1000, "123", "45", generateAccNum()));
+		ba.add(new BankAccount("Ricky", 1000, "Ricky", "Lin", generateAccNum()));
+		ba.add(new BankAccount("1", 12, "John", "Doe", generateAccNum(), "1"));
 	}
 
 	private void initialize() {
@@ -332,7 +331,11 @@ public class GUI {
 		withdrawBtnWithdraw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			    if(!withdrawTxtAmount.getText().trim().isEmpty())
-    				ba.get(index).withdraw(Double.valueOf(withdrawTxtAmount.getText()));
+			    	if(ba.get(index).withdraw(Double.valueOf(withdrawTxtAmount.getText()))) {
+			    		JOptionPane.showMessageDialog(null, "Withdrawl Success", "Success", JOptionPane.PLAIN_MESSAGE);
+			    	} else {
+			    		JOptionPane.showMessageDialog(null, "Withdrawl Failed. Check balance and try again", "Failed" , JOptionPane.ERROR_MESSAGE);
+			    	}
     				withdrawTxtAmount.setText("");
     				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			    }
@@ -362,6 +365,7 @@ public class GUI {
 		depositJPanel.setLayout(null);
 
 		JLabel depositLblAmountPrompt = new JLabel("Enter The Amount That You Would Deposit:");
+		depositLblAmountPrompt.setEnabled(false);
 		depositLblAmountPrompt.setHorizontalAlignment(SwingConstants.CENTER);
 		depositLblAmountPrompt.setFont(new Font("Tahoma", Font.PLAIN, 15));
 		depositLblAmountPrompt.setBounds(56, 65, 321, 36);
@@ -402,59 +406,59 @@ public class GUI {
 			}
 		});
 		
-		JPanel accInfoJPanel = new JPanel();
-		frame.getContentPane().add(accInfoJPanel, DISPLAY_PANEL);
-		accInfoJPanel.setLayout(null);
-
-		JButton accInfoBack = new JButton("Back");
-		accInfoBack.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), CHOICE_PANEL);
-			}
-		});
+		JPanel accDetailJPanel = new JPanel();
+		frame.getContentPane().add(accDetailJPanel, ACCOUNTDETAIL_PANEL);
+		accDetailJPanel.setLayout(null);
 		
-		accInfoBack.setBounds(335, 228, 89, 23);
-		accInfoJPanel.add(accInfoBack);
-
-		JLabel accInfoLblAccNum = new JLabel("Account Number:");
-		accInfoLblAccNum.setHorizontalAlignment(SwingConstants.RIGHT);
-		accInfoLblAccNum.setBounds(50, 55, 89, 14);
-		accInfoJPanel.add(accInfoLblAccNum);
-
-		JLabel accInfoLblBalance = new JLabel("Balance:");
-		accInfoLblBalance.setHorizontalAlignment(SwingConstants.RIGHT);
-		accInfoLblBalance.setBounds(50, 90, 89, 14);
-		accInfoJPanel.add(accInfoLblBalance);
-
-		JLabel accInfoLblFirstName = new JLabel("First Name:");
-		accInfoLblFirstName.setHorizontalAlignment(SwingConstants.RIGHT);
-		accInfoLblFirstName.setBounds(50, 125, 90, 14);
-		accInfoJPanel.add(accInfoLblFirstName);
-
-		JLabel accInfoLblLastName = new JLabel("Last Name:");
-		accInfoLblLastName.setHorizontalAlignment(SwingConstants.RIGHT);
-		accInfoLblLastName.setBounds(50, 160, 89, 14);
-		accInfoJPanel.add(accInfoLblLastName);
-
-		JLabel accInfoLblAccNumValue = new JLabel();
-		accInfoLblAccNumValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		accInfoLblAccNumValue.setBounds(149, 50, 226, 20);
-		accInfoJPanel.add(accInfoLblAccNumValue);
-
-		JLabel accInfoLblBalanceValue = new JLabel("New label");
-		accInfoLblBalanceValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		accInfoLblBalanceValue.setBounds(149, 84, 226, 20);
-		accInfoJPanel.add(accInfoLblBalanceValue);
-
-		JLabel accInfoLblFirstNameValue = new JLabel("New label");
-		accInfoLblFirstNameValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		accInfoLblFirstNameValue.setBounds(149, 119, 226, 20);
-		accInfoJPanel.add(accInfoLblFirstNameValue);
-
-		JLabel accInfoLblLastNameValue = new JLabel("New label");
-		accInfoLblLastNameValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		accInfoLblLastNameValue.setBounds(149, 154, 226, 20);
-		accInfoJPanel.add(accInfoLblLastNameValue);
+				JButton accDetailBack = new JButton("Back");
+				accDetailBack.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						layout.show(frame.getContentPane(), CHOICE_PANEL);
+					}
+				});
+				
+				accDetailBack.setBounds(335, 228, 89, 23);
+				accDetailJPanel.add(accDetailBack);
+				
+						JLabel accIDetailLblAccNum = new JLabel("Account Number:");
+						accIDetailLblAccNum.setHorizontalAlignment(SwingConstants.RIGHT);
+						accIDetailLblAccNum.setBounds(50, 55, 89, 14);
+						accDetailJPanel.add(accIDetailLblAccNum);
+						
+								JLabel accDetailLblBalance = new JLabel("Balance:");
+								accDetailLblBalance.setHorizontalAlignment(SwingConstants.RIGHT);
+								accDetailLblBalance.setBounds(50, 90, 89, 14);
+								accDetailJPanel.add(accDetailLblBalance);
+								
+										JLabel accDetailLblFirstName = new JLabel("First Name:");
+										accDetailLblFirstName.setHorizontalAlignment(SwingConstants.RIGHT);
+										accDetailLblFirstName.setBounds(50, 125, 90, 14);
+										accDetailJPanel.add(accDetailLblFirstName);
+										
+												JLabel accDetailLblLastName = new JLabel("Last Name:");
+												accDetailLblLastName.setHorizontalAlignment(SwingConstants.RIGHT);
+												accDetailLblLastName.setBounds(50, 160, 89, 14);
+												accDetailJPanel.add(accDetailLblLastName);
+												
+														JLabel accDetailLblAccNumValue = new JLabel();
+														accDetailLblAccNumValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
+														accDetailLblAccNumValue.setBounds(149, 50, 226, 20);
+														accDetailJPanel.add(accDetailLblAccNumValue);
+														
+																JLabel accDetailLblBalanceValue = new JLabel("");
+																accDetailLblBalanceValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																accDetailLblBalanceValue.setBounds(149, 84, 226, 20);
+																accDetailJPanel.add(accDetailLblBalanceValue);
+																
+																		JLabel accDetailLblFirstNameValue = new JLabel("");
+																		accDetailLblFirstNameValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																		accDetailLblFirstNameValue.setBounds(149, 119, 226, 20);
+																		accDetailJPanel.add(accDetailLblFirstNameValue);
+																		
+																				JLabel accDetailLblLastNameValue = new JLabel("");
+																				accDetailLblLastNameValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
+																				accDetailLblLastNameValue.setBounds(149, 154, 226, 20);
+																				accDetailJPanel.add(accDetailLblLastNameValue);
 
 		JPanel emptyJPanel = new JPanel();
 		frame.getContentPane().add(emptyJPanel, EMPTYACCOUNT_PANEL);
@@ -590,7 +594,7 @@ public class GUI {
 
 		JLabel transFromLblOtherAccount = new JLabel("Other Account:");
 		transFromLblOtherAccount.setHorizontalAlignment(SwingConstants.TRAILING);
-		transFromLblOtherAccount.setBounds(39, 90, 82, 14);
+		transFromLblOtherAccount.setBounds(21, 90, 100, 14);
 		transFromJPanel.add(transFromLblOtherAccount);
 
 		JLabel transFromLblAmount = new JLabel("Amount:");
@@ -607,6 +611,11 @@ public class GUI {
 		transFromBtnEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
+				transFromTxtBankAccount.setText("");
+				transFromTxtOtherAccount.setText("");
+				transFromTxtAmount.setText("");
+				transFromPassword.setText("");
+				
 			}
 		});
 		
@@ -626,7 +635,13 @@ public class GUI {
 		JButton regBtnBack = new JButton("Back");
 		regBtnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				layout.show(frame.getContentPane(), LOGIN_PANEL);
+				regTxtUsername.setText("");
+				regTxtFirstName.setText("");
+				regTxtLastName.setText("");
+				regPasswordRepeat.setText("");
+				regPassword.setText("");
 			}
 		});
 		
@@ -639,6 +654,11 @@ public class GUI {
 			@SuppressWarnings("deprecation")
 
 			public void actionPerformed(ActionEvent e) {
+				regTxtUsername.setText("");
+				regTxtFirstName.setText("");
+				regTxtLastName.setText("");
+				regPasswordRepeat.setText("");
+				regPassword.setText("");
 				
 				if ((regPassword.getText().trim().isEmpty()
 						|| regPasswordRepeat.getText().isEmpty()
@@ -685,9 +705,7 @@ public class GUI {
 							"Account Creation Error", JOptionPane.ERROR_MESSAGE);
 				}
 				
-				regPassword.setText("");
-				regPasswordRepeat.setText("");
-				
+
 			}
 		});
 		
@@ -754,8 +772,8 @@ public class GUI {
 		// displays the withdraw panel when the withdraw button is pressed on the main panel
 		mainBtnWithdraw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), WITHDRAW_PANEL);
 				withdrawTxtAmount.setText("");
+				layout.show(frame.getContentPane(), WITHDRAW_PANEL);
 			}
 		});
 		
@@ -858,21 +876,25 @@ public class GUI {
 		gbc_mainBtnGetPassword.gridy = 4;
 		mainJPanel.add(mainBtnGetPassword, gbc_mainBtnGetPassword);
 
-		// DELETE; IS REDUNDANT. SAME AS GETPASSWORD
-		JButton mainBtnCheckPassword = new JButton("Check Password");
-		mainBtnCheckPassword.addActionListener(new ActionListener() {
+		JButton mainBtnAccDetail = new JButton("Account Info");
+		mainBtnAccDetail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				layout.show(frame.getContentPane(), CHECKPASSWORD_PANEL);
+				accDetailLblAccNumValue.setText(String.valueOf(ba.get(index).getAccountNum()));
+				accDetailLblBalanceValue.setText(ba.get(index).getBalance());
+				accDetailLblFirstNameValue.setText(ba.get(index).getFirstName());
+				accDetailLblLastNameValue.setText(ba.get(index).getLastName());
+				
+				layout.show(frame.getContentPane(), ACCOUNTDETAIL_PANEL);
 			}
 		});
 		
-		GridBagConstraints gbc_mainBtnCheckPassword = new GridBagConstraints();
-		gbc_mainBtnCheckPassword.anchor = GridBagConstraints.NORTH;
-		gbc_mainBtnCheckPassword.fill = GridBagConstraints.HORIZONTAL;
-		gbc_mainBtnCheckPassword.insets = new Insets(0, 3, 3, 3);
-		gbc_mainBtnCheckPassword.gridx = 2;
-		gbc_mainBtnCheckPassword.gridy = 4;
-		mainJPanel.add(mainBtnCheckPassword, gbc_mainBtnCheckPassword);
+		GridBagConstraints gbc_mainBtnAccDetail = new GridBagConstraints();
+		gbc_mainBtnAccDetail.anchor = GridBagConstraints.NORTH;
+		gbc_mainBtnAccDetail.fill = GridBagConstraints.HORIZONTAL;
+		gbc_mainBtnAccDetail.insets = new Insets(0, 3, 3, 3);
+		gbc_mainBtnAccDetail.gridx = 2;
+		gbc_mainBtnAccDetail.gridy = 4;
+		mainJPanel.add(mainBtnAccDetail, gbc_mainBtnAccDetail);
 
 		// displays the reset password panel when the button is pressed on the main panel
 		JButton mainBtnResetPassword = new JButton("Reset Password");
