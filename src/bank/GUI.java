@@ -9,8 +9,6 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.BorderLayout;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -34,7 +32,7 @@ import java.util.Random;
 public class GUI {
 
 	// Also give functionality to Transfer To/From
-	
+
 	private JFrame frame;
 	CardLayout layout = new CardLayout(0, 0);
 
@@ -44,7 +42,6 @@ public class GUI {
 	final static String CHOICE_PANEL = "Choice Panel";
 	final static String WITHDRAW_PANEL = "Withdraw Panel";
 	final static String DEPOSIT_PANEL = "Deposit Panel";
-	final static String DISPLAY_PANEL = "Display Panel";
 	final static String CHECKPASSWORD_PANEL = "CheckPassword Panel";
 	final static String GETPASSWORD_PANEL = "GetPassword Panel";
 	final static String EMPTYACCOUNT_PANEL = "EmptyAccount Panel";
@@ -55,6 +52,7 @@ public class GUI {
 	final static String TRANSFERFROM_PANEL = "TransferFrom Panel";
 	final static String REGISTER_PANEL = "Register Panel";
 	final static String LOGIN_PANEL = "Login Panel";
+	private static String ACCOUNTDETAILS_PANEL = "AccountDetails Panel";
 	private static final double DEFAULT_MONEY_VALUE = 1234.56;
 
 	private JTextField loginTxtUsername;
@@ -102,24 +100,29 @@ public class GUI {
 			}
 		}
 	}
-	
-	
+
 	private boolean isPasswordsecure(String pass) {
-		
+
 		///////////////////////////////////////////////////////
-		// TESTING IF STATEMENT. PASSOWRDS STARTING WITH 12345 
+		// TESTING IF STATEMENT. PASSOWRDS STARTING WITH 12345
 		// WILL BE PASSED NO MATTER WHAT. DELETE THIS WHEN DONE
 		///////////////////////////////////////////////////////
-		if(pass.length() >= 5) {
-			if(pass.substring(0, 5).equals("12345")) return true;
-		} else if(pass.equals("1"));
+		if (pass.length() >= 5) {
+			if (pass.substring(0, 5).equals("12345"))
+				return true;
+		} else if (pass.equals("1"))
+			;
 		///////////////////////////////////////////////////////
-		
-		if(pass.toLowerCase().equals(pass)) return false;
-		else if(pass.toUpperCase().equals(pass)) return false;
-		else if(pass.length() < 9) return false;
+
+		if (pass.toLowerCase().equals(pass))
+			return false;
+		else if (pass.toUpperCase().equals(pass))
+			return false;
+		else if (pass.length() < 9)
+			return false;
 		// else if password has number
-		else return true;
+		else
+			return true;
 	}
 
 	private static int generateAccNum() {
@@ -127,7 +130,6 @@ public class GUI {
 		int accNum = 0;
 
 		while (taken) {
-
 
 			String accComb = "";
 
@@ -141,7 +143,7 @@ public class GUI {
 				accComb += String.valueOf(x[i]);
 			}
 
-			//checks if the generated number is unique
+			// checks if the generated number is unique
 			if (checkForUniqueAccNum(Integer.valueOf(accComb))) {
 				accNum = Integer.valueOf(accComb);
 				taken = false;
@@ -159,7 +161,8 @@ public class GUI {
 		return true;
 	}
 
-	private static boolean createAcc(String username, double amt, String fName, String lName, int acctNum, String password) {
+	private static boolean createAcc(String username, double amt, String fName, String lName, int acctNum,
+			String password) {
 
 		// checks if the username is already taken
 		for (BankAccount element : ba) {
@@ -167,12 +170,11 @@ public class GUI {
 				return false;
 		}
 
-		// adds accont
+		// adds account
 		ba.add(new BankAccount(username, amt, fName, lName, acctNum, password));
 		return true;
 	}
-	
-	
+
 	private static void createTestAccount() {
 		int accNum = generateAccNum();
 		ba.add(new BankAccount("12345", 1000, "123", "45", accNum));
@@ -234,13 +236,12 @@ public class GUI {
 
 		JButton loginBtnEnter = new JButton("Enter");
 
-
 		// checks for username and password. Continues accordingly
 		loginBtnEnter.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent arg0) {
 				setBankAccountIndex(loginTxtUsername.getText());
-				
+
 				if (ba.get(index).checkPassword(loginPassword.getText())) {
 					layout.show(frame.getContentPane(), CHOICE_PANEL);
 				} else {
@@ -252,7 +253,7 @@ public class GUI {
 				loginPassword.setText("");
 			}
 		});
-		
+
 		// makes the username text field press the enter button when
 		// the enter key is pressed
 		loginTxtUsername.addKeyListener(new KeyListener() {
@@ -261,15 +262,16 @@ public class GUI {
 					loginBtnEnter.doClick();
 				}
 			}
-			
+
 			public void keyReleased(KeyEvent arg0) {
 			}
-			
+
 			public void keyTyped(KeyEvent arg0) {
 			}
 		});
 
-		// makes the username text field click the enter button when the enter key is pressed
+		// makes the username text field click the enter button when the enter key is
+		// pressed
 		loginPassword.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -292,25 +294,24 @@ public class GUI {
 		gbc_loginBtnEnter.gridy = 3;
 		loginJPanel.add(loginBtnEnter, gbc_loginBtnEnter);
 
-
-		// displays the register panel when the register button is pressed on the login panel
+		// displays the register panel when the register button is pressed on the login
+		// panel
 		JButton loginBtnRegister = new JButton("Create A New Account");
 		loginBtnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 				loginTxtUsername.setText("");
 				loginPassword.setText("");
-				
+
 				layout.show(frame.getContentPane(), REGISTER_PANEL);
 			}
 		});
-		
+
 		GridBagConstraints gbc_loginBtnRegister = new GridBagConstraints();
 		gbc_loginBtnRegister.gridx = 2;
 		gbc_loginBtnRegister.gridy = 5;
 		loginJPanel.add(loginBtnRegister, gbc_loginBtnRegister);
 
-		
 		JPanel withdrawJPanel = new JPanel();
 		frame.getContentPane().add(withdrawJPanel, WITHDRAW_PANEL);
 		withdrawJPanel.setLayout(null);
@@ -331,13 +332,13 @@ public class GUI {
 		JButton withdrawBtnWithdraw = new JButton("Withdraw");
 		withdrawBtnWithdraw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			    if(!withdrawTxtAmount.getText().trim().isEmpty())
-    				ba.get(index).withdraw(Double.valueOf(withdrawTxtAmount.getText()));
-    				withdrawTxtAmount.setText("");
-    				layout.show(frame.getContentPane(), CHOICE_PANEL);
-			    }
-			});
-		
+				if (!withdrawTxtAmount.getText().trim().isEmpty())
+					ba.get(index).withdraw(Double.valueOf(withdrawTxtAmount.getText()));
+				withdrawTxtAmount.setText("");
+				layout.show(frame.getContentPane(), CHOICE_PANEL);
+			}
+		});
+
 		// adds KeyListerner to Enter to click the Withdraw Button
 		withdrawTxtAmount.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
@@ -345,14 +346,14 @@ public class GUI {
 					withdrawBtnWithdraw.doClick();
 				}
 			}
-			
+
 			public void keyReleased(KeyEvent arg0) {
 			}
-			
+
 			public void keyTyped(KeyEvent arg0) {
 			}
 		});
-		
+
 		withdrawBtnWithdraw.setBounds(153, 160, 127, 30);
 		withdrawJPanel.add(withdrawBtnWithdraw);
 
@@ -372,21 +373,21 @@ public class GUI {
 		depositTxtAmount.setBounds(142, 112, 150, 37);
 		depositJPanel.add(depositTxtAmount);
 		depositTxtAmount.setColumns(10);
-		
+
 		JButton depositBtnDeposit = new JButton("Deposit");
 		depositBtnDeposit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			    if(!depositTxtAmount.getText().trim().isEmpty()){
-				    ba.get(index).deposit(Double.valueOf(depositTxtAmount.getText()));
-				    depositTxtAmount.setText("");
-				    layout.show(frame.getContentPane(), CHOICE_PANEL);
-			    }
+				if (!depositTxtAmount.getText().trim().isEmpty()) {
+					ba.get(index).deposit(Double.valueOf(depositTxtAmount.getText()));
+					depositTxtAmount.setText("");
+					layout.show(frame.getContentPane(), CHOICE_PANEL);
+				}
 			}
 		});
-		
+
 		depositBtnDeposit.setBounds(153, 160, 127, 30);
 		depositJPanel.add(depositBtnDeposit);
-		
+
 		// enter button presses deposit
 		depositTxtAmount.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
@@ -394,67 +395,67 @@ public class GUI {
 					depositBtnDeposit.doClick();
 				}
 			}
-			
+
 			public void keyReleased(KeyEvent arg0) {
 			}
-			
+
 			public void keyTyped(KeyEvent arg0) {
 			}
 		});
-		
-		JPanel accInfoJPanel = new JPanel();
-		frame.getContentPane().add(accInfoJPanel, DISPLAY_PANEL);
-		accInfoJPanel.setLayout(null);
 
-		JButton accInfoBack = new JButton("Back");
-		accInfoBack.addActionListener(new ActionListener() {
+		JPanel accDetailsJPanel = new JPanel();
+		frame.getContentPane().add(accDetailsJPanel, ACCOUNTDETAILS_PANEL);
+		accDetailsJPanel.setLayout(null);
+
+		JButton accDetailsBack = new JButton("Back");
+		accDetailsBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			}
 		});
-		
-		accInfoBack.setBounds(335, 228, 89, 23);
-		accInfoJPanel.add(accInfoBack);
 
-		JLabel accInfoLblAccNum = new JLabel("Account Number:");
-		accInfoLblAccNum.setHorizontalAlignment(SwingConstants.RIGHT);
-		accInfoLblAccNum.setBounds(50, 55, 89, 14);
-		accInfoJPanel.add(accInfoLblAccNum);
+		accDetailsBack.setBounds(335, 228, 89, 23);
+		accDetailsJPanel.add(accDetailsBack);
 
-		JLabel accInfoLblBalance = new JLabel("Balance:");
-		accInfoLblBalance.setHorizontalAlignment(SwingConstants.RIGHT);
-		accInfoLblBalance.setBounds(50, 90, 89, 14);
-		accInfoJPanel.add(accInfoLblBalance);
+		JLabel accDetailsLblAccNum = new JLabel("Account Number:");
+		accDetailsLblAccNum.setHorizontalAlignment(SwingConstants.RIGHT);
+		accDetailsLblAccNum.setBounds(50, 55, 89, 14);
+		accDetailsJPanel.add(accDetailsLblAccNum);
 
-		JLabel accInfoLblFirstName = new JLabel("First Name:");
-		accInfoLblFirstName.setHorizontalAlignment(SwingConstants.RIGHT);
-		accInfoLblFirstName.setBounds(50, 125, 90, 14);
-		accInfoJPanel.add(accInfoLblFirstName);
+		JLabel accDetailsLblBalance = new JLabel("Balance:");
+		accDetailsLblBalance.setHorizontalAlignment(SwingConstants.RIGHT);
+		accDetailsLblBalance.setBounds(50, 90, 89, 14);
+		accDetailsJPanel.add(accDetailsLblBalance);
 
-		JLabel accInfoLblLastName = new JLabel("Last Name:");
-		accInfoLblLastName.setHorizontalAlignment(SwingConstants.RIGHT);
-		accInfoLblLastName.setBounds(50, 160, 89, 14);
-		accInfoJPanel.add(accInfoLblLastName);
+		JLabel accDetailsLblFirstName = new JLabel("First Name:");
+		accDetailsLblFirstName.setHorizontalAlignment(SwingConstants.RIGHT);
+		accDetailsLblFirstName.setBounds(50, 125, 90, 14);
+		accDetailsJPanel.add(accDetailsLblFirstName);
 
-		JLabel accInfoLblAccNumValue = new JLabel();
-		accInfoLblAccNumValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		accInfoLblAccNumValue.setBounds(149, 50, 226, 20);
-		accInfoJPanel.add(accInfoLblAccNumValue);
+		JLabel accDetailsLblLastName = new JLabel("Last Name:");
+		accDetailsLblLastName.setHorizontalAlignment(SwingConstants.RIGHT);
+		accDetailsLblLastName.setBounds(50, 160, 89, 14);
+		accDetailsJPanel.add(accDetailsLblLastName);
 
-		JLabel accInfoLblBalanceValue = new JLabel("New label");
-		accInfoLblBalanceValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		accInfoLblBalanceValue.setBounds(149, 84, 226, 20);
-		accInfoJPanel.add(accInfoLblBalanceValue);
+		JLabel accDetailsLblAccNumValue = new JLabel();
+		accDetailsLblAccNumValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		accDetailsLblAccNumValue.setBounds(149, 50, 226, 20);
+		accDetailsJPanel.add(accDetailsLblAccNumValue);
 
-		JLabel accInfoLblFirstNameValue = new JLabel("New label");
-		accInfoLblFirstNameValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		accInfoLblFirstNameValue.setBounds(149, 119, 226, 20);
-		accInfoJPanel.add(accInfoLblFirstNameValue);
+		JLabel accDetailsLblBalanceValue = new JLabel("");
+		accDetailsLblBalanceValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		accDetailsLblBalanceValue.setBounds(149, 84, 226, 20);
+		accDetailsJPanel.add(accDetailsLblBalanceValue);
 
-		JLabel accInfoLblLastNameValue = new JLabel("New label");
-		accInfoLblLastNameValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		accInfoLblLastNameValue.setBounds(149, 154, 226, 20);
-		accInfoJPanel.add(accInfoLblLastNameValue);
+		JLabel accDetailsLblFirstNameValue = new JLabel("");
+		accDetailsLblFirstNameValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		accDetailsLblFirstNameValue.setBounds(149, 119, 226, 20);
+		accDetailsJPanel.add(accDetailsLblFirstNameValue);
+
+		JLabel accDetailsLblLastNameValue = new JLabel("");
+		accDetailsLblLastNameValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		accDetailsLblLastNameValue.setBounds(149, 154, 226, 20);
+		accDetailsJPanel.add(accDetailsLblLastNameValue);
 
 		JPanel emptyJPanel = new JPanel();
 		frame.getContentPane().add(emptyJPanel, EMPTYACCOUNT_PANEL);
@@ -466,7 +467,7 @@ public class GUI {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			}
 		});
-		
+
 		emptyBtnBack.setBounds(296, 198, 89, 23);
 		emptyJPanel.add(emptyBtnBack);
 
@@ -485,7 +486,7 @@ public class GUI {
 
 			}
 		});
-		
+
 		messageBtnBack.setVerticalAlignment(SwingConstants.BOTTOM);
 		messageJPanel.add(messageBtnBack);
 
@@ -497,7 +498,6 @@ public class GUI {
 		messageTxtAMessage.setEditable(false);
 		messageScrollPane.setViewportView(messageTxtAMessage);
 
-
 		JPanel getBalance = new JPanel();
 		frame.getContentPane().add(getBalance, GETBALANCE_PANEL);
 		getBalance.setLayout(null);
@@ -508,7 +508,7 @@ public class GUI {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			}
 		});
-		
+
 		getBalanceBtnBack.setBounds(335, 228, 89, 23);
 		getBalance.add(getBalanceBtnBack);
 
@@ -556,7 +556,7 @@ public class GUI {
 				transToTxtOtherAccount.setText("");
 			}
 		});
-		
+
 		transToBtnEnter.setBounds(290, 228, 89, 23);
 		transToJPanel.add(transToBtnEnter);
 
@@ -609,7 +609,7 @@ public class GUI {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
 			}
 		});
-		
+
 		transFromBtnEnter.setBounds(296, 228, 89, 23);
 		transFromJPanel.add(transFromBtnEnter);
 
@@ -629,7 +629,7 @@ public class GUI {
 				layout.show(frame.getContentPane(), LOGIN_PANEL);
 			}
 		});
-		
+
 		regBtnBack.setBounds(55, 225, 65, 25);
 		registerJPanel.add(regBtnBack);
 
@@ -639,58 +639,58 @@ public class GUI {
 			@SuppressWarnings("deprecation")
 
 			public void actionPerformed(ActionEvent e) {
-				
-				if ((regPassword.getText().trim().isEmpty()
-						|| regPasswordRepeat.getText().isEmpty()
-						|| regTxtUsername.getText().trim().isEmpty()
-						|| regTxtFirstName.getText().trim().isEmpty()
+
+				if ((regPassword.getText().trim().isEmpty() || regPasswordRepeat.getText().isEmpty()
+						|| regTxtUsername.getText().trim().isEmpty() || regTxtFirstName.getText().trim().isEmpty()
 						|| regTxtLastName.getText().trim().isEmpty())) {
 					JOptionPane.showMessageDialog(null, "Dude. Put stuff in the text box. Kind of the point", "bruh",
 							JOptionPane.ERROR_MESSAGE);
-				 
+
 				} else if (regPassword.getText().equals(regPasswordRepeat.getText())) {
-					
+
 					String username = regTxtUsername.getText();
 					String firstName = regTxtFirstName.getText();
 					String lastName = regTxtLastName.getText();
 					String password = regPassword.getText();
-					
-					if(!isPasswordsecure(password)) {
-						JOptionPane.showMessageDialog(null, "ERROR: Password did not meet one of the following fields: 1+ capital, 1+ lowercase "
-								+ "9+ characters. NOTE: PASSWORDS STARTING WITH 12345 IS A LAZY PASS FOR TESTING");
-								}
-					
-					else if (createAcc(username, DEFAULT_MONEY_VALUE, firstName, lastName, generateAccNum(), password)) {
-						
+
+					if (!isPasswordsecure(password)) {
+						JOptionPane.showMessageDialog(null,
+								"ERROR: Password did not meet one of the following fields: 1+ capital, 1+ lowercase "
+										+ "9+ characters. NOTE: PASSWORDS STARTING WITH 12345 IS A LAZY PASS FOR TESTING");
+					}
+
+					else if (createAcc(username, DEFAULT_MONEY_VALUE, firstName, lastName, generateAccNum(),
+							password)) {
+
 						// Add password argument to BankAccount constructor
 						// Update createAcc to accept the parameter
-						
+
 						layout.show(frame.getContentPane(), LOGIN_PANEL);
 						JOptionPane.showMessageDialog(null, "Account Created Successfuly", "Account Creation Success",
 								JOptionPane.PLAIN_MESSAGE);
-							
-							//add pass clears
+
+						// add pass clears
 					} else {
 						layout.show(frame.getContentPane(), REGISTER_PANEL);
 						JOptionPane.showMessageDialog(null,
 								"Error: Username already in use. Try adding some abbritrary "
 										+ "numbers no one likes to the end",
 								"Account Creation Error", JOptionPane.ERROR_MESSAGE);
-							
-							// add pass clears
+
+						// add pass clears
 					}
 				} else {
 					layout.show(frame.getContentPane(), REGISTER_PANEL);
 					JOptionPane.showMessageDialog(null, "Error: Passwords Don't match. Please try again",
 							"Account Creation Error", JOptionPane.ERROR_MESSAGE);
 				}
-				
+
 				regPassword.setText("");
 				regPasswordRepeat.setText("");
-				
+
 			}
 		});
-		
+
 		regBtnCreate.setBounds(130, 225, 200, 25);
 		registerJPanel.add(regBtnCreate);
 
@@ -736,10 +736,10 @@ public class GUI {
 		regLblUsername.setHorizontalAlignment(SwingConstants.RIGHT);
 		regLblUsername.setBounds(46, 43, 74, 14);
 		registerJPanel.add(regLblUsername);
-		
+
 		JPanel resetPasswordPanel = new JPanel();
 		frame.getContentPane().add(resetPasswordPanel, "name_2314993320963");
-		
+
 		JPanel mainJPanel = new JPanel();
 		frame.getContentPane().add(mainJPanel, CHOICE_PANEL);
 		GridBagLayout gbl_mainJPanel = new GridBagLayout();
@@ -751,14 +751,15 @@ public class GUI {
 
 		mainBtnWithdraw = new JButton("Withdraw");
 
-		// displays the withdraw panel when the withdraw button is pressed on the main panel
+		// displays the withdraw panel when the withdraw button is pressed on the main
+		// panel
 		mainBtnWithdraw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), WITHDRAW_PANEL);
 				withdrawTxtAmount.setText("");
 			}
 		});
-		
+
 		GridBagConstraints gbc_mainBtnWithdraw = new GridBagConstraints();
 		gbc_mainBtnWithdraw.fill = GridBagConstraints.BOTH;
 		gbc_mainBtnWithdraw.insets = new Insets(0, 3, 3, 3);
@@ -766,9 +767,10 @@ public class GUI {
 		gbc_mainBtnWithdraw.gridy = 1;
 		mainJPanel.add(mainBtnWithdraw, gbc_mainBtnWithdraw);
 
-		// displays the balance (maybe in a popup later) when the button is pressed on the main panel
+		// displays the balance (maybe in a popup later) when the button is pressed on
+		// the main panel
 		JButton mainBtnBalance = new JButton("Get Balance");
-		
+
 		mainBtnBalance.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), GETBALANCE_PANEL);
@@ -784,7 +786,7 @@ public class GUI {
 				layout.show(frame.getContentPane(), DEPOSIT_PANEL);
 			}
 		});
-		
+
 		GridBagConstraints gbc_mainBtnDeposit = new GridBagConstraints();
 		gbc_mainBtnDeposit.fill = GridBagConstraints.BOTH;
 		gbc_mainBtnDeposit.insets = new Insets(0, 3, 3, 3);
@@ -805,7 +807,7 @@ public class GUI {
 				layout.show(frame.getContentPane(), EMPTYACCOUNT_PANEL);
 			}
 		});
-		
+
 		GridBagConstraints gbc_mainBtnEmpty = new GridBagConstraints();
 		gbc_mainBtnEmpty.fill = GridBagConstraints.BOTH;
 		gbc_mainBtnEmpty.insets = new Insets(3, 3, 0, 3);
@@ -814,13 +816,13 @@ public class GUI {
 		mainJPanel.add(mainBtnEmpty, gbc_mainBtnEmpty);
 
 		JButton mainBtnGetMessages = new JButton("Read Messages");
-			mainBtnGetMessages.addActionListener(new ActionListener() {
+		mainBtnGetMessages.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				messageTxtAMessage.setText(ba.get(index).getMessage());
 				layout.show(frame.getContentPane(), MESSAGES_PANEL);
 			}
 		});
-			
+
 		// displays the transfer to panel when the button is pressed on the main panel
 		JButton mainBtnTransTo = new JButton("Transfer To");
 		mainBtnTransTo.addActionListener(new ActionListener() {
@@ -844,7 +846,7 @@ public class GUI {
 				layout.show(frame.getContentPane(), TRANSFERFROM_PANEL);
 			}
 		});
-		
+
 		GridBagConstraints gbc_mainBtnTransFrom = new GridBagConstraints();
 		gbc_mainBtnTransFrom.fill = GridBagConstraints.HORIZONTAL;
 		gbc_mainBtnTransFrom.insets = new Insets(0, 3, 3, 3);
@@ -857,31 +859,33 @@ public class GUI {
 		gbc_mainBtnGetPassword.gridx = 1;
 		gbc_mainBtnGetPassword.gridy = 4;
 		mainJPanel.add(mainBtnGetPassword, gbc_mainBtnGetPassword);
-
-		// DELETE; IS REDUNDANT. SAME AS GETPASSWORD
-		JButton mainBtnCheckPassword = new JButton("Check Password");
-		mainBtnCheckPassword.addActionListener(new ActionListener() {
+		
+		JButton mainBtnAccDetails = new JButton("Account Details");
+		mainBtnAccDetails.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				layout.show(frame.getContentPane(), CHECKPASSWORD_PANEL);
+				accDetailsLblAccNumValue.setText(String.valueOf(ba.get(index).getAccountNum()));
+				accDetailsLblBalanceValue.setText(String.valueOf(ba.get(index).getBalance()));
+				accDetailsLblFirstNameValue.setText(ba.get(index).getFirstName());
+				accDetailsLblLastNameValue.setText(ba.get(index).getLastName());
+				layout.show(frame.getContentPane(), ACCOUNTDETAILS_PANEL);
 			}
 		});
-		
-		GridBagConstraints gbc_mainBtnCheckPassword = new GridBagConstraints();
-		gbc_mainBtnCheckPassword.anchor = GridBagConstraints.NORTH;
-		gbc_mainBtnCheckPassword.fill = GridBagConstraints.HORIZONTAL;
-		gbc_mainBtnCheckPassword.insets = new Insets(0, 3, 3, 3);
-		gbc_mainBtnCheckPassword.gridx = 2;
-		gbc_mainBtnCheckPassword.gridy = 4;
-		mainJPanel.add(mainBtnCheckPassword, gbc_mainBtnCheckPassword);
 
-		// displays the reset password panel when the button is pressed on the main panel
+		GridBagConstraints gbc_mainBtnAccDetails = new GridBagConstraints();		
+		gbc_mainBtnAccDetails.anchor = GridBagConstraints.NORTH;
+		gbc_mainBtnAccDetails.fill = GridBagConstraints.HORIZONTAL;
+		gbc_mainBtnAccDetails.insets = new Insets(0, 3, 3, 3);
+		gbc_mainBtnAccDetails.gridx = 2;
+		gbc_mainBtnAccDetails.gridy = 4;
+		mainJPanel.add(mainBtnAccDetails, gbc_mainBtnAccDetails);
+		
 		JButton mainBtnResetPassword = new JButton("Reset Password");
 		mainBtnResetPassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), RESETPASSWORD_PANEL);
 			}
 		});
-		
+
 		GridBagConstraints gbc_mainBtnResetPassword = new GridBagConstraints();
 		gbc_mainBtnResetPassword.insets = new Insets(3, 3, 0, 3);
 		gbc_mainBtnResetPassword.fill = GridBagConstraints.HORIZONTAL;
