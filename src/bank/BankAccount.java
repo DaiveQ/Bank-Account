@@ -22,7 +22,7 @@ public class BankAccount {
 	// date format for use with messages for timestamps
 	SimpleDateFormat datef = new SimpleDateFormat("dd/MM/YYYY HH:mm");
 
-	DecimalFormat df = new DecimalFormat("#. 00");
+	DecimalFormat df = new DecimalFormat("#0. 00");
 
 	BankAccount(String uName, double amt, String fName, String lName, int acctNum) {
 		this.username = uName;
@@ -101,10 +101,10 @@ public class BankAccount {
 		amount = roundDecimals(amount);
 		if (amount > 0) {
 			this.balance += amount;
-			message += getTime() + "A deposit of $" + df.format(amount) + " has been made.\n";
+			message += getTime() + "A deposit of $" + df.format(amount) + " made.\n";
 			return true;
 		} else {
-			message += getTime() + "Deposit unsucsessful - invalid amount\n";
+			message += getTime() + "Deposit failed - Invalid amount\n";
 			return false;
 		}
 
@@ -112,14 +112,19 @@ public class BankAccount {
 
 	boolean withdraw(double amount) {
 		amount = roundDecimals(amount);
-		if (amount > balance && amount > 0) {
-			message += getTime() + "Withdrawl of $" + df.format(amount) + " failed. Check balance and try again";
+		if (amount < 0) {
+			message += getTime() + "Withdrawl failed - Invalid amount\n";
 			return false;
-		}
-
-		else {
+		} else if (balance - amount < -1000) {
+			message += getTime() + "Withdrawl of $" + df.format(amount) + "failed. Overdraft limit reached\n";
+			return false;
+		} else if (amount > balance){
+			this.balance -= amount + 25.0;
+			message += getTime() + "Withdrawl of $" + df.format(amount) + " made. Overdraft fee of $25 added\n";
+			return true;
+		} else {
 			this.balance -= amount;
-			message += getTime() + "Withdrawl of $" + df.format(amount) + " has been made.\n";
+			message += getTime() + "Withdrawl of $" + df.format(amount) + " made.\n";
 			return true;
 		}
 	}
