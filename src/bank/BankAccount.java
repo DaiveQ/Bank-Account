@@ -50,7 +50,7 @@ public class BankAccount {
 	}
 
 	private double roundDecimals(double num) {
-		return Math.round(num * 100.0) / 100;
+		return (Math.round(num * 100.0) / 100.0);
 	}
 
 	private String getTime() {
@@ -118,6 +118,7 @@ public class BankAccount {
 		}
 
 		else {
+			this.balance -= amount;
 			message += getTime() + "Withdrawl of $" + df.format(amount) + " has been made.\n";
 			return true;
 		}
@@ -135,8 +136,8 @@ public class BankAccount {
 			return true;
 
 		} else {
-			message += getTime() + "Overdraft during transfer occured. Transaction not processed. "
-					+ "Please contact us for more information. A fee of $25 was applied\n";
+			message += getTime() + "Overdraft during transfer occured. Transaction not processed.\n"
+					+ DIVIDER + "Please contact us for more information. A fee of $25 was applied\n";
 			return false;
 		}
 	}
@@ -148,7 +149,6 @@ public class BankAccount {
 		if (balance >= amount) {
 			deposit(amount);
 			otherAcct.withdraw(amount);
-
 			message += getTime() + "Transfer of $" + amount + " from account " + accountNum + " complete.\n";
 			return true;
 		}
