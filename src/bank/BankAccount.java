@@ -118,7 +118,7 @@ public class BankAccount {
 		} else if (balance - amount < -1000) {
 			message += getTime() + "Withdrawl of $" + df.format(amount) + "failed. Overdraft limit reached\n";
 			return false;
-		} else if (amount > balance){
+		} else if (amount > balance) {
 			this.balance -= amount + 25.0;
 			message += getTime() + "Withdrawl of $" + df.format(amount) + " made. Overdraft fee of $25 added\n";
 			return true;
@@ -134,27 +134,28 @@ public class BankAccount {
 		amount = roundDecimals(amount);
 
 		if (amount >= balance && balance > 0) {
+			message += DIVIDER + "Transfer To: " + otherAcc.getAccountNum();
+			otherAcc.message += DIVIDER + "Transfer From: " + this.accountNum;
 			otherAcc.deposit(amount);
 			withdraw(amount);
-			message += getTime() + "Transfer of $" + df.format(amount) + " to account " + otherAcc.accountNum
-					+ " has been complete\n";
 			return true;
 
 		} else {
-			message += getTime() + "Overdraft during transfer occured. Transaction not processed.\n"
-					+ DIVIDER + "Please contact us for more information. A fee of $25 was applied\n";
+			message += getTime() + "Overdraft during transfer occured. Transaction not processed.\n" + DIVIDER
+					+ "Please contact us for more information. A fee of $25 was applied\n";
 			return false;
 		}
 	}
 
 	// transfers money from another account to the user
-	boolean transferFrom(double amount, BankAccount otherAcct, String pswd) {
+	boolean transferFrom(double amount, BankAccount otherAcc, String pswd) {
 		amount = roundDecimals(amount);
 
-		if (balance >= amount) {
+		if (balance >= amount && balance > 0) {
+			message += DIVIDER + "Transfer From: " + otherAcc.getAccountNum();
+			otherAcc.message += DIVIDER + "Transfer To: " + this.accountNum;
 			deposit(amount);
-			otherAcct.withdraw(amount);
-			message += getTime() + "Transfer of $" + amount + " from account " + accountNum + " complete.\n";
+			otherAcc.withdraw(amount);
 			return true;
 		}
 
