@@ -24,20 +24,21 @@ public class BankAccount {
 
 	DecimalFormat df = new DecimalFormat("#0. 00");
 
-	BankAccount(String uName, double amt, String fName, String lName, int acctNum) {
+	BankAccount(String uName, double amt, String fName, String lName, int accNum) {
 		this.username = uName;
 		this.balance = amt;
 		this.firstName = fName;
 		this.lastName = lName;
+		this.accountNum = accNum;
 		this.password = setPassword();
 	}
 
-	BankAccount(String uName, double amt, String fName, String lName, int acctNum, String password) {
+	BankAccount(String uName, double amt, String fName, String lName, int accNum, String password) {
 		this.username = uName;
 		this.balance = amt;
 		this.firstName = fName;
 		this.lastName = lName;
-		this.accountNum = acctNum;
+		this.accountNum = accNum;
 		this.password = password;
 	}
 

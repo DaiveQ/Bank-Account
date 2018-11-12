@@ -182,15 +182,15 @@ public class GUI {
 				return false;
 		}
 
-		// adds accont
+		// adds account
 		ba.add(new BankAccount(username, amt, fName, lName, acctNum, password));
 		return true;
 	}
 
 	private static void createTestAccount() {
-		ba.add(new BankAccount("12345", 1000, "123", "45", 1));
-		ba.add(new BankAccount("Ricky", 1000, "Ricky", "Lin", 2));
-		ba.add(new BankAccount("1", 12, "John", "Doe", 3, "1"));
+		ba.add(new BankAccount("12345", 123456.78, "123", "45", 1));
+		ba.add(new BankAccount("Ricky", 1234.56, "Ricky", "Lin", 2));
+		ba.add(new BankAccount("1", 12.34, "John", "Doe", 3, "1"));
 	}
 
 	private void initialize() {
