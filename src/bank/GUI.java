@@ -65,7 +65,6 @@ public class GUI {
 	private JTextField transToTxtAmount;
 	private JTextField transToTxtOtherAccount;
 	private JPasswordField transFromPassword;
-	private JTextField transFromTxtBankAccount;
 	private JTextField transFromTxtOtherAccount;
 	private JTextField transFromTxtAmount;
 	private JTextField regTxtFirstName;
@@ -580,23 +579,23 @@ public class GUI {
 		transToJPanel.setLayout(null);
 
 		transToTxtAmount = new JTextField();
-		transToTxtAmount.setBounds(129, 49, 202, 20);
+		transToTxtAmount.setBounds(129, 149, 202, 20);
 		transToJPanel.add(transToTxtAmount);
 		transToTxtAmount.setColumns(10);
 
 		transToTxtOtherAccount = new JTextField();
-		transToTxtOtherAccount.setBounds(129, 119, 202, 20);
+		transToTxtOtherAccount.setBounds(129, 75, 202, 20);
 		transToJPanel.add(transToTxtOtherAccount);
 		transToTxtOtherAccount.setColumns(10);
 
 		JLabel transToLblAmount = new JLabel("Amount:");
 		transToLblAmount.setHorizontalAlignment(SwingConstants.TRAILING);
-		transToLblAmount.setBounds(53, 51, 66, 17);
+		transToLblAmount.setBounds(52, 151, 66, 17);
 		transToJPanel.add(transToLblAmount);
 
 		JLabel transToLblOtherAccount = new JLabel("Other Account:");
 		transToLblOtherAccount.setHorizontalAlignment(SwingConstants.TRAILING);
-		transToLblOtherAccount.setBounds(24, 122, 95, 14);
+		transToLblOtherAccount.setBounds(25, 78, 95, 14);
 		transToJPanel.add(transToLblOtherAccount);
 
 		JButton transToBtnEnter = new JButton("Enter");
@@ -641,49 +640,38 @@ public class GUI {
 		transFromJPanel.setLayout(null);
 
 		transFromPassword = new JPasswordField();
-		transFromPassword.setBounds(131, 187, 200, 20);
+		transFromPassword.setBounds(131, 170, 200, 20);
 		transFromJPanel.add(transFromPassword);
 
-		transFromTxtBankAccount = new JTextField();
-		transFromTxtBankAccount.setBounds(131, 37, 200, 20);
-		transFromJPanel.add(transFromTxtBankAccount);
-		transFromTxtBankAccount.setColumns(10);
-
 		transFromTxtOtherAccount = new JTextField();
-		transFromTxtOtherAccount.setBounds(131, 87, 200, 20);
+		transFromTxtOtherAccount.setBounds(131, 50, 200, 20);
 		transFromJPanel.add(transFromTxtOtherAccount);
 		transFromTxtOtherAccount.setColumns(10);
 
 		transFromTxtAmount = new JTextField();
-		transFromTxtAmount.setBounds(131, 137, 200, 20);
+		transFromTxtAmount.setBounds(131, 110, 200, 20);
 		transFromJPanel.add(transFromTxtAmount);
 		transFromTxtAmount.setColumns(10);
 
-		JLabel transFromLblBankAccount = new JLabel("Bank Account:");
-		transFromLblBankAccount.setHorizontalAlignment(SwingConstants.TRAILING);
-		transFromLblBankAccount.setBounds(39, 40, 82, 14);
-		transFromJPanel.add(transFromLblBankAccount);
-
 		JLabel transFromLblOtherAccount = new JLabel("Other Account:");
 		transFromLblOtherAccount.setHorizontalAlignment(SwingConstants.TRAILING);
-		transFromLblOtherAccount.setBounds(21, 90, 100, 14);
+		transFromLblOtherAccount.setBounds(21, 51, 100, 14);
 		transFromJPanel.add(transFromLblOtherAccount);
 
 		JLabel transFromLblAmount = new JLabel("Amount:");
 		transFromLblAmount.setHorizontalAlignment(SwingConstants.TRAILING);
-		transFromLblAmount.setBounds(39, 140, 82, 14);
+		transFromLblAmount.setBounds(39, 108, 82, 14);
 		transFromJPanel.add(transFromLblAmount);
 
 		JLabel transFromTxtPassword = new JLabel("Password:");
 		transFromTxtPassword.setHorizontalAlignment(SwingConstants.TRAILING);
-		transFromTxtPassword.setBounds(39, 190, 82, 14);
+		transFromTxtPassword.setBounds(39, 173, 82, 14);
 		transFromJPanel.add(transFromTxtPassword);
 
 		JButton transFromBtnEnter = new JButton("Enter");
 		transFromBtnEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
-				transFromTxtBankAccount.setText("");
 				transFromTxtOtherAccount.setText("");
 				transFromTxtAmount.setText("");
 				transFromPassword.setText("");
