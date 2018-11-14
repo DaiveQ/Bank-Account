@@ -173,8 +173,7 @@ public class BankAccount {
 		return false;
 	}
 
-	//
-	boolean resetPassword(String currentPassword, String newPassword) {
+	boolean changePassword(String currentPassword, String newPassword) {
 		if (checkPassword(currentPassword)) {
 			password = newPassword;
 			message += getTime() + "Password succesfully changed\n";
