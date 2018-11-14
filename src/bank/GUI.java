@@ -36,7 +36,7 @@ public class GUI {
 
 	// Also give functionality to Transfer To/From
 
-	private JFrame frame;
+	private JFrame frmBankAccount;
 	CardLayout layout = new CardLayout(0, 0);
 
 	private static List<BankAccount> ba = new ArrayList<BankAccount>();
@@ -80,7 +80,7 @@ public class GUI {
 			public void run() {
 				try {
 					GUI window = new GUI();
-					window.frame.setVisible(true);
+					window.frmBankAccount.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -194,14 +194,15 @@ public class GUI {
 
 	private void initialize() {
 
-		frame = new JFrame();
-		frame.setAlwaysOnTop(true);
-		frame.setBounds(100, 100, 450, 300);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.getContentPane().setLayout(layout);
+		frmBankAccount = new JFrame();
+		frmBankAccount.setTitle("Bank Account");
+		frmBankAccount.setAlwaysOnTop(true);
+		frmBankAccount.setBounds(100, 100, 450, 300);
+		frmBankAccount.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmBankAccount.getContentPane().setLayout(layout);
 
 		JPanel loginJPanel = new JPanel();
-		frame.getContentPane().add(loginJPanel, LOGIN_PANEL);
+		frmBankAccount.getContentPane().add(loginJPanel, LOGIN_PANEL);
 		GridBagLayout gbl_loginJPanel = new GridBagLayout();
 		gbl_loginJPanel.columnWidths = new int[] { 75, 74, 107, 0 };
 		gbl_loginJPanel.rowHeights = new int[] { 91, 21, 20, 23, 0, 0, 0 };
@@ -254,7 +255,7 @@ public class GUI {
 				setBankAccountIndex(loginTxtUsername.getText());
 
 				if (ba.get(index).checkPassword(loginPassword.getText())) {
-					layout.show(frame.getContentPane(), CHOICE_PANEL);
+					layout.show(frmBankAccount.getContentPane(), CHOICE_PANEL);
 				} else {
 					JOptionPane.showMessageDialog(null, "Wrong Password or Username. Please try again.", "Login Error",
 							JOptionPane.ERROR_MESSAGE);
@@ -314,7 +315,7 @@ public class GUI {
 				loginTxtUsername.setText("");
 				loginPassword.setText("");
 
-				layout.show(frame.getContentPane(), REGISTER_PANEL);
+				layout.show(frmBankAccount.getContentPane(), REGISTER_PANEL);
 			}
 		});
 
@@ -324,7 +325,7 @@ public class GUI {
 		loginJPanel.add(loginBtnRegister, gbc_loginBtnRegister);
 
 		JPanel withdrawJPanel = new JPanel();
-		frame.getContentPane().add(withdrawJPanel, WITHDRAW_PANEL);
+		frmBankAccount.getContentPane().add(withdrawJPanel, WITHDRAW_PANEL);
 		withdrawJPanel.setLayout(null);
 
 		withdrawTxtAmount = new JTextField();
@@ -353,7 +354,7 @@ public class GUI {
 								JOptionPane.ERROR_MESSAGE);
 					}
 					withdrawTxtAmount.setText("");
-					layout.show(frame.getContentPane(), CHOICE_PANEL);
+					layout.show(frmBankAccount.getContentPane(), CHOICE_PANEL);
 				}
 			}
 		});
@@ -380,7 +381,7 @@ public class GUI {
 
 		withdrawBtnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), CHOICE_PANEL);
+				layout.show(frmBankAccount.getContentPane(), CHOICE_PANEL);
 			}
 		});
 
@@ -389,7 +390,7 @@ public class GUI {
 
 		JPanel depositJPanel = new JPanel();
 		depositJPanel.setBackground(new Color(240, 240, 240));
-		frame.getContentPane().add(depositJPanel, DEPOSIT_PANEL);
+		frmBankAccount.getContentPane().add(depositJPanel, DEPOSIT_PANEL);
 		depositJPanel.setLayout(null);
 
 		depositTxtAmount = new JTextField();
@@ -411,7 +412,7 @@ public class GUI {
 								JOptionPane.ERROR_MESSAGE);
 					}
 					depositTxtAmount.setText("");
-					layout.show(frame.getContentPane(), CHOICE_PANEL);
+					layout.show(frmBankAccount.getContentPane(), CHOICE_PANEL);
 				}
 			}
 		});
@@ -428,7 +429,7 @@ public class GUI {
 		JButton depositBtnBack = new JButton("Back");
 		depositBtnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), CHOICE_PANEL);
+				layout.show(frmBankAccount.getContentPane(), CHOICE_PANEL);
 			}
 		});
 		depositBtnBack.setBounds(335, 227, 89, 23);
@@ -450,13 +451,13 @@ public class GUI {
 		});
 
 		JPanel accDetailJPanel = new JPanel();
-		frame.getContentPane().add(accDetailJPanel, ACCOUNTDETAIL_PANEL);
+		frmBankAccount.getContentPane().add(accDetailJPanel, ACCOUNTDETAIL_PANEL);
 		accDetailJPanel.setLayout(null);
 
 		JButton accDetailBack = new JButton("Back");
 		accDetailBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), CHOICE_PANEL);
+				layout.show(frmBankAccount.getContentPane(), CHOICE_PANEL);
 			}
 		});
 
@@ -484,40 +485,41 @@ public class GUI {
 		accDetailJPanel.add(accDetailLblLastName);
 
 		JLabel accDetailLblAccNumValue = new JLabel();
+		accDetailLblAccNumValue.setText("ACCOUNT NUMBER SET IN CODE");
 		accDetailLblAccNumValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		accDetailLblAccNumValue.setBounds(149, 50, 226, 20);
 		accDetailJPanel.add(accDetailLblAccNumValue);
 
-		JLabel accDetailLblBalanceValue = new JLabel("");
+		JLabel accDetailLblBalanceValue = new JLabel("BALANCE SET IN CODE");
 		accDetailLblBalanceValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		accDetailLblBalanceValue.setBounds(149, 84, 226, 20);
 		accDetailJPanel.add(accDetailLblBalanceValue);
 
-		JLabel accDetailLblFirstNameValue = new JLabel("");
+		JLabel accDetailLblFirstNameValue = new JLabel("FIRST NAME SET IN CODE");
 		accDetailLblFirstNameValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		accDetailLblFirstNameValue.setBounds(149, 119, 226, 20);
 		accDetailJPanel.add(accDetailLblFirstNameValue);
 
-		JLabel accDetailLblLastNameValue = new JLabel("");
+		JLabel accDetailLblLastNameValue = new JLabel("LAST NAME SET IN CODE");
 		accDetailLblLastNameValue.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		accDetailLblLastNameValue.setBounds(149, 154, 226, 20);
 		accDetailJPanel.add(accDetailLblLastNameValue);
 
 		JPanel emptyJPanel = new JPanel();
-		frame.getContentPane().add(emptyJPanel, EMPTYACCOUNT_PANEL);
+		frmBankAccount.getContentPane().add(emptyJPanel, EMPTYACCOUNT_PANEL);
 		emptyJPanel.setLayout(null);
 
 		JButton emptyBtnBack = new JButton("Back");
 		emptyBtnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), CHOICE_PANEL);
+				layout.show(frmBankAccount.getContentPane(), CHOICE_PANEL);
 			}
 		});
 
 		emptyBtnBack.setBounds(335, 227, 89, 23);
 		emptyJPanel.add(emptyBtnBack);
 
-		JLabel emptyLblMessage = new JLabel("");
+		JLabel emptyLblMessage = new JLabel("CLEARED WHEN OPENED AND SET IN CODE");
 		emptyLblMessage.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		emptyLblMessage.setBounds(10, 227, 264, 23);
 		emptyJPanel.add(emptyLblMessage);
@@ -525,8 +527,22 @@ public class GUI {
 		JButton emptyBtnEmptyAcc = new JButton("EMPTY ACCOUNT");
 		emptyBtnEmptyAcc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ba.get(index).emptyAccount();
-				emptyLblMessage.setText("So much for \"leaving something for a rainy day\"...");
+				
+				// confirmation on wheter or not to empty account
+				int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to empty your account?", 
+						"Are you sure?", JOptionPane.YES_NO_OPTION);
+				
+				if(response == JOptionPane.YES_OPTION) {
+					
+					// empties account, sets the small message and shames user for not being responsible
+					ba.get(index).emptyAccount();
+					emptyLblMessage.setText("So much for \"leaving something for a rainy day\"...");
+					JOptionPane.showMessageDialog(null, "Shame on you!", "SHAME", JOptionPane.PLAIN_MESSAGE);
+				} else {
+					// cancels operation, but shames the user anyways for pressing it in the first place
+					JOptionPane.showMessageDialog(null, "Operation has been canceled. You still pressed it in the first place so shame on you.", 
+							"SHAME", JOptionPane.PLAIN_MESSAGE);
+				}
 			}
 		});
 		emptyBtnEmptyAcc.setFont(new Font("Tahoma", Font.PLAIN, 35));
@@ -534,13 +550,13 @@ public class GUI {
 		emptyJPanel.add(emptyBtnEmptyAcc);
 
 		JPanel messageJPanel = new JPanel();
-		frame.getContentPane().add(messageJPanel, MESSAGES_PANEL);
+		frmBankAccount.getContentPane().add(messageJPanel, MESSAGES_PANEL);
 		messageJPanel.setLayout(new BorderLayout(0, 0));
 
 		JButton messageBtnBack = new JButton("Back");
 		messageBtnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				layout.show(frame.getContentPane(), CHOICE_PANEL);
+				layout.show(frmBankAccount.getContentPane(), CHOICE_PANEL);
 
 			}
 		});
@@ -552,30 +568,32 @@ public class GUI {
 		messageJPanel.add(messageScrollPane, BorderLayout.NORTH);
 
 		JTextArea messageTxtAMessage = new JTextArea(13, 10);
-		messageTxtAMessage.setText("");
+		messageTxtAMessage.setText("MESSAGE SET IN CODE");
 		messageTxtAMessage.setEditable(false);
 		messageScrollPane.setViewportView(messageTxtAMessage);
 
 		JPanel getBalance = new JPanel();
-		frame.getContentPane().add(getBalance, GETBALANCE_PANEL);
+		frmBankAccount.getContentPane().add(getBalance, GETBALANCE_PANEL);
 		getBalance.setLayout(null);
 
 		JButton getBalanceBtnBack = new JButton("Back");
 		getBalanceBtnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), CHOICE_PANEL);
+				layout.show(frmBankAccount.getContentPane(), CHOICE_PANEL);
 			}
 		});
 
 		getBalanceBtnBack.setBounds(335, 228, 89, 23);
 		getBalance.add(getBalanceBtnBack);
 
-		JLabel getBalanceLblBalance = new JLabel("Return Balance Here:");
-		getBalanceLblBalance.setBounds(120, 55, 246, 23);
+		JLabel getBalanceLblBalance = new JLabel("BALANCE SET IN CODE");
+		getBalanceLblBalance.setHorizontalAlignment(SwingConstants.CENTER);
+		getBalanceLblBalance.setFont(new Font("Comic Sans MS", Font.PLAIN, 35));
+		getBalanceLblBalance.setBounds(10, 11, 414, 207);
 		getBalance.add(getBalanceLblBalance);
 
 		JPanel transToJPanel = new JPanel();
-		frame.getContentPane().add(transToJPanel, TRANSFERTO_PANEL);
+		frmBankAccount.getContentPane().add(transToJPanel, TRANSFERTO_PANEL);
 		transToJPanel.setLayout(null);
 
 		transToTxtAmount = new JTextField();
@@ -606,15 +624,15 @@ public class GUI {
 				} else if (setOtherAccountIndex(Integer.valueOf(transToTxtOtherAccount.getText()))) {
 					if (ba.get(index).transferTo(Double.valueOf(transToTxtAmount.getText()), ba.get(otherIndex))) {
 						JOptionPane.showMessageDialog(null, "Transfer Success", "Success", JOptionPane.PLAIN_MESSAGE);
-						layout.show(frame.getContentPane(), CHOICE_PANEL);
+						layout.show(frmBankAccount.getContentPane(), CHOICE_PANEL);
 					} else {
 						JOptionPane.showMessageDialog(null, "Transfer Failed", "Failed", JOptionPane.ERROR_MESSAGE);
-						layout.show(frame.getContentPane(), CHOICE_PANEL);
+						layout.show(frmBankAccount.getContentPane(), CHOICE_PANEL);
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "Transfer Failed - Other Account Doesn't Exist", "Failed",
 							JOptionPane.ERROR_MESSAGE);
-					layout.show(frame.getContentPane(), CHOICE_PANEL);
+					layout.show(frmBankAccount.getContentPane(), CHOICE_PANEL);
 				}
 
 				transToTxtAmount.setText("");
@@ -629,14 +647,14 @@ public class GUI {
 		transToBtnBack.addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), CHOICE_PANEL);
+				layout.show(frmBankAccount.getContentPane(), CHOICE_PANEL);
 			}
 		});
 		transToBtnBack.setBounds(335, 227, 89, 23);
 		transToJPanel.add(transToBtnBack);
 
 		JPanel transFromJPanel = new JPanel();
-		frame.getContentPane().add(transFromJPanel, TRANSFERFROM_PANEL);
+		frmBankAccount.getContentPane().add(transFromJPanel, TRANSFERFROM_PANEL);
 		transFromJPanel.setLayout(null);
 
 		transFromPassword = new JPasswordField();
@@ -671,7 +689,7 @@ public class GUI {
 		JButton transFromBtnEnter = new JButton("Enter");
 		transFromBtnEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), CHOICE_PANEL);
+				layout.show(frmBankAccount.getContentPane(), CHOICE_PANEL);
 				transFromTxtOtherAccount.setText("");
 				transFromTxtAmount.setText("");
 				transFromPassword.setText("");
@@ -686,7 +704,7 @@ public class GUI {
 
 		transFromBtnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), CHOICE_PANEL);
+				layout.show(frmBankAccount.getContentPane(), CHOICE_PANEL);
 			}
 		});
 
@@ -695,7 +713,7 @@ public class GUI {
 
 		JPanel registerJPanel = new JPanel();
 
-		frame.getContentPane().add(registerJPanel, REGISTER_PANEL);
+		frmBankAccount.getContentPane().add(registerJPanel, REGISTER_PANEL);
 		registerJPanel.setLayout(null);
 
 		JLabel regLblFirstName = new JLabel("First Name");
@@ -707,7 +725,7 @@ public class GUI {
 		regBtnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				layout.show(frame.getContentPane(), LOGIN_PANEL);
+				layout.show(frmBankAccount.getContentPane(), LOGIN_PANEL);
 				regTxtUsername.setText("");
 				regTxtFirstName.setText("");
 				regTxtLastName.setText("");
@@ -750,13 +768,13 @@ public class GUI {
 						// Add password argument to BankAccount constructor
 						// Update createAcc to accept the parameter
 
-						layout.show(frame.getContentPane(), LOGIN_PANEL);
+						layout.show(frmBankAccount.getContentPane(), LOGIN_PANEL);
 						JOptionPane.showMessageDialog(null, "Account Created Successfuly", "Account Creation Success",
 								JOptionPane.PLAIN_MESSAGE);
 
 						// add pass clears
 					} else {
-						layout.show(frame.getContentPane(), REGISTER_PANEL);
+						layout.show(frmBankAccount.getContentPane(), REGISTER_PANEL);
 						JOptionPane.showMessageDialog(null,
 								"Error: Username already in use. Try adding some abbritrary "
 										+ "numbers no one likes to the end",
@@ -765,7 +783,7 @@ public class GUI {
 						// add pass clears
 					}
 				} else {
-					layout.show(frame.getContentPane(), REGISTER_PANEL);
+					layout.show(frmBankAccount.getContentPane(), REGISTER_PANEL);
 					JOptionPane.showMessageDialog(null, "Error: Passwords Don't match. Please try again",
 							"Account Creation Error", JOptionPane.ERROR_MESSAGE);
 				}
@@ -820,7 +838,7 @@ public class GUI {
 		registerJPanel.add(regLblUsername);
 
 		JPanel mainJPanel = new JPanel();
-		frame.getContentPane().add(mainJPanel, CHOICE_PANEL);
+		frmBankAccount.getContentPane().add(mainJPanel, CHOICE_PANEL);
 		GridBagLayout gbl_mainJPanel = new GridBagLayout();
 		gbl_mainJPanel.columnWidths = new int[] { 138, 136, 133 };
 		gbl_mainJPanel.rowHeights = new int[] { 19, 75, 50, 23, 0, 0, 0 };
@@ -835,7 +853,7 @@ public class GUI {
 		mainBtnWithdraw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				withdrawTxtAmount.setText("");
-				layout.show(frame.getContentPane(), WITHDRAW_PANEL);
+				layout.show(frmBankAccount.getContentPane(), WITHDRAW_PANEL);
 			}
 		});
 
@@ -852,7 +870,7 @@ public class GUI {
 
 		mainBtnBalance.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), GETBALANCE_PANEL);
+				layout.show(frmBankAccount.getContentPane(), GETBALANCE_PANEL);
 				getBalanceLblBalance.setText("Balance: " + ba.get(index).getBalance());
 			}
 		});
@@ -862,7 +880,7 @@ public class GUI {
 		mainBtnDeposit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				depositTxtAmount.setText("");
-				layout.show(frame.getContentPane(), DEPOSIT_PANEL);
+				layout.show(frmBankAccount.getContentPane(), DEPOSIT_PANEL);
 			}
 		});
 
@@ -884,7 +902,7 @@ public class GUI {
 		mainBtnEmpty.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				emptyLblMessage.setText("");
-				layout.show(frame.getContentPane(), EMPTYACCOUNT_PANEL);
+				layout.show(frmBankAccount.getContentPane(), EMPTYACCOUNT_PANEL);
 			}
 		});
 
@@ -899,7 +917,7 @@ public class GUI {
 		mainBtnGetMessages.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				messageTxtAMessage.setText(ba.get(index).getMessage());
-				layout.show(frame.getContentPane(), MESSAGES_PANEL);
+				layout.show(frmBankAccount.getContentPane(), MESSAGES_PANEL);
 			}
 		});
 
@@ -907,7 +925,7 @@ public class GUI {
 		JButton mainBtnTransFrom = new JButton("Transfer From");
 		mainBtnTransFrom.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				layout.show(frame.getContentPane(), TRANSFERFROM_PANEL);
+				layout.show(frmBankAccount.getContentPane(), TRANSFERFROM_PANEL);
 			}
 		});
 
@@ -926,7 +944,7 @@ public class GUI {
 				accDetailLblFirstNameValue.setText(ba.get(index).getFirstName());
 				accDetailLblLastNameValue.setText(ba.get(index).getLastName());
 
-				layout.show(frame.getContentPane(), ACCOUNTDETAIL_PANEL);
+				layout.show(frmBankAccount.getContentPane(), ACCOUNTDETAIL_PANEL);
 			}
 		});
 
@@ -934,7 +952,7 @@ public class GUI {
 		JButton mainBtnTransTo = new JButton("Transfer To");
 		mainBtnTransTo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), TRANSFERTO_PANEL);
+				layout.show(frmBankAccount.getContentPane(), TRANSFERTO_PANEL);
 			}
 		});
 		GridBagConstraints gbc_mainBtnTransTo = new GridBagConstraints();
@@ -957,7 +975,7 @@ public class GUI {
 		JButton mainBtnResetPassword = new JButton("Reset Password");
 		mainBtnResetPassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), RESETPASSWORD_PANEL);
+				layout.show(frmBankAccount.getContentPane(), RESETPASSWORD_PANEL);
 			}
 		});
 
@@ -972,7 +990,7 @@ public class GUI {
 		JButton mainBtnGetPassword = new JButton("Get Password");
 		mainBtnGetPassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), GETPASSWORD_PANEL);
+				layout.show(frmBankAccount.getContentPane(), GETPASSWORD_PANEL);
 			}
 		});
 		GridBagConstraints gbc_mainBtnGetPassword = new GridBagConstraints();
