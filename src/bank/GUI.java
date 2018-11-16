@@ -97,13 +97,14 @@ public class GUI {
 		initialize();
 	}
 
-	private void setBankAccountIndex(String username) {
+	private boolean setBankAccountIndex(String username) {
 		for (int i = 0; i < ba.size(); i++) {
 			if (ba.get(i).getUsername().equals(username)) {
 				this.index = i;
-				return;
+				return true;
 			}
 		}
+		return false;
 	}
 
 	private boolean setOtherAccountIndex(int accNum) {
@@ -122,11 +123,10 @@ public class GUI {
 		// TESTING IF STATEMENT. PASSOWRDS STARTING WITH 12345
 		// WILL BE PASSED NO MATTER WHAT. DELETE THIS WHEN DONE
 		///////////////////////////////////////////////////////
-		if (pass.length() >= 5) {
-			if (pass.substring(0, 5).equals("12345"))
-				return true;
-		} else if (pass.equals("1"))
-			;
+		/*
+		 * if (pass.length() >= 5) { if (pass.substring(0, 5).equals("12345")) return
+		 * true; } else if (pass.equals("1"))
+		 */
 		///////////////////////////////////////////////////////
 
 		if (pass.toLowerCase().equals(pass))
@@ -256,17 +256,20 @@ public class GUI {
 		loginBtnEnter.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent arg0) {
-				setBankAccountIndex(loginTxtUsername.getText());
-
-				if (ba.get(index).checkPassword(loginPassword.getText())) {
-					layout.show(frame.getContentPane(), CHOICE_PANEL);
+				if (!setBankAccountIndex(loginTxtUsername.getText())) {
+					JOptionPane.showMessageDialog(null, "User does not exist", "Error", JOptionPane.ERROR_MESSAGE);
 				} else {
-					JOptionPane.showMessageDialog(null, "Wrong Password or Username. Please try again.", "Login Error",
-							JOptionPane.ERROR_MESSAGE);
-				}
 
-				// resets the password field
-				loginPassword.setText("");
+					if (ba.get(index).checkPassword(loginPassword.getText())) {
+						layout.show(frame.getContentPane(), CHOICE_PANEL);
+					} else {
+						JOptionPane.showMessageDialog(null, "Wrong Password or Username. Please try again.",
+								"Login Error", JOptionPane.ERROR_MESSAGE);
+					}
+
+					// resets the password field
+					loginPassword.setText("");
+				}
 			}
 		});
 
@@ -531,20 +534,23 @@ public class GUI {
 		JButton emptyBtnEmptyAcc = new JButton("EMPTY ACCOUNT");
 		emptyBtnEmptyAcc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				
+
 				// confirmation on wheter or not to empty account
-				int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to empty your account?", 
+				int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to empty your account?",
 						"Are you sure?", JOptionPane.YES_NO_OPTION);
-				
-				if(response == JOptionPane.YES_OPTION) {
-					
-					// empties account, sets the small message and shames user for not being responsible
+
+				if (response == JOptionPane.YES_OPTION) {
+
+					// empties account, sets the small message and shames user for not being
+					// responsible
 					ba.get(index).emptyAccount();
 					emptyLblMessage.setText("So much for \"leaving something for a rainy day\"...");
 					JOptionPane.showMessageDialog(null, "Shame on you!", "SHAME", JOptionPane.PLAIN_MESSAGE);
 				} else {
-					// cancels operation, but shames the user anyways for pressing it in the first place
-					JOptionPane.showMessageDialog(null, "Operation has been canceled. You still pressed it in the first place so shame on you.", 
+					// cancels operation, but shames the user anyways for pressing it in the first
+					// place
+					JOptionPane.showMessageDialog(null,
+							"Operation has been canceled. You still pressed it in the first place so shame on you.",
 							"SHAME", JOptionPane.PLAIN_MESSAGE);
 				}
 			}
@@ -685,20 +691,37 @@ public class GUI {
 		transFromLblAmount.setBounds(39, 108, 82, 14);
 		transFromJPanel.add(transFromLblAmount);
 
-		JLabel transFromTxtPassword = new JLabel("Password:");
-		transFromTxtPassword.setHorizontalAlignment(SwingConstants.TRAILING);
-		transFromTxtPassword.setBounds(39, 173, 82, 14);
-		transFromJPanel.add(transFromTxtPassword);
+		JLabel transFromLblPassword = new JLabel("Password:");
+		transFromLblPassword.setHorizontalAlignment(SwingConstants.TRAILING);
+		transFromLblPassword.setBounds(39, 173, 82, 14);
+		transFromJPanel.add(transFromLblPassword);
 
 		JButton transFromBtnEnter = new JButton("Enter");
 		transFromBtnEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				layout.show(frame.getContentPane(), CHOICE_PANEL);
+				if (transFromTxtAmount.getText().trim().isEmpty() || transFromTxtOtherAccount.getText().trim().isEmpty()
+						|| transFromPassword.getText().trim().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Please Fill All Fields", "Failed", JOptionPane.ERROR_MESSAGE);
+				} else if (setOtherAccountIndex(Integer.valueOf(transFromTxtOtherAccount.getText()))) {
+					if (ba.get(index).transferFrom(Double.valueOf(transFromTxtAmount.getText()), ba.get(otherIndex),
+							transFromPassword.getText())) {
+						JOptionPane.showMessageDialog(null, "Transfer Success", "Success", JOptionPane.PLAIN_MESSAGE);
+						layout.show(frame.getContentPane(), CHOICE_PANEL);
+					} else {
+						JOptionPane.showMessageDialog(null, "Transfer Failed", "Failed", JOptionPane.ERROR_MESSAGE);
+						layout.show(frame.getContentPane(), CHOICE_PANEL);
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "Transfer Failed - Other Account Doesn't Exist", "Failed",
+							JOptionPane.ERROR_MESSAGE);
+					layout.show(frame.getContentPane(), CHOICE_PANEL);
+				}
+
 				transFromTxtOtherAccount.setText("");
 				transFromTxtAmount.setText("");
 				transFromPassword.setText("");
-
 			}
+
 		});
 
 		transFromBtnEnter.setBounds(166, 227, 128, 23);
@@ -766,8 +789,7 @@ public class GUI {
 										+ "9+ characters. NOTE: PASSWORDS STARTING WITH 12345 IS A LAZY PASS FOR TESTING");
 					}
 
-					else if (createAcc(username, DEFAULT_MONEY_VALUE, firstName, lastName, generateAccNum(),
-							password)) {
+					else if (createAcc(username, 0, firstName, lastName, generateAccNum(), password)) {
 
 						// Add password argument to BankAccount constructor
 						// Update createAcc to accept the parameter
@@ -845,9 +867,9 @@ public class GUI {
 		frame.getContentPane().add(mainJPanel, CHOICE_PANEL);
 		GridBagLayout gbl_mainJPanel = new GridBagLayout();
 		gbl_mainJPanel.columnWidths = new int[] { 138, 136, 133 };
-		gbl_mainJPanel.rowHeights = new int[] { 19, 75, 50, 23, 0, 0, 0 };
+		gbl_mainJPanel.rowHeights = new int[] { 19, 75, 50, 23, 0, 0, 0, 0 };
 		gbl_mainJPanel.columnWeights = new double[] { 0.0, 0.0, 0.0 };
-		gbl_mainJPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
+		gbl_mainJPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		mainJPanel.setLayout(gbl_mainJPanel);
 
 		mainBtnWithdraw = new JButton("Withdraw");
@@ -956,6 +978,9 @@ public class GUI {
 		JButton mainBtnTransTo = new JButton("Transfer To");
 		mainBtnTransTo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				transToTxtAmount.setText("");
+				transToTxtOtherAccount.setText("");
+
 				layout.show(frame.getContentPane(), TRANSFERTO_PANEL);
 			}
 		});
@@ -987,7 +1012,7 @@ public class GUI {
 		});
 
 		GridBagConstraints gbc_mainBtnChangePassword = new GridBagConstraints();
-		gbc_mainBtnChangePassword.insets = new Insets(3, 3, 0, 5);
+		gbc_mainBtnChangePassword.insets = new Insets(3, 3, 5, 5);
 		gbc_mainBtnChangePassword.fill = GridBagConstraints.HORIZONTAL;
 		gbc_mainBtnChangePassword.gridx = 0;
 		gbc_mainBtnChangePassword.gridy = 5;
@@ -1002,80 +1027,105 @@ public class GUI {
 		});
 		GridBagConstraints gbc_mainBtnGetPassword = new GridBagConstraints();
 		gbc_mainBtnGetPassword.fill = GridBagConstraints.HORIZONTAL;
-		gbc_mainBtnGetPassword.insets = new Insets(3, 3, 0, 5);
+		gbc_mainBtnGetPassword.insets = new Insets(3, 3, 5, 5);
 		gbc_mainBtnGetPassword.gridx = 1;
 		gbc_mainBtnGetPassword.gridy = 5;
 		mainJPanel.add(mainBtnGetPassword, gbc_mainBtnGetPassword);
 		GridBagConstraints gbc_mainBtnGetMessages = new GridBagConstraints();
-		gbc_mainBtnGetMessages.insets = new Insets(3, 3, 0, 3);
+		gbc_mainBtnGetMessages.insets = new Insets(3, 3, 5, 3);
 		gbc_mainBtnGetMessages.fill = GridBagConstraints.HORIZONTAL;
 		gbc_mainBtnGetMessages.anchor = GridBagConstraints.NORTH;
 		gbc_mainBtnGetMessages.gridx = 2;
 		gbc_mainBtnGetMessages.gridy = 5;
 		mainJPanel.add(mainBtnGetMessages, gbc_mainBtnGetMessages);
-		
+
+		JButton btnSignOut = new JButton("Sign Out");
+		btnSignOut.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				loginTxtUsername.setText("");
+				loginPassword.setText("");
+				layout.show(frame.getContentPane(), LOGIN_PANEL);
+			}
+		});
+		btnSignOut.setHorizontalAlignment(SwingConstants.RIGHT);
+		GridBagConstraints gbc_btnSignOut = new GridBagConstraints();
+		gbc_btnSignOut.anchor = GridBagConstraints.EAST;
+		gbc_btnSignOut.insets = new Insets(0, 0, 10, 0);
+		gbc_btnSignOut.gridx = 2;
+		gbc_btnSignOut.gridy = 6;
+		mainJPanel.add(btnSignOut, gbc_btnSignOut);
+
 		JPanel changePassword = new JPanel();
 		frame.getContentPane().add(changePassword, "ResetPassword Panel");
 		changePassword.setLayout(null);
-		
+
 		changePasswordFieldRepeat = new JPasswordField();
 		changePasswordFieldRepeat.setBounds(140, 125, 200, 20);
 		changePassword.add(changePasswordFieldRepeat);
-		
+
 		changePasswordFieldNew = new JPasswordField();
 		changePasswordFieldNew.setBounds(140, 94, 200, 20);
 		changePassword.add(changePasswordFieldNew);
-		
+
 		changePasswordField = new JPasswordField();
 		changePasswordField.setBounds(140, 63, 200, 20);
 		changePassword.add(changePasswordField);
-		
+
 		JLabel changeLblCurrentPassword = new JLabel("Current Password:");
 		changeLblCurrentPassword.setHorizontalAlignment(SwingConstants.RIGHT);
 		changeLblCurrentPassword.setBounds(-15, 66, 145, 14);
 		changePassword.add(changeLblCurrentPassword);
-		
+
 		JLabel changeLblNewPassword = new JLabel("New Pasword:");
 		changeLblNewPassword.setHorizontalAlignment(SwingConstants.RIGHT);
 		changeLblNewPassword.setBounds(20, 97, 110, 14);
 		changePassword.add(changeLblNewPassword);
-		
+
 		JLabel changePassLblRepeatPassword = new JLabel("Repeat Password:");
 		changePassLblRepeatPassword.setHorizontalAlignment(SwingConstants.RIGHT);
-		changePassLblRepeatPassword.setBounds(30, 128, 100, 14);
+		changePassLblRepeatPassword.setBounds(20, 128, 110, 14);
 		changePassword.add(changePassLblRepeatPassword);
-		
+
 		JButton changeBtnEnter = new JButton("Enter");
 		changeBtnEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				
-				
-				
-				if(changePasswordFieldNew.getText().equals(changePasswordFieldRepeat.getText())) {
-					if(ba.get(index).changePassword(changePasswordField.getText(), changePasswordFieldNew.getText())) {
-						JOptionPane.showMessageDialog(null, "Password Change Successful", "Sucess", JOptionPane.PLAIN_MESSAGE);
-						layout.show(frame.getContentPane(), CHOICE_PANEL);
-					} else {
-						JOptionPane.showMessageDialog(null, "Current password is incorrect", "Error", JOptionPane.ERROR_MESSAGE);
-					}
+
+				if (changePasswordField.getText().trim().isEmpty() || changePasswordFieldNew.getText().trim().isEmpty()
+						|| changePasswordFieldRepeat.getText().trim().isEmpty()) {
+					JOptionPane.showMessageDialog(null, "Please fill in all fields", "Failure",
+							JOptionPane.ERROR_MESSAGE);
 				} else {
-					JOptionPane.showMessageDialog(null, "Passwords do not match", "Error", JOptionPane.ERROR_MESSAGE);
+					if (changePasswordFieldNew.getText().equals(changePasswordFieldRepeat.getText())) {
+						if (ba.get(index).changePassword(changePasswordField.getText(),
+								changePasswordFieldNew.getText())) {
+							JOptionPane.showMessageDialog(null, "Password Change Successful", "Sucess",
+									JOptionPane.PLAIN_MESSAGE);
+							layout.show(frame.getContentPane(), CHOICE_PANEL);
+						} else {
+							JOptionPane.showMessageDialog(null, "Current password is incorrect", "Error",
+									JOptionPane.ERROR_MESSAGE);
+						}
+					} else {
+						JOptionPane.showMessageDialog(null, "Passwords do not match", "Error",
+								JOptionPane.ERROR_MESSAGE);
+					}
+					changePasswordFieldRepeat.setText("");
+					changePasswordFieldNew.setText("");
+					changePasswordField.setText("");
+
 				}
-				changePasswordFieldRepeat.setText("");
-				changePasswordFieldNew.setText("");
-				changePasswordField.setText("");
-				
 			}
 		});
-		changeBtnEnter.setFont(new Font("Tahoma", Font.PLAIN, 11));
+		changeBtnEnter.setFont(new Font("Tahoma", Font.BOLD, 11));
 		changeBtnEnter.setBounds(251, 156, 89, 23);
 		changePassword.add(changeBtnEnter);
-		
+
 		JButton changeBtnBack = new JButton("Back");
+		changeBtnBack.setFont(new Font("Tahoma", Font.BOLD, 11));
 		changeBtnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				layout.show(frame.getContentPane(), CHOICE_PANEL);
-				
+
 			}
 		});
 		changeBtnBack.setBounds(251, 184, 89, 23);

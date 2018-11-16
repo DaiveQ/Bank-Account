@@ -134,9 +134,9 @@ public class BankAccount {
 	boolean transferTo(double amount, BankAccount otherAcc) {
 		amount = roundDecimals(amount);
 
-		if (amount >= balance && balance > 0) {
-			message += DIVIDER + "Transfer To: " + otherAcc.getAccountNum();
-			otherAcc.message += DIVIDER + "Transfer From: " + this.accountNum;
+		if (amount <= balance && balance > 0) {
+			message += DIVIDER + "Transfer To: " + otherAcc.getAccountNum() + "\n";
+			otherAcc.message += DIVIDER + "Transfer From: " + this.accountNum + "\n";
 			otherAcc.deposit(amount);
 			withdraw(amount);
 			return true;
@@ -151,26 +151,29 @@ public class BankAccount {
 	// transfers money from another account to the user
 	boolean transferFrom(double amount, BankAccount otherAcc, String pswd) {
 		amount = roundDecimals(amount);
+		if (pswd != password) {
+			return false;
+		} else {
+			if (balance >= amount && balance > 0) {
+				message += DIVIDER + "Transfer From: " + otherAcc.getAccountNum() + "\n";
+				otherAcc.message += DIVIDER + "Transfer To: " + this.accountNum;
+				deposit(amount);
+				otherAcc.withdraw(amount);
+				return true;
+			}
 
-		if (balance >= amount && balance > 0) {
-			message += DIVIDER + "Transfer From: " + otherAcc.getAccountNum();
-			otherAcc.message += DIVIDER + "Transfer To: " + this.accountNum;
-			deposit(amount);
-			otherAcc.withdraw(amount);
-			return true;
-		}
+			else if (amount > balance) {
+				message += getTime() + "Transfer was unsucsessful - an overdraft fee of $25 was applied\n";
+				return false;
+			}
 
-		else if (amount > balance) {
-			message += getTime() + "Transfer was unsucsessful - an overdraft fee of $25 was applied\n";
+			else if (pswd != password) {
+				message += getTime() + "Transfer was unsucsessful - please check password and try again\n";
+				return false;
+			}
+
 			return false;
 		}
-
-		else if (pswd != password) {
-			message += getTime() + "Transfer was unsucsessful - please check password and try again\n";
-			return false;
-		}
-
-		return false;
 	}
 
 	boolean changePassword(String currentPassword, String newPassword) {
