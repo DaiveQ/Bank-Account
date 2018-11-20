@@ -257,13 +257,13 @@ public class GUI {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent arg0) {
 				if (!setBankAccountIndex(loginTxtUsername.getText())) {
-					JOptionPane.showMessageDialog(null, "User does not exist", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(frame, "User does not exist", "Error", JOptionPane.ERROR_MESSAGE);
 				} else {
 
 					if (ba.get(index).checkPassword(loginPassword.getText())) {
 						layout.show(frame.getContentPane(), CHOICE_PANEL);
 					} else {
-						JOptionPane.showMessageDialog(null, "Wrong Password or Username. Please try again.",
+						JOptionPane.showMessageDialog(frame, "Wrong Password or Username. Please try again.",
 								"Login Error", JOptionPane.ERROR_MESSAGE);
 					}
 
@@ -352,12 +352,12 @@ public class GUI {
 		withdrawBtnWithdraw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (withdrawTxtAmount.getText().trim().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Fill in the blanks", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(frame, "Fill in the blanks", "Error", JOptionPane.ERROR_MESSAGE);
 				} else {
 					if (ba.get(index).withdraw(Double.valueOf(withdrawTxtAmount.getText()))) {
-						JOptionPane.showMessageDialog(null, "Withdrawl Success", "Success", JOptionPane.PLAIN_MESSAGE);
+						JOptionPane.showMessageDialog(frame, "Withdrawl Success", "Success", JOptionPane.PLAIN_MESSAGE);
 					} else {
-						JOptionPane.showMessageDialog(null, "Withdrawl Failed. Check balance and try again", "Failed",
+						JOptionPane.showMessageDialog(frame, "Withdrawl Failed. Check balance and try again", "Failed",
 								JOptionPane.ERROR_MESSAGE);
 					}
 					withdrawTxtAmount.setText("");
@@ -410,12 +410,12 @@ public class GUI {
 		depositBtnDeposit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (depositBtnDeposit.getText().trim().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Fill in the blanks", "Error", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(frame, "Fill in the blanks", "Error", JOptionPane.ERROR_MESSAGE);
 				} else {
 					if (ba.get(index).deposit(Double.valueOf(depositTxtAmount.getText()))) {
-						JOptionPane.showMessageDialog(null, "Deposit Success", "Success", JOptionPane.PLAIN_MESSAGE);
+						JOptionPane.showMessageDialog(frame, "Deposit Success", "Success", JOptionPane.PLAIN_MESSAGE);
 					} else {
-						JOptionPane.showMessageDialog(null, "Deposit Failed. Please try again", "Failed",
+						JOptionPane.showMessageDialog(frame, "Deposit Failed. Please try again", "Failed",
 								JOptionPane.ERROR_MESSAGE);
 					}
 					depositTxtAmount.setText("");
@@ -535,8 +535,8 @@ public class GUI {
 		emptyBtnEmptyAcc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				// confirmation on wheter or not to empty account
-				int response = JOptionPane.showConfirmDialog(null, "Are you sure you want to empty your account?",
+				// confirmation on whether or not to empty account
+				int response = JOptionPane.showConfirmDialog(frame, "Are you sure you want to empty your account?",
 						"Are you sure?", JOptionPane.YES_NO_OPTION);
 
 				if (response == JOptionPane.YES_OPTION) {
@@ -545,11 +545,11 @@ public class GUI {
 					// responsible
 					ba.get(index).emptyAccount();
 					emptyLblMessage.setText("So much for \"leaving something for a rainy day\"...");
-					JOptionPane.showMessageDialog(null, "Shame on you!", "SHAME", JOptionPane.PLAIN_MESSAGE);
+					JOptionPane.showMessageDialog(frame, "Shame on you!", "SHAME", JOptionPane.PLAIN_MESSAGE);
 				} else {
 					// cancels operation, but shames the user anyways for pressing it in the first
 					// place
-					JOptionPane.showMessageDialog(null,
+					JOptionPane.showMessageDialog(frame,
 							"Operation has been canceled. You still pressed it in the first place so shame on you.",
 							"SHAME", JOptionPane.PLAIN_MESSAGE);
 				}
@@ -630,17 +630,17 @@ public class GUI {
 		transToBtnEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (transToTxtAmount.getText().trim().isEmpty() || transToTxtOtherAccount.getText().trim().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Please Fill All Fields", "Failed", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(frame, "Please Fill All Fields", "Failed", JOptionPane.ERROR_MESSAGE);
 				} else if (setOtherAccountIndex(Integer.valueOf(transToTxtOtherAccount.getText()))) {
 					if (ba.get(index).transferTo(Double.valueOf(transToTxtAmount.getText()), ba.get(otherIndex))) {
-						JOptionPane.showMessageDialog(null, "Transfer Success", "Success", JOptionPane.PLAIN_MESSAGE);
+						JOptionPane.showMessageDialog(frame, "Transfer Success", "Success", JOptionPane.PLAIN_MESSAGE);
 						layout.show(frame.getContentPane(), CHOICE_PANEL);
 					} else {
-						JOptionPane.showMessageDialog(null, "Transfer Failed", "Failed", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(frame, "Transfer Failed", "Failed", JOptionPane.ERROR_MESSAGE);
 						layout.show(frame.getContentPane(), CHOICE_PANEL);
 					}
 				} else {
-					JOptionPane.showMessageDialog(null, "Transfer Failed - Other Account Doesn't Exist", "Failed",
+					JOptionPane.showMessageDialog(frame, "Transfer Failed - Other Account Doesn't Exist", "Failed",
 							JOptionPane.ERROR_MESSAGE);
 					layout.show(frame.getContentPane(), CHOICE_PANEL);
 				}
@@ -701,18 +701,18 @@ public class GUI {
 			public void actionPerformed(ActionEvent e) {
 				if (transFromTxtAmount.getText().trim().isEmpty() || transFromTxtOtherAccount.getText().trim().isEmpty()
 						|| transFromPassword.getText().trim().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Please Fill All Fields", "Failed", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(frame, "Please Fill All Fields", "Failed", JOptionPane.ERROR_MESSAGE);
 				} else if (setOtherAccountIndex(Integer.valueOf(transFromTxtOtherAccount.getText()))) {
 					if (ba.get(index).transferFrom(Double.valueOf(transFromTxtAmount.getText()), ba.get(otherIndex),
 							transFromPassword.getText())) {
-						JOptionPane.showMessageDialog(null, "Transfer Success", "Success", JOptionPane.PLAIN_MESSAGE);
+						JOptionPane.showMessageDialog(frame, "Transfer Success", "Success", JOptionPane.PLAIN_MESSAGE);
 						layout.show(frame.getContentPane(), CHOICE_PANEL);
 					} else {
-						JOptionPane.showMessageDialog(null, "Transfer Failed", "Failed", JOptionPane.ERROR_MESSAGE);
+						JOptionPane.showMessageDialog(frame, "Transfer Failed", "Failed", JOptionPane.ERROR_MESSAGE);
 						layout.show(frame.getContentPane(), CHOICE_PANEL);
 					}
 				} else {
-					JOptionPane.showMessageDialog(null, "Transfer Failed - Other Account Doesn't Exist", "Failed",
+					JOptionPane.showMessageDialog(frame, "Transfer Failed - Other Account Doesn't Exist", "Failed",
 							JOptionPane.ERROR_MESSAGE);
 					layout.show(frame.getContentPane(), CHOICE_PANEL);
 				}
@@ -773,7 +773,7 @@ public class GUI {
 				if ((regPassword.getText().trim().isEmpty() || regPasswordRepeat.getText().isEmpty()
 						|| regTxtUsername.getText().trim().isEmpty() || regTxtFirstName.getText().trim().isEmpty()
 						|| regTxtLastName.getText().trim().isEmpty())) {
-					JOptionPane.showMessageDialog(null, "Dude. Put stuff in the text box. Kind of the point", "bruh",
+					JOptionPane.showMessageDialog(frame, "Dude. Put stuff in the text box. Kind of the point", "bruh",
 							JOptionPane.ERROR_MESSAGE);
 
 				} else if (regPassword.getText().equals(regPasswordRepeat.getText())) {
@@ -784,7 +784,7 @@ public class GUI {
 					String password = regPassword.getText();
 
 					if (!isPasswordSecure(password)) {
-						JOptionPane.showMessageDialog(null,
+						JOptionPane.showMessageDialog(frame,
 								"ERROR: Password did not meet one of the following fields: 1+ capital, 1+ lowercase "
 										+ "9+ characters. NOTE: PASSWORDS STARTING WITH 12345 IS A LAZY PASS FOR TESTING");
 					}
@@ -795,13 +795,13 @@ public class GUI {
 						// Update createAcc to accept the parameter
 
 						layout.show(frame.getContentPane(), LOGIN_PANEL);
-						JOptionPane.showMessageDialog(null, "Account Created Successfuly", "Account Creation Success",
+						JOptionPane.showMessageDialog(frame, "Account Created Successfuly", "Account Creation Success",
 								JOptionPane.PLAIN_MESSAGE);
 
 						// add pass clears
 					} else {
 						layout.show(frame.getContentPane(), REGISTER_PANEL);
-						JOptionPane.showMessageDialog(null,
+						JOptionPane.showMessageDialog(frame,
 								"Error: Username already in use. Try adding some abbritrary "
 										+ "numbers no one likes to the end",
 								"Account Creation Error", JOptionPane.ERROR_MESSAGE);
@@ -810,7 +810,7 @@ public class GUI {
 					}
 				} else {
 					layout.show(frame.getContentPane(), REGISTER_PANEL);
-					JOptionPane.showMessageDialog(null, "Error: Passwords Don't match. Please try again",
+					JOptionPane.showMessageDialog(frame, "Error: Passwords Don't match. Please try again",
 							"Account Creation Error", JOptionPane.ERROR_MESSAGE);
 				}
 
@@ -1092,21 +1092,21 @@ public class GUI {
 
 				if (changePasswordField.getText().trim().isEmpty() || changePasswordFieldNew.getText().trim().isEmpty()
 						|| changePasswordFieldRepeat.getText().trim().isEmpty()) {
-					JOptionPane.showMessageDialog(null, "Please fill in all fields", "Failure",
+					JOptionPane.showMessageDialog(frame, "Please fill in all fields", "Failure",
 							JOptionPane.ERROR_MESSAGE);
 				} else {
 					if (changePasswordFieldNew.getText().equals(changePasswordFieldRepeat.getText())) {
 						if (ba.get(index).changePassword(changePasswordField.getText(),
 								changePasswordFieldNew.getText())) {
-							JOptionPane.showMessageDialog(null, "Password Change Successful", "Sucess",
+							JOptionPane.showMessageDialog(frame, "Password Change Successful", "Sucess",
 									JOptionPane.PLAIN_MESSAGE);
 							layout.show(frame.getContentPane(), CHOICE_PANEL);
 						} else {
-							JOptionPane.showMessageDialog(null, "Current password is incorrect", "Error",
+							JOptionPane.showMessageDialog(frame, "Current password is incorrect", "Error",
 									JOptionPane.ERROR_MESSAGE);
 						}
 					} else {
-						JOptionPane.showMessageDialog(null, "Passwords do not match", "Error",
+						JOptionPane.showMessageDialog(frame, "Passwords do not match", "Error",
 								JOptionPane.ERROR_MESSAGE);
 					}
 					changePasswordFieldRepeat.setText("");
