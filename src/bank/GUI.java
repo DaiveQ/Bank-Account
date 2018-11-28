@@ -9,8 +9,6 @@ import java.awt.Font;
 import java.awt.Color;
 import java.awt.BorderLayout;
 
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -26,12 +24,10 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.awt.GridLayout;
 
 public class GUI {
 
@@ -57,7 +53,6 @@ public class GUI {
 	final static String TRANSFERFROM_PANEL = "TransferFrom Panel";
 	final static String REGISTER_PANEL = "Register Panel";
 	final static String LOGIN_PANEL = "Login Panel";
-	private static final double DEFAULT_MONEY_VALUE = 1234.56;
 
 	private JTextField loginTxtUsername;
 	private JPasswordField loginPassword;
@@ -698,6 +693,7 @@ public class GUI {
 
 		JButton transFromBtnEnter = new JButton("Enter");
 		transFromBtnEnter.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent e) {
 				if (transFromTxtAmount.getText().trim().isEmpty() || transFromTxtOtherAccount.getText().trim().isEmpty()
 						|| transFromPassword.getText().trim().isEmpty()) {
@@ -1088,6 +1084,7 @@ public class GUI {
 
 		JButton changeBtnEnter = new JButton("Enter");
 		changeBtnEnter.addActionListener(new ActionListener() {
+			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent arg0) {
 
 				if (changePasswordField.getText().trim().isEmpty() || changePasswordFieldNew.getText().trim().isEmpty()
