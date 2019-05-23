@@ -3,6 +3,7 @@ package bank;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.Insets;
+import java.awt.Toolkit;
 import java.awt.GridBagLayout;
 import java.awt.CardLayout;
 import java.awt.Font;
@@ -12,6 +13,7 @@ import java.awt.BorderLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.text.DecimalFormat;
 import java.awt.event.ActionEvent;
 
 import javax.swing.JFrame;
@@ -25,34 +27,30 @@ import javax.swing.JTextArea;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-
 public class GUI {
 
-	// Also give functionality to Transfer To/From
+	// BEGIN USING KEY BINDINGS INSTEAD OF KEY LISTENER
 
+	// Also give functionality to Transfer To/From
 	private JFrame frame;
 	CardLayout layout = new CardLayout(0, 0);
 
-	private static List<BankAccount> ba = new ArrayList<BankAccount>();
-	private int index = 0; // index of BankAccount. Shortened for simplicity
-	private int otherIndex = 0;
+	private BankAccount ba;
+	private DecimalFormat df = new DecimalFormat("#0.00");
 
-	final static String CHOICE_PANEL = "Choice Panel";
-	final static String WITHDRAW_PANEL = "Withdraw Panel";
-	final static String DEPOSIT_PANEL = "Deposit Panel";
-	final static String ACCOUNTDETAIL_PANEL = "AccountDetail Panel";
-	final static String GETPASSWORD_PANEL = "GetPassword Panel";
-	final static String EMPTYACCOUNT_PANEL = "EmptyAccount Panel";
-	final static String MESSAGES_PANEL = "Messages Panel";
-	final static String RESETPASSWORD_PANEL = "ResetPassword Panel";
-	final static String GETBALANCE_PANEL = "GetBalance Panel";
-	final static String TRANSFERTO_PANEL = "TransferTo Panel";
-	final static String TRANSFERFROM_PANEL = "TransferFrom Panel";
-	final static String REGISTER_PANEL = "Register Panel";
-	final static String LOGIN_PANEL = "Login Panel";
+	static final String CHOICE_PANEL = "Choice Panel";
+	static final String WITHDRAW_PANEL = "Withdraw Panel";
+	static final String DEPOSIT_PANEL = "Deposit Panel";
+	static final String ACCOUNTDETAIL_PANEL = "AccountDetail Panel";
+	static final String GETPASSWORD_PANEL = "GetPassword Panel";
+	static final String EMPTYACCOUNT_PANEL = "EmptyAccount Panel";
+	static final String MESSAGES_PANEL = "Messages Panel";
+	static final String RESETPASSWORD_PANEL = "ResetPassword Panel";
+	static final String GETBALANCE_PANEL = "GetBalance Panel";
+	static final String TRANSFERTO_PANEL = "TransferTo Panel";
+	static final String TRANSFERFROM_PANEL = "TransferFrom Panel";
+	static final String REGISTER_PANEL = "Register Panel";
+	static final String LOGIN_PANEL = "Login Panel";
 
 	private JTextField loginTxtUsername;
 	private JPasswordField loginPassword;
@@ -68,13 +66,13 @@ public class GUI {
 	private JPasswordField regPassword;
 	private JPasswordField regPasswordRepeat;
 	private JTextField regTxtUsername;
-	private JButton mainBtnWithdraw;
 	private JPasswordField changePasswordFieldRepeat;
 	private JPasswordField changePasswordFieldNew;
 	private JPasswordField changePasswordField;
 
+	BAHttpURLConnection http = new BAHttpURLConnection();
+
 	public static void main(String[] args) {
-		createTestAccount();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -92,110 +90,20 @@ public class GUI {
 		initialize();
 	}
 
-	private boolean setBankAccountIndex(String username) {
-		for (int i = 0; i < ba.size(); i++) {
-			if (ba.get(i).getUsername().equals(username)) {
-				this.index = i;
-				return true;
-			}
-		}
-		return false;
+	private void createErrorMessage(String message) {
+		JOptionPane.showMessageDialog(frame, message, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 
-	private boolean setOtherAccountIndex(int accNum) {
-		for (int i = 0; i < ba.size(); i++) {
-			if (ba.get(i).getAccountNum() == accNum) {
-				this.otherIndex = i;
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private boolean isPasswordSecure(String pass) {
-
-		///////////////////////////////////////////////////////
-		// TESTING IF STATEMENT. PASSOWRDS STARTING WITH 12345
-		// WILL BE PASSED NO MATTER WHAT. DELETE THIS WHEN DONE
-		///////////////////////////////////////////////////////
-		/*
-		 * if (pass.length() >= 5) { if (pass.substring(0, 5).equals("12345")) return
-		 * true; } else if (pass.equals("1"))
-		 */
-		///////////////////////////////////////////////////////
-
-		if (pass.toLowerCase().equals(pass))
-			return false;
-		else if (pass.toUpperCase().equals(pass))
-			return false;
-		else if (pass.length() < 9)
-			return false;
-		// else if password has number
-		else
-			return true;
-	}
-
-	private static int generateAccNum() {
-		boolean taken = true;
-		int accNum = 0;
-
-		while (taken) {
-
-			String accComb = "";
-
-			// generates account number
-			Random rand = new Random();
-			int x[] = new int[9];
-			for (int i = 0; i < 9; i++)
-				x[i] = rand.nextInt(9);
-
-			for (int i : x) {
-				accComb += String.valueOf(x[i]);
-			}
-
-			// checks if the generated number is unique
-			if (checkForUniqueAccNum(Integer.valueOf(accComb))) {
-				accNum = Integer.valueOf(accComb);
-				taken = false;
-			}
-
-		}
-		return Integer.valueOf(accNum);
-	}
-
-	private static boolean checkForUniqueAccNum(int accNum) {
-		for (BankAccount element : ba) {
-			if (element.getAccountNum() == accNum)
-				return false;
-		}
-		return true;
-	}
-
-	private static boolean createAcc(String username, double amt, String fName, String lName, int acctNum,
-			String password) {
-
-		// checks if the username is already taken
-		for (BankAccount element : ba) {
-			if (element.getUsername().equals(username))
-				return false;
-		}
-
-		// adds account
-		ba.add(new BankAccount(username, amt, fName, lName, acctNum, password));
-		return true;
-	}
-
-	private static void createTestAccount() {
-		ba.add(new BankAccount("12345", 123456.78, "123", "45", 1));
-		ba.add(new BankAccount("Ricky", 1234.56, "Ricky", "Lin", 2));
-		ba.add(new BankAccount("1", 12.34, "John", "Doe", 3, "1"));
+	private void createSuccessMessage(String message) {
+		JOptionPane.showMessageDialog(frame, message, "Success", JOptionPane.PLAIN_MESSAGE);
 	}
 
 	private void initialize() {
 
 		frame = new JFrame();
+		frame.setIconImage(Toolkit.getDefaultToolkit().getImage(GUI.class.getResource("/res/favicon.png")));
 		frame.setTitle("Bank Account");
-		frame.setAlwaysOnTop(true);
+		frame.setAlwaysOnTop(false);
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(layout);
@@ -247,45 +155,59 @@ public class GUI {
 
 		JButton loginBtnEnter = new JButton("Enter");
 
-		// checks for username and password. Continues accordingly
 		loginBtnEnter.addActionListener(new ActionListener() {
 			@SuppressWarnings("deprecation")
 			public void actionPerformed(ActionEvent arg0) {
-				if (!setBankAccountIndex(loginTxtUsername.getText())) {
-					JOptionPane.showMessageDialog(frame, "User does not exist", "Error", JOptionPane.ERROR_MESSAGE);
-				} else {
-
-					if (ba.get(index).checkPassword(loginPassword.getText())) {
-						layout.show(frame.getContentPane(), CHOICE_PANEL);
-					} else {
-						JOptionPane.showMessageDialog(frame, "Wrong Password or Username. Please try again.",
-								"Login Error", JOptionPane.ERROR_MESSAGE);
-					}
-
-					// resets the password field
+				if (loginTxtUsername.getText().trim().isEmpty() || loginPassword.getText().trim().isEmpty()) {
+					createErrorMessage("Please fill out all fields");
 					loginPassword.setText("");
+					return;
 				}
+
+				BAHttpURLConnection http = new BAHttpURLConnection();
+				int response = http.login(loginTxtUsername.getText(), loginPassword.getText(), ba);
+
+				if (response == http.CONNECTIONERROR) {
+					createErrorMessage("Connection Error");
+				}
+
+				else if (response == http.UNEXPECTEDERROR) {
+					createErrorMessage("Unexpected error occured");
+				}
+
+				else if (response == http.FAILED) {
+					createErrorMessage("Username or password incorrect");
+				}
+
+				else if (response == http.SUCCESS) {
+					ba = http.parseInitialAccountData();
+					layout.show(frame.getContentPane(), CHOICE_PANEL);
+				}
+				loginPassword.setText("");
 			}
+
 		});
 
-		// makes the username text field press the enter button when
-		// the enter key is pressed
 		loginTxtUsername.addKeyListener(new KeyListener() {
+
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					loginBtnEnter.doClick();
 				}
 			}
 
+			@Override
 			public void keyReleased(KeyEvent arg0) {
+				// Only keyPressed needed
 			}
 
+			@Override
 			public void keyTyped(KeyEvent arg0) {
+				// Only keyPressed needed
 			}
+
 		});
 
-		// makes the username text field click the enter button when the enter key is
-		// pressed
 		loginPassword.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -293,10 +215,14 @@ public class GUI {
 				}
 			}
 
+			@Override
 			public void keyReleased(KeyEvent arg0) {
+				// Only keyPressed needed
 			}
 
+			@Override
 			public void keyTyped(KeyEvent arg0) {
+				// Only keyPressed needed
 			}
 		});
 
@@ -308,8 +234,6 @@ public class GUI {
 		gbc_loginBtnEnter.gridy = 3;
 		loginJPanel.add(loginBtnEnter, gbc_loginBtnEnter);
 
-		// displays the register panel when the register button is pressed on the login
-		// panel
 		JButton loginBtnRegister = new JButton("Create A New Account");
 		loginBtnRegister.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -346,22 +270,36 @@ public class GUI {
 		JButton withdrawBtnWithdraw = new JButton("Withdraw");
 		withdrawBtnWithdraw.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (withdrawTxtAmount.getText().trim().isEmpty()) {
-					JOptionPane.showMessageDialog(frame, "Fill in the blanks", "Error", JOptionPane.ERROR_MESSAGE);
-				} else {
-					if (ba.get(index).withdraw(Double.valueOf(withdrawTxtAmount.getText()))) {
-						JOptionPane.showMessageDialog(frame, "Withdrawl Success", "Success", JOptionPane.PLAIN_MESSAGE);
-					} else {
-						JOptionPane.showMessageDialog(frame, "Withdrawl Failed. Check balance and try again", "Failed",
-								JOptionPane.ERROR_MESSAGE);
+				BAHttpURLConnection http = new BAHttpURLConnection();
+
+				if (ba.isLegalAmount(withdrawTxtAmount.getText())) {
+					if (withdrawTxtAmount.getText().trim().isEmpty())
+						createErrorMessage("Please fill in all fields");
+					else {
+
+						int response = http.withdraw(ba.getUsername(), Double.valueOf(withdrawTxtAmount.getText()));
+
+						if (response == http.FAILED)
+							createErrorMessage("Withdraw failed");
+						else if (response == http.BADVALUE)
+							createErrorMessage("Bad Value. Please Check Balance");
+						else if (response == http.CONNECTIONERROR)
+							createErrorMessage("Connection failed");
+
+						else if (response == http.SUCCESS)
+							createSuccessMessage("Withdraw successful");
+
+						else
+							createErrorMessage("Unexpected error");
 					}
+
 					withdrawTxtAmount.setText("");
 					layout.show(frame.getContentPane(), CHOICE_PANEL);
-				}
+				} else
+					createErrorMessage("Bad value entered");
 			}
 		});
 
-		// adds KeyListerner to Enter to click the Withdraw Button
 		withdrawTxtAmount.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -369,10 +307,14 @@ public class GUI {
 				}
 			}
 
+			@Override
 			public void keyReleased(KeyEvent arg0) {
+				// Only keyPressed needed
 			}
 
+			@Override
 			public void keyTyped(KeyEvent arg0) {
+				// Only keyPressed needed
 			}
 		});
 
@@ -404,18 +346,32 @@ public class GUI {
 		JButton depositBtnDeposit = new JButton("Deposit");
 		depositBtnDeposit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (depositBtnDeposit.getText().trim().isEmpty()) {
-					JOptionPane.showMessageDialog(frame, "Fill in the blanks", "Error", JOptionPane.ERROR_MESSAGE);
-				} else {
-					if (ba.get(index).deposit(Double.valueOf(depositTxtAmount.getText()))) {
-						JOptionPane.showMessageDialog(frame, "Deposit Success", "Success", JOptionPane.PLAIN_MESSAGE);
-					} else {
-						JOptionPane.showMessageDialog(frame, "Deposit Failed. Please try again", "Failed",
-								JOptionPane.ERROR_MESSAGE);
+				BAHttpURLConnection http = new BAHttpURLConnection();
+
+				if (ba.isLegalAmount(depositTxtAmount.getText())) {
+					if (depositTxtAmount.getText().trim().isEmpty())
+						createErrorMessage("Please fill in all fields");
+					else {
+
+						int response = http.deposit(ba.getUsername(), Double.valueOf(depositTxtAmount.getText()));
+
+						if (response == http.FAILED)
+							createErrorMessage("Deposit failed");
+
+						else if (response == http.CONNECTIONERROR)
+							createErrorMessage("Connection failed");
+
+						else if (response == http.SUCCESS)
+							createSuccessMessage("Deposit successful");
+
+						else
+							createErrorMessage("Unexpected error");
 					}
+
 					depositTxtAmount.setText("");
 					layout.show(frame.getContentPane(), CHOICE_PANEL);
-				}
+				} else
+					createErrorMessage("Bad value entered");
 			}
 		});
 
@@ -437,7 +393,6 @@ public class GUI {
 		depositBtnBack.setBounds(335, 227, 89, 23);
 		depositJPanel.add(depositBtnBack);
 
-		// enter button presses deposit
 		depositTxtAmount.addKeyListener(new KeyListener() {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -530,23 +485,19 @@ public class GUI {
 		emptyBtnEmptyAcc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				// confirmation on whether or not to empty account
 				int response = JOptionPane.showConfirmDialog(frame, "Are you sure you want to empty your account?",
 						"Are you sure?", JOptionPane.YES_NO_OPTION);
 
 				if (response == JOptionPane.YES_OPTION) {
 
-					// empties account, sets the small message and shames user for not being
-					// responsible
-					ba.get(index).emptyAccount();
+					// remember to change the it
+					ba.emptyAccount();
 					emptyLblMessage.setText("So much for \"leaving something for a rainy day\"...");
 					JOptionPane.showMessageDialog(frame, "Shame on you!", "SHAME", JOptionPane.PLAIN_MESSAGE);
 				} else {
-					// cancels operation, but shames the user anyways for pressing it in the first
-					// place
 					JOptionPane.showMessageDialog(frame,
-							"Operation has been canceled. You still pressed it in the first place so shame on you.",
-							"SHAME", JOptionPane.PLAIN_MESSAGE);
+							"Operation has been canceled. You still pressed it in the first place so SHAME.", "SHAME",
+							JOptionPane.PLAIN_MESSAGE);
 				}
 			}
 		});
@@ -623,27 +574,67 @@ public class GUI {
 
 		JButton transToBtnEnter = new JButton("Enter");
 		transToBtnEnter.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (transToTxtAmount.getText().trim().isEmpty() || transToTxtOtherAccount.getText().trim().isEmpty()) {
-					JOptionPane.showMessageDialog(frame, "Please Fill All Fields", "Failed", JOptionPane.ERROR_MESSAGE);
-				} else if (setOtherAccountIndex(Integer.valueOf(transToTxtOtherAccount.getText()))) {
-					if (ba.get(index).transferTo(Double.valueOf(transToTxtAmount.getText()), ba.get(otherIndex))) {
-						JOptionPane.showMessageDialog(frame, "Transfer Success", "Success", JOptionPane.PLAIN_MESSAGE);
-						layout.show(frame.getContentPane(), CHOICE_PANEL);
-					} else {
-						JOptionPane.showMessageDialog(frame, "Transfer Failed", "Failed", JOptionPane.ERROR_MESSAGE);
-						layout.show(frame.getContentPane(), CHOICE_PANEL);
-					}
-				} else {
-					JOptionPane.showMessageDialog(frame, "Transfer Failed - Other Account Doesn't Exist", "Failed",
-							JOptionPane.ERROR_MESSAGE);
-					layout.show(frame.getContentPane(), CHOICE_PANEL);
+			public void actionPerformed(ActionEvent arg0) {
+				// fix this
+
+				if (transToTxtOtherAccount.getText().trim().isEmpty() || transToTxtAmount.getText().trim().isEmpty()) {
+					createErrorMessage("Please fill out all fields");
+					loginPassword.setText("");
+					return;
 				}
 
-				transToTxtAmount.setText("");
-				transToTxtOtherAccount.setText("");
+				BAHttpURLConnection http = new BAHttpURLConnection();
+				int response = http.transferTo(ba.getUsername(), transToTxtOtherAccount.getText(),
+						Double.valueOf(transToTxtAmount.getText()));
+				if (response == http.CONNECTIONERROR) {
+					createErrorMessage("Connection Error");
+				}
+
+				else if (response == http.UNEXPECTEDERROR) {
+					createErrorMessage("Unexpected error occured");
+				}
+
+				else if (response == http.FAILED) {
+					createErrorMessage("Transfer Failed");
+				}
+
+				else if (response == http.BADVALUE) {
+					createErrorMessage("Bad Value Please Check Balance");
+				}
+
+				else if (response == http.SUCCESS) {
+					createSuccessMessage("Transfer Successful");
+					layout.show(frame.getContentPane(), CHOICE_PANEL);
+				}
+				loginPassword.setText("");
 			}
+
 		});
+
+		// Fix whatever the hell I did here later because I have know idea what I did
+		// here
+
+		/*
+		 * transToBtnEnter.addActionListener(new ActionListener() { public void
+		 * actionPerformed(ActionEvent e) { if
+		 * (transToTxtAmount.getText().trim().isEmpty() ||
+		 * transToTxtOtherAccount.getText().trim().isEmpty()) {
+		 * JOptionPane.showMessageDialog(frame, "Please Fill All Fields", "Failed",
+		 * JOptionPane.ERROR_MESSAGE); } else if
+		 * (setOtherAccountIndex(Integer.valueOf(transToTxtOtherAccount.getText()))) {
+		 * if (ba.transferTo(Double.valueOf(transToTxtAmount.getText()),
+		 * OLDBA.get(otherIndex))) { JOptionPane.showMessageDialog(frame,
+		 * "Transfer Success", "Success", JOptionPane.PLAIN_MESSAGE);
+		 * layout.show(frame.getContentPane(), CHOICE_PANEL); } else {
+		 * JOptionPane.showMessageDialog(frame, "Transfer Failed", "Failed",
+		 * JOptionPane.ERROR_MESSAGE); layout.show(frame.getContentPane(),
+		 * CHOICE_PANEL); } } else { JOptionPane.showMessageDialog(frame,
+		 * "Transfer Failed - Other Account Doesn't Exist", "Failed",
+		 * JOptionPane.ERROR_MESSAGE); layout.show(frame.getContentPane(),
+		 * CHOICE_PANEL); }
+		 * 
+		 * transToTxtAmount.setText(""); transToTxtOtherAccount.setText(""); } });
+		 */
 
 		transToBtnEnter.setBounds(166, 227, 128, 23);
 		transToJPanel.add(transToBtnEnter);
@@ -692,33 +683,36 @@ public class GUI {
 		transFromJPanel.add(transFromLblPassword);
 
 		JButton transFromBtnEnter = new JButton("Enter");
-		transFromBtnEnter.addActionListener(new ActionListener() {
-			@SuppressWarnings("deprecation")
-			public void actionPerformed(ActionEvent e) {
-				if (transFromTxtAmount.getText().trim().isEmpty() || transFromTxtOtherAccount.getText().trim().isEmpty()
-						|| transFromPassword.getText().trim().isEmpty()) {
-					JOptionPane.showMessageDialog(frame, "Please Fill All Fields", "Failed", JOptionPane.ERROR_MESSAGE);
-				} else if (setOtherAccountIndex(Integer.valueOf(transFromTxtOtherAccount.getText()))) {
-					if (ba.get(index).transferFrom(Double.valueOf(transFromTxtAmount.getText()), ba.get(otherIndex),
-							transFromPassword.getText())) {
-						JOptionPane.showMessageDialog(frame, "Transfer Success", "Success", JOptionPane.PLAIN_MESSAGE);
-						layout.show(frame.getContentPane(), CHOICE_PANEL);
-					} else {
-						JOptionPane.showMessageDialog(frame, "Transfer Failed", "Failed", JOptionPane.ERROR_MESSAGE);
-						layout.show(frame.getContentPane(), CHOICE_PANEL);
-					}
-				} else {
-					JOptionPane.showMessageDialog(frame, "Transfer Failed - Other Account Doesn't Exist", "Failed",
-							JOptionPane.ERROR_MESSAGE);
-					layout.show(frame.getContentPane(), CHOICE_PANEL);
-				}
 
-				transFromTxtOtherAccount.setText("");
-				transFromTxtAmount.setText("");
-				transFromPassword.setText("");
-			}
+		// See transTo, but just whatever I did, I don't wanna deal with it
 
-		});
+		/*
+		 * transFromBtnEnter.addActionListener(new ActionListener() {
+		 * 
+		 * @SuppressWarnings("deprecation") public void actionPerformed(ActionEvent e) {
+		 * if (transFromTxtAmount.getText().trim().isEmpty() ||
+		 * transFromTxtOtherAccount.getText().trim().isEmpty() ||
+		 * transFromPassword.getText().trim().isEmpty()) {
+		 * JOptionPane.showMessageDialog(frame, "Please Fill All Fields", "Failed",
+		 * JOptionPane.ERROR_MESSAGE); } else if
+		 * (setOtherAccountIndex(Integer.valueOf(transFromTxtOtherAccount.getText()))) {
+		 * if (ba.transferFrom(Double.valueOf(transFromTxtAmount.getText()),
+		 * OLDBA.get(otherIndex), transFromPassword.getText())) {
+		 * JOptionPane.showMessageDialog(frame, "Transfer Success", "Success",
+		 * JOptionPane.PLAIN_MESSAGE); layout.show(frame.getContentPane(),
+		 * CHOICE_PANEL); } else { JOptionPane.showMessageDialog(frame,
+		 * "Transfer Failed", "Failed", JOptionPane.ERROR_MESSAGE);
+		 * layout.show(frame.getContentPane(), CHOICE_PANEL); } } else {
+		 * JOptionPane.showMessageDialog(frame,
+		 * "Transfer Failed - Other Account Doesn't Exist", "Failed",
+		 * JOptionPane.ERROR_MESSAGE); layout.show(frame.getContentPane(),
+		 * CHOICE_PANEL); }
+		 * 
+		 * transFromTxtOtherAccount.setText(""); transFromTxtAmount.setText("");
+		 * transFromPassword.setText(""); }
+		 * 
+		 * });
+		 */
 
 		transFromBtnEnter.setBounds(166, 227, 128, 23);
 		transFromJPanel.add(transFromBtnEnter);
@@ -761,55 +755,74 @@ public class GUI {
 		registerJPanel.add(regBtnBack);
 
 		JButton regBtnCreate = new JButton("Create Account");
+
 		regBtnCreate.addActionListener(new ActionListener() {
 
 			@SuppressWarnings("deprecation")
-
 			public void actionPerformed(ActionEvent e) {
 				if ((regPassword.getText().trim().isEmpty() || regPasswordRepeat.getText().isEmpty()
 						|| regTxtUsername.getText().trim().isEmpty() || regTxtFirstName.getText().trim().isEmpty()
 						|| regTxtLastName.getText().trim().isEmpty())) {
-					JOptionPane.showMessageDialog(frame, "Dude. Put stuff in the text box. Kind of the point", "bruh",
+
+					JOptionPane.showMessageDialog(frame, "Please fill out all fields", "ERROR",
 							JOptionPane.ERROR_MESSAGE);
 
 				} else if (regPassword.getText().equals(regPasswordRepeat.getText())) {
-
+					BAHttpURLConnection http = new BAHttpURLConnection();
 					String username = regTxtUsername.getText();
 					String firstName = regTxtFirstName.getText();
 					String lastName = regTxtLastName.getText();
 					String password = regPassword.getText();
 
-					if (!isPasswordSecure(password)) {
-						JOptionPane.showMessageDialog(frame,
-								"ERROR: Password did not meet one of the following fields: 1+ capital, 1+ lowercase "
-										+ "9+ characters. NOTE: PASSWORDS STARTING WITH 12345 IS A LAZY PASS FOR TESTING");
-					}
+					int response = http.createAcc(username, password, firstName, lastName);
 
-					else if (createAcc(username, 0, firstName, lastName, generateAccNum(), password)) {
+					if (response == http.CONNECTIONERROR)
+						createErrorMessage("Connection Error");
 
-						// Add password argument to BankAccount constructor
-						// Update createAcc to accept the parameter
+					else if (response == http.FAILED)
+						createErrorMessage("Username in use. Try adding arbitrary numbers no one likes to the end");
+
+					else if (response == http.FAILEDSECURITY)
+						createErrorMessage("Password must be 3+ characters long");
+
+					else if (response == http.SUCCESS) {
+						createSuccessMessage("Account successfully created");
+
+						regTxtUsername.setText("");
+						regTxtFirstName.setText("");
+						regTxtLastName.setText("");
 
 						layout.show(frame.getContentPane(), LOGIN_PANEL);
-						JOptionPane.showMessageDialog(frame, "Account Created Successfuly", "Account Creation Success",
-								JOptionPane.PLAIN_MESSAGE);
 
-						// add pass clears
-					} else {
-						layout.show(frame.getContentPane(), REGISTER_PANEL);
-						JOptionPane.showMessageDialog(frame,
-								"Error: Username already in use. Try adding some abbritrary "
-										+ "numbers no one likes to the end",
-								"Account Creation Error", JOptionPane.ERROR_MESSAGE);
+					} else
+						createErrorMessage("Unexpected error has occured");
 
-						// add pass clears
-					}
-				} else {
-					layout.show(frame.getContentPane(), REGISTER_PANEL);
-					JOptionPane.showMessageDialog(frame, "Error: Passwords Don't match. Please try again",
-							"Account Creation Error", JOptionPane.ERROR_MESSAGE);
-				}
+					/*
+					 * else if (createAcc(username, 0, firstName, lastName, generateAccNum(),
+					 * password)) {
+					 * 
+					 * // Add password argument to BankAccount constructor // Update createAcc to
+					 * accept the parameter
+					 * 
+					 * layout.show(frame.getContentPane(), LOGIN_PANEL);
+					 * JOptionPane.showMessageDialog(frame, "Account Created Successfuly",
+					 * "SUCCESS", JOptionPane.PLAIN_MESSAGE);
+					 * 
+					 * // add pass clears } else { layout.show(frame.getContentPane(),
+					 * REGISTER_PANEL); JOptionPane.showMessageDialog(frame,
+					 * "Error: Username already in use. Try adding some abbritrary " +
+					 * "numbers that no one likes to the end", "ERROR", JOptionPane.ERROR_MESSAGE);
+					 * 
+					 * // add pass clears } } else { layout.show(frame.getContentPane(),
+					 * REGISTER_PANEL); JOptionPane.showMessageDialog(frame,
+					 * "Error: Passwords Don't match. Please try again", "ERROR",
+					 * JOptionPane.ERROR_MESSAGE);
+					 */
+				} else
+					createErrorMessage("Passwords do not match");
 
+				regPassword.setText("");
+				regPasswordRepeat.setText("");
 			}
 		});
 
@@ -868,11 +881,10 @@ public class GUI {
 		gbl_mainJPanel.rowWeights = new double[] { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, Double.MIN_VALUE };
 		mainJPanel.setLayout(gbl_mainJPanel);
 
-		mainBtnWithdraw = new JButton("Withdraw");
+		JButton mainBtnWithdraw = new JButton("Withdraw");
 
-		// displays the withdraw panel when the withdraw button is pressed on the main
-		// panel
 		mainBtnWithdraw.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
 				withdrawTxtAmount.setText("");
 				layout.show(frame.getContentPane(), WITHDRAW_PANEL);
@@ -886,18 +898,24 @@ public class GUI {
 		gbc_mainBtnWithdraw.gridy = 1;
 		mainJPanel.add(mainBtnWithdraw, gbc_mainBtnWithdraw);
 
-		// displays the balance (maybe in a popup later) when the button is pressed on
-		// the main panel
 		JButton mainBtnBalance = new JButton("Get Balance");
 
 		mainBtnBalance.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent e) {
+
+				try {
+					getBalanceLblBalance.setText("Balance: $" + df.format(http.getBalance(ba.getUsername())));
+
+				} catch (Exception execp) {
+					getBalanceLblBalance.setText("Balance Could Not Be Found");
+					execp.printStackTrace();
+				}
+
 				layout.show(frame.getContentPane(), GETBALANCE_PANEL);
-				getBalanceLblBalance.setText("Balance: " + ba.get(index).getBalance());
 			}
 		});
 
-		// displays the deposit panel when the button is pressed on the main panel
 		JButton mainBtnDeposit = new JButton("Deposit");
 		mainBtnDeposit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -919,7 +937,6 @@ public class GUI {
 		gbc_mainBtnBalance.gridy = 1;
 		mainJPanel.add(mainBtnBalance, gbc_mainBtnBalance);
 
-		// displays the empty account panel when the button is pressed on the main panel
 		JButton mainBtnEmpty = new JButton("Empty Account");
 		mainBtnEmpty.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -938,12 +955,12 @@ public class GUI {
 		JButton mainBtnGetMessages = new JButton("Read Messages");
 		mainBtnGetMessages.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				messageTxtAMessage.setText(ba.get(index).getMessage());
+				messageTxtAMessage.setText(http.getMessage(ba.getUsername()));
 				layout.show(frame.getContentPane(), MESSAGES_PANEL);
+
 			}
 		});
 
-		// displays the transfer from panel when the button is pressed on the main panel
 		JButton mainBtnTransFrom = new JButton("Transfer From");
 		mainBtnTransFrom.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -961,16 +978,18 @@ public class GUI {
 		JButton mainBtnAccDetail = new JButton("Account Info");
 		mainBtnAccDetail.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				accDetailLblAccNumValue.setText(String.valueOf(ba.get(index).getAccountNum()));
-				accDetailLblBalanceValue.setText('$' + ba.get(index).getBalance());
-				accDetailLblFirstNameValue.setText(ba.get(index).getFirstName());
-				accDetailLblLastNameValue.setText(ba.get(index).getLastName());
-
+				accDetailLblAccNumValue.setText(String.valueOf(ba.getAccountNum()));
+				try {
+					accDetailLblBalanceValue.setText('$' + df.format(http.getBalance(ba.getUsername())));
+				} catch (Exception e1) {
+					accDetailLblBalanceValue.setText("ERROR");
+				}
+				accDetailLblFirstNameValue.setText(ba.getFirstName());
+				accDetailLblLastNameValue.setText(ba.getLastName());
 				layout.show(frame.getContentPane(), ACCOUNTDETAIL_PANEL);
 			}
 		});
 
-		// displays the transfer to panel when the button is pressed on the main panel
 		JButton mainBtnTransTo = new JButton("Transfer To");
 		mainBtnTransTo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -980,6 +999,7 @@ public class GUI {
 				layout.show(frame.getContentPane(), TRANSFERTO_PANEL);
 			}
 		});
+
 		GridBagConstraints gbc_mainBtnTransTo = new GridBagConstraints();
 		gbc_mainBtnTransTo.insets = new Insets(0, 3, 5, 5);
 		gbc_mainBtnTransTo.fill = GridBagConstraints.HORIZONTAL;
@@ -995,8 +1015,6 @@ public class GUI {
 		gbc_mainBtnAccDetail.gridy = 4;
 		mainJPanel.add(mainBtnAccDetail, gbc_mainBtnAccDetail);
 
-		// displays the reset password panel when the button is pressed on the main
-		// panel
 		JButton mainBtnChangePassword = new JButton("Change Password");
 		mainBtnChangePassword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1021,12 +1039,14 @@ public class GUI {
 				layout.show(frame.getContentPane(), GETPASSWORD_PANEL);
 			}
 		});
+
 		GridBagConstraints gbc_mainBtnGetPassword = new GridBagConstraints();
 		gbc_mainBtnGetPassword.fill = GridBagConstraints.HORIZONTAL;
 		gbc_mainBtnGetPassword.insets = new Insets(3, 3, 5, 5);
 		gbc_mainBtnGetPassword.gridx = 1;
 		gbc_mainBtnGetPassword.gridy = 5;
 		mainJPanel.add(mainBtnGetPassword, gbc_mainBtnGetPassword);
+
 		GridBagConstraints gbc_mainBtnGetMessages = new GridBagConstraints();
 		gbc_mainBtnGetMessages.insets = new Insets(3, 3, 5, 3);
 		gbc_mainBtnGetMessages.fill = GridBagConstraints.HORIZONTAL;
@@ -1044,6 +1064,7 @@ public class GUI {
 			}
 		});
 		btnSignOut.setHorizontalAlignment(SwingConstants.RIGHT);
+
 		GridBagConstraints gbc_btnSignOut = new GridBagConstraints();
 		gbc_btnSignOut.anchor = GridBagConstraints.EAST;
 		gbc_btnSignOut.insets = new Insets(0, 0, 10, 0);
@@ -1089,22 +1110,17 @@ public class GUI {
 
 				if (changePasswordField.getText().trim().isEmpty() || changePasswordFieldNew.getText().trim().isEmpty()
 						|| changePasswordFieldRepeat.getText().trim().isEmpty()) {
-					JOptionPane.showMessageDialog(frame, "Please fill in all fields", "Failure",
-							JOptionPane.ERROR_MESSAGE);
+					createErrorMessage("Please fill in all fields");
 				} else {
 					if (changePasswordFieldNew.getText().equals(changePasswordFieldRepeat.getText())) {
-						if (ba.get(index).changePassword(changePasswordField.getText(),
-								changePasswordFieldNew.getText())) {
-							JOptionPane.showMessageDialog(frame, "Password Change Successful", "Sucess",
-									JOptionPane.PLAIN_MESSAGE);
+						if (ba.changePassword(changePasswordField.getText(), changePasswordFieldNew.getText())) {
+							createSuccessMessage("Passwords successfully changed");
 							layout.show(frame.getContentPane(), CHOICE_PANEL);
-						} else {
-							JOptionPane.showMessageDialog(frame, "Current password is incorrect", "Error",
-									JOptionPane.ERROR_MESSAGE);
-						}
+						} else
+							createErrorMessage("Current password is incorrect");
+
 					} else {
-						JOptionPane.showMessageDialog(frame, "Passwords do not match", "Error",
-								JOptionPane.ERROR_MESSAGE);
+						createErrorMessage("Passwords do not match");
 					}
 					changePasswordFieldRepeat.setText("");
 					changePasswordFieldNew.setText("");

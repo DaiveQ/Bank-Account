@@ -24,34 +24,23 @@ public class BankAccount {
 
 	DecimalFormat df = new DecimalFormat("#0. 00");
 
-	BankAccount(String uName, double amt, String fName, String lName, int accNum) {
-		this.username = uName;
-		this.balance = amt;
-		this.firstName = fName;
-		this.lastName = lName;
+	BankAccount(String username, int accNum, double balance, String fname, String lName, String message) {
+		this.username = username;
 		this.accountNum = accNum;
-		this.password = setPassword();
-	}
-
-	BankAccount(String uName, double amt, String fName, String lName, int accNum, String password) {
-		this.username = uName;
-		this.balance = amt;
-		this.firstName = fName;
-		this.lastName = lName;
-		this.accountNum = accNum;
-		this.password = password;
-	}
-
-	BankAccount(String uName, String fname, String lName, int accNum) {
-		this.username = uName;
-		this.accountNum = accNum;
+		this.balance = balance;
 		this.firstName = fname;
 		this.lastName = lName;
 		this.balance = 0;
+		this.message = message;
 	}
 
 	private double roundDecimals(double num) {
-		return (Math.round(num * 100.0) / 100.0);
+		num = Math.round(num * 100.0) / 100.0;
+		if(num < .5) {
+			return -1.0;
+		} else {
+			return num;
+		}
 	}
 
 	private String getTime() {
@@ -85,18 +74,18 @@ public class BankAccount {
 		return df.format(this.balance);
 	}
 
-	private String setPassword() {
-		String pswd = "";
-
-		// sets beginning to the first 3 characters of firstName
-		for (int i = 0; i < 3; i++)
-			pswd += firstName.charAt(i);
-
-		// sets end to the last 2 characters of the firstName
-		for (int i = 2; i > 0; i--)
-			pswd += lastName.charAt(lastName.length() - i);
-		return pswd;
+	public boolean isLegalAmount(String amount) {
+		try {
+			if (Double.valueOf(amount) >= 0.5)
+				return true;
+			else
+				return false;
+		} catch (NumberFormatException e) {
+			return false;
+		}
 	}
+	
+	
 
 	boolean deposit(double amount) {
 		amount = roundDecimals(amount);
